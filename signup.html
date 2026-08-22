@@ -8,6 +8,9 @@
 
     <link rel="stylesheet" href="style.css">
 
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         .auth-container {
             max-width: 500px;
@@ -67,6 +70,11 @@
             background: #0f56b3;
         }
 
+        .signup-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .login-link {
             text-align: center;
             margin-top: 20px;
@@ -83,6 +91,20 @@
             padding: 12px;
             border-radius: 8px;
             display: none;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .message.success {
+            display: block;
+            background: #e8f7ee;
+            color: #16733a;
+        }
+
+        .message.error {
+            display: block;
+            background: #fdeaea;
+            color: #b42318;
         }
     </style>
 </head>
@@ -154,6 +176,7 @@
                         type="tel"
                         id="mobile"
                         maxlength="10"
+                        inputmode="numeric"
                         placeholder="Enter 10 digit mobile number"
                         required
                     >
@@ -189,7 +212,7 @@
                         type="password"
                         id="password"
                         placeholder="Create a password"
-                        minlength="6"
+                        minlength="8"
                         required
                     >
 
@@ -207,7 +230,7 @@
                         type="password"
                         id="confirmPassword"
                         placeholder="Confirm your password"
-                        minlength="6"
+                        minlength="8"
                         required
                     >
 
@@ -217,6 +240,7 @@
                 <button
                     type="submit"
                     class="signup-btn"
+                    id="signupButton"
                 >
                     Create Account
                 </button>
@@ -257,36 +281,104 @@
 
     <script>
 
+        /* ==============================
+           SUPABASE CONFIGURATION
+        ============================== */
+
+        const SUPABASE_URL =
+            "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+        /* ==============================
+           SIGN UP
+        ============================== */
+
         document
             .getElementById("signupForm")
-            .addEventListener("submit", function(event) {
+            .addEventListener("submit", async function(event) {
 
                 event.preventDefault();
 
+
                 const fullName =
-                    document.getElementById("fullName").value.trim();
+                    document
+                        .getElementById("fullName")
+                        .value
+                        .trim();
+
 
                 const mobile =
-                    document.getElementById("mobile").value.trim();
+                    document
+                        .getElementById("mobile")
+                        .value
+                        .trim();
+
 
                 const email =
-                    document.getElementById("email").value.trim();
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim()
+                        .toLowerCase();
+
 
                 const password =
-                    document.getElementById("password").value;
+                    document
+                        .getElementById("password")
+                        .value;
+
 
                 const confirmPassword =
-                    document.getElementById("confirmPassword").value;
+                    document
+                        .getElementById("confirmPassword")
+                        .value;
+
 
                 const message =
                     document.getElementById("message");
 
 
-                // Check mobile number
+                const button =
+                    document.getElementById("signupButton");
+
+
+                /* Clear old message */
+
+                message.className = "message";
+                message.textContent = "";
+
+
+                /* ==============================
+                   VALIDATION
+                ============================== */
+
+                if (fullName.length < 2) {
+
+                    message.className =
+                        "message error";
+
+                    message.textContent =
+                        "Please enter your full name.";
+
+                    return;
+                }
+
 
                 if (!/^[0-9]{10}$/.test(mobile)) {
 
-                    message.style.display = "block";
+                    message.className =
+                        "message error";
+
                     message.textContent =
                         "Please enter a valid 10 digit mobile number.";
 
@@ -294,11 +386,23 @@
                 }
 
 
-                // Check password
+                if (password.length < 8) {
+
+                    message.className =
+                        "message error";
+
+                    message.textContent =
+                        "Password must be at least 8 characters.";
+
+                    return;
+                }
+
 
                 if (password !== confirmPassword) {
 
-                    message.style.display = "block";
+                    message.className =
+                        "message error";
+
                     message.textContent =
                         "Passwords do not match.";
 
@@ -306,15 +410,115 @@
                 }
 
 
-                /*
-                    SUPABASE AUTHENTICATION
-                    WILL BE CONNECTED HERE.
-                */
+                /* ==============================
+                   DISABLE BUTTON
+                ============================== */
 
-                message.style.display = "block";
+                button.disabled = true;
+                button.textContent = "Creating Account...";
 
-                message.textContent =
-                    "Registration system will be connected with Supabase.";
+
+                try {
+
+                    /* ==============================
+                       CREATE SUPABASE ACCOUNT
+                    ============================== */
+
+                    const { data, error } =
+                        await supabaseClient.auth.signUp({
+
+                            email: email,
+
+                            password: password,
+
+                            options: {
+
+                                data: {
+
+                                    full_name: fullName,
+
+                                    mobile: mobile
+
+                                },
+
+                                emailRedirectTo:
+                                    "https://paulsoumyajit359-ship-it.github.io/digitalservices/"
+
+                            }
+
+                        });
+
+
+                    /* ==============================
+                       ERROR
+                    ============================== */
+
+                    if (error) {
+
+                        throw error;
+
+                    }
+
+
+                    /* ==============================
+                       SUCCESS
+                    ============================== */
+
+                    message.className =
+                        "message success";
+
+
+                    if (data.user && !data.session) {
+
+                        message.textContent =
+                            "Account created successfully! Please check your email and verify your account before logging in.";
+
+                    } else {
+
+                        message.textContent =
+                            "Account created successfully! You can now login.";
+
+                    }
+
+
+                    /* Clear password fields */
+
+                    document
+                        .getElementById("password")
+                        .value = "";
+
+                    document
+                        .getElementById("confirmPassword")
+                        .value = "";
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Signup Error:",
+                        error
+                    );
+
+
+                    message.className =
+                        "message error";
+
+
+                    message.textContent =
+                        error.message ||
+                        "Unable to create account. Please try again.";
+
+                }
+
+
+                /* ==============================
+                   ENABLE BUTTON
+                ============================== */
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Create Account";
 
             });
 
