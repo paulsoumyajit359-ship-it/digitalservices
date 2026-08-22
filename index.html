@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Service | Digital • Tax • Business Services</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #063b8f, #1769d1);
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: white;
+            color: #0755b8;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .brand h1 {
+            font-size: 23px;
+        }
+
+        .brand p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 22px;
+            font-weight: 600;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 75px 6%;
+            text-align: center;
+            background: white;
+        }
+
+        .hero h2 {
+            font-size: 42px;
+            color: #063b8f;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: auto;
+            color: #596579;
+            font-size: 18px;
+        }
+
+        .hero-buttons {
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 6px;
+        }
+
+        .primary {
+            background: #0866d8;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #064fa8;
+        }
+
+        .secondary {
+            border: 2px solid #0866d8;
+            color: #0866d8;
+            background: white;
+        }
+
+        .secondary:hover {
+            background: #eef5ff;
+        }
+
+        /* SERVICES */
+        .services {
+            padding: 65px 6%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            color: #063b8f;
+            font-size: 32px;
+        }
+
+        .section-title p {
+            color: #687386;
+            margin-top: 8px;
+        }
+
+        .service-grid {
+            max-width: 1150px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 28px 22px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(20, 40, 80, 0.08);
+            text-align: center;
+            border: 1px solid #e7edf5;
+            transition: 0.25s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 28px rgba(20, 40, 80, 0.14);
+        }
+
+        .service-icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .service-card h3 {
+            color: #173f7a;
+            margin-bottom: 8px;
+        }
+
+        .service-card p {
+            color: #6c7687;
+            font-size: 14px;
+            min-height: 45px;
+        }
+
+        .apply-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 9px 18px;
+            background: #0866d8;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .apply-btn:hover {
+            background: #064fa8;
+        }
+
+        /* HOW IT WORKS */
+        .how {
+            background: white;
+            padding: 65px 6%;
+        }
+
+        .steps {
+            max-width: 1000px;
+            margin: 35px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            text-align: center;
+        }
+
+        .step {
+            padding: 20px;
+        }
+
+        .step-number {
+            width: 45px;
+            height: 45px;
+            margin: auto auto 15px;
+            border-radius: 50%;
+            background: #0866d8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .step h3 {
+            margin-bottom: 8px;
+            color: #173f7a;
+        }
+
+        .step p {
+            color: #687386;
+            font-size: 14px;
+        }
+
+        /* CTA */
+        .cta {
+            margin: 55px 6%;
+            padding: 50px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #063b8f, #1769d1);
+            color: white;
+            border-radius: 18px;
+        }
+
+        .cta h2 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .cta p {
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .cta .btn {
+            background: white;
+            color: #0755b8;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #111827;
+            color: #d6dbe5;
+            text-align: center;
+            padding: 28px 20px;
+            font-size: 14px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        /* MOBILE */
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            nav a {
+                margin: 0 7px;
+                font-size: 14px;
+            }
+
+            .hero {
+                padding: 55px 20px;
+            }
+
+            .hero h2 {
+                font-size: 31px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .services {
+                padding: 50px 20px;
+            }
+
+            .cta {
+                margin: 35px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+
+        <div class="brand">
+
+            <div class="logo">DS</div>
+
+            <div>
+                <h1>Digital Service</h1>
+                <p>Digital • Tax • Business Services</p>
+            </div>
+
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#services">Services</a>
+            <a href="apply.html">Apply</a>
+        </nav>
+
+    </header>
+
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <h2>Your Digital Service Partner</h2>
+
+        <p>
+            Get Digital, Tax and Business related services
+            easily from one place. Submit your application
+            online and manage your service request.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#services" class="btn primary">
+                Explore Services
+            </a>
+
+            <a href="apply.html" class="btn secondary">
+                Apply for a Service
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- SERVICES -->
+    <section class="services" id="services">
+
+        <div class="section-title">
+
+            <h2>Our Services</h2>
+
+            <p>
+                Select the service you require and apply online.
+            </p>
+
+        </div>
+
+
+        <div class="service-grid">
+
+
+            <!-- PAN -->
+            <div class="service-card">
+
+                <div class="service-icon">🪪</div>
+
+                <h3>PAN Card</h3>
+
+                <p>
+                    New PAN card application and related services.
+                </p>
+
+                <a href="apply.html?service=PAN%20Card"
+                   class="apply-btn">
+                    Apply Now
+                </a>
+
+            </div>
+
+
+            <!-- AADHAAR -->
+            <div class="service-card">
+
+                <div class="service-icon">🆔</div>
+
+                <h3>Aadhaar Card</h3>
+
+                <p>
+                    Aadhaar related application and assistance.
+                </p>
+
+                <a href="apply.html?service=Aadhaar"
+                   class="apply-btn">
+                    Apply Now
+                </a>
+
+            </div>
+
+
+            <!-- RATION -->
+            <div class="service-card">
+
+                <div class="service-icon">🍚</div>
+
+                <h3>Ration Card</h3>
+
+                <p>
+                    Ration card application and related services.
+                </p>
+
+                <a href="apply.html?service=Ration%20Card"
+                   class="apply-btn">
+                    Apply Now
+                </a>
+
+            </div>
+
+
+            <!-- TRADE LICENSE -->
+            <div class="service-card">
+
+                <div class="service-icon">🏪</div>
+
+                <h3>Trade License</h3>
+
+                <p>
+                    Assistance for trade license applications.
+                </p>
+
+                <a href="apply.html?service=Trade%20License"
+                   class="apply-btn">
+                    Apply Now
+                </a>
+
+            </div>
+
+
+            <!-- SHOP ESTABLISHMENT -->
+            <div class="service-card">
+
+                <div class="service-icon">🏢</div>
+
+                <h3>Shop & Establishment</h3>
+
+                <p>
+                    Shop and establishment registration services.
+                </p>
+
+                <a href="apply.html?service=Shop%20Establishment"
+                   class="apply-btn">
+                    Apply Now
+                </a>
+
+            </div>
+
+
+            <!-- FSSAI -->
+            <div class="service-card">
+
+                <div class="service-icon">🍴</div>
+
+                <h3>FSSAI License</h3>
+
+                <p>
+                    FSSAI registration and license assistance.
+                </p>
+
+                <a href="apply.html?service=FSSAI%20License"
+                   class="apply-btn">
+                    Apply Now
+                </a>
+
+            </div>
+
+
+            <!-- GST -->
+            <div class="service-card">
+
+                <div class="service-icon">📊</div>
+
+                <h3>GST</h3>
+
+                <p>
+                    GST registration and compliance services.
+                </p>
+
+                <a href="apply.html?service=GST"
+                   class="apply-btn">
+                    Apply Now
+                </a>
+
+            </div>
+
+
+            <!-- TDS -->
+            <div class="service-card">
+
+                <div class="service-icon">💰</div>
+
+                <h3>TDS</h3>
+
+                <p>
+                    TDS related registration and compliance support.
+                </p>
+
+                <a href="apply.html?service=TDS"
+                   class="apply-btn">
+                    Apply Now
+                </a>
+
+            </div>
+
+
+            <!-- INCOME TAX -->
+            <div class="service-card">
+
+                <div class="service-icon">📑</div>
+
+                <h3>Income Tax</h3>
+
+                <p>
+                    Income tax return and related services.
+                </p>
+
+                <a href="apply.html?service=Income%20Tax"
+                   class="apply-btn">
+                    Apply Now
+                </a>
+
+            </div>
+
+
+            <!-- OTHER -->
+            <div class="service-card">
+
+                <div class="service-icon">➕</div>
+
+                <h3>Other Services</h3>
+
+                <p>
+                    Need another digital or business service?
+                </p>
+
+                <a href="apply.html"
+                   class="apply-btn">
+                    Apply Now
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+    <section class="how">
+
+        <div class="section-title">
+
+            <h2>How It Works</h2>
+
+            <p>
+                Simple and convenient online service process.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">1</div>
+
+                <h3>Select Service</h3>
+
+                <p>
+                    Choose the service you need from our service list.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">2</div>
+
+                <h3>Submit Details</h3>
+
+                <p>
+                    Fill in your details and upload required documents.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">3</div>
+
+                <h3>Application Processing</h3>
+
+                <p>
+                    We review and process your application.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">4</div>
+
+                <h3>Track Status</h3>
+
+                <p>
+                    Check the progress of your application online.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+    <section class="cta">
+
+        <h2>Need a Digital Service?</h2>
+
+        <p>
+            Submit your application online today.
+        </p>
+
+        <a href="apply.html" class="btn">
+            Start Your Application
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <p>
+            © 2026 <strong>Digital Service</strong>.
+            All Rights Reserved.
+        </p>
+
+        <p>
+            Digital • Tax • Business Services
+        </p>
+
+    </footer>
+
+</body>
+</html>
