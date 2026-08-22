@@ -69,15 +69,10 @@
         input {
             width: 100%;
             padding: 13px;
-            margin-bottom: 18px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 15px;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #1769d1;
         }
 
         button {
@@ -90,10 +85,25 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 8px;
         }
 
         button:hover {
             background: #0d55b3;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .forgot {
+            display: block;
+            text-align: right;
+            margin: 5px 0 15px;
+            color: #1769d1;
+            text-decoration: none;
+            font-size: 14px;
         }
 
         #message {
@@ -146,6 +156,10 @@
             required
         >
 
+        <a href="#" id="forgotPassword" class="forgot">
+            Forgot Password?
+        </a>
+
         <button type="submit" id="loginButton">
             Login
         </button>
@@ -163,26 +177,21 @@
 
 <script>
 
-    // ==============================
-    // SUPABASE CONFIGURATION
-    // ==============================
-
     const SUPABASE_URL =
         "https://nlzrdjvlkdqungmhnsrl.supabase.co";
 
     const SUPABASE_PUBLISHABLE_KEY =
         "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
 
-
-    // Create Supabase client
-    const supabaseClient = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
 
 
     // ==============================
-    // LOGIN
+    // PASSWORD LOGIN
     // ==============================
 
     document
@@ -205,13 +214,14 @@
 
 
             message.textContent = "";
+
             button.disabled = true;
             button.textContent = "Logging in...";
 
 
             try {
 
-                const { data, error } =
+                const { error } =
                     await supabaseClient.auth.signInWithPassword({
                         email: email,
                         password: password
@@ -228,10 +238,10 @@
                     "Login successful!";
 
 
-                // Redirect after successful login
                 setTimeout(function() {
 
-                    window.location.href = "index.html";
+                    window.location.href =
+                        "index.html";
 
                 }, 1000);
 
@@ -247,6 +257,68 @@
 
             button.disabled = false;
             button.textContent = "Login";
+
+        });
+
+
+    // ==============================
+    // FORGOT PASSWORD
+    // ==============================
+
+    document
+        .getElementById("forgotPassword")
+        .addEventListener("click", async function(event) {
+
+            event.preventDefault();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const message =
+                document.getElementById("message");
+
+
+            if (!email) {
+
+                message.style.color = "red";
+                message.textContent =
+                    "Please enter your email address first.";
+
+                return;
+            }
+
+
+            try {
+
+                const { error } =
+                    await supabaseClient.auth.resetPasswordForEmail(
+                        email,
+                        {
+                            redirectTo:
+                                window.location.origin +
+                                "/digitalservices/reset-password.html"
+                        }
+                    );
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                message.style.color = "green";
+
+                message.textContent =
+                    "Password reset email sent. Please check your email.";
+
+            } catch (error) {
+
+                message.style.color = "red";
+
+                message.textContent =
+                    error.message;
+
+            }
 
         });
 
