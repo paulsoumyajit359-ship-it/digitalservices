@@ -1,0 +1,309 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #111827;
+    line-height: 1.6;
+}
+
+/* HEADER */
+
+.header {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-box {
+    width: 48px;
+    height: 48px;
+    background: #2563eb;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.logo-area h1 {
+    font-size: 22px;
+    color: #111827;
+}
+
+.logo-area p {
+    font-size: 11px;
+    color: #2563eb;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.home-btn {
+    text-decoration: none;
+    background: #111827;
+    color: white;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+
+/* MAIN CONTAINER */
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 50px auto;
+}
+
+
+/* INTRO */
+
+.intro {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.intro h2 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.intro p {
+    color: #6b7280;
+    font-size: 16px;
+}
+
+
+/* CARD */
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+}
+
+.card h3 {
+    font-size: 20px;
+    margin-bottom: 22px;
+    color: #111827;
+}
+
+
+/* FORM */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    background: #ffffff;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+textarea {
+    resize: vertical;
+}
+
+
+/* DOCUMENT UPLOAD */
+
+.upload-box {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    background: #f8fafc;
+}
+
+.upload-box label {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.upload-box input {
+    display: none;
+}
+
+.upload-box p {
+    margin-top: 12px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.file-item {
+    background: #f1f5f9;
+    padding: 10px 14px;
+    margin-top: 8px;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+
+/* HELP TEXT */
+
+.help-text {
+    color: #6b7280;
+    margin-bottom: 18px;
+}
+
+
+/* SUBMIT */
+
+.submit-area {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.submit-btn {
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 15px 35px;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #1d4ed8;
+}
+
+.submit-area p {
+    margin-top: 12px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+
+/* SUCCESS */
+
+.success-box {
+    background: white;
+    text-align: center;
+    padding: 50px 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.success-box h2 {
+    color: #16a34a;
+    margin-bottom: 15px;
+}
+
+.application-id {
+    display: inline-block;
+    margin: 15px 0;
+    padding: 14px 25px;
+    background: #eff6ff;
+    color: #2563eb;
+    border-radius: 8px;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.new-btn {
+    margin-top: 15px;
+    border: none;
+    background: #111827;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .header {
+        padding: 15px 5%;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .container {
+        width: 94%;
+        margin: 30px auto;
+    }
+
+    .intro h2 {
+        font-size: 30px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .home-btn {
+        padding: 9px 15px;
+    }
+
+}
