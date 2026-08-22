@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Sign Up - Digital Service</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .auth-container {
+            max-width: 500px;
+            margin: 60px auto;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.10);
+        }
+
+        .auth-card h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .auth-card .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #1769d1;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .signup-btn:hover {
+            background: #0f56b3;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: #1769d1;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <div class="logo-area">
+
+            <div class="logo-box">
+                DS
+            </div>
+
+            <div>
+                <h1>Digital Service</h1>
+                <p>Digital • Tax • Business Services</p>
+            </div>
+
+        </div>
+
+        <a href="index.html" class="home-btn">
+            Home
+        </a>
+
+    </header>
+
+
+    <!-- SIGN UP -->
+    <main class="auth-container">
+
+        <div class="auth-card">
+
+            <h2>Create Customer Account</h2>
+
+            <p class="subtitle">
+                Register to apply for digital services
+            </p>
+
+
+            <form id="signupForm">
+
+                <!-- FULL NAME -->
+                <div class="form-group">
+
+                    <label for="fullName">
+                        Full Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="fullName"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- MOBILE -->
+                <div class="form-group">
+
+                    <label for="mobile">
+                        Mobile Number *
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="mobile"
+                        maxlength="10"
+                        placeholder="Enter 10 digit mobile number"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address *
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email address"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="form-group">
+
+                    <label for="password">
+                        Password *
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Create a password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CONFIRM PASSWORD -->
+                <div class="form-group">
+
+                    <label for="confirmPassword">
+                        Confirm Password *
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm your password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="signup-btn"
+                >
+                    Create Account
+                </button>
+
+
+                <div
+                    id="message"
+                    class="message"
+                ></div>
+
+            </form>
+
+
+            <div class="login-link">
+
+                Already have an account?
+
+                <a href="login.html">
+                    Customer Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <p>
+            © 2026 Digital Service. All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        document
+            .getElementById("signupForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                const fullName =
+                    document.getElementById("fullName").value.trim();
+
+                const mobile =
+                    document.getElementById("mobile").value.trim();
+
+                const email =
+                    document.getElementById("email").value.trim();
+
+                const password =
+                    document.getElementById("password").value;
+
+                const confirmPassword =
+                    document.getElementById("confirmPassword").value;
+
+                const message =
+                    document.getElementById("message");
+
+
+                // Check mobile number
+
+                if (!/^[0-9]{10}$/.test(mobile)) {
+
+                    message.style.display = "block";
+                    message.textContent =
+                        "Please enter a valid 10 digit mobile number.";
+
+                    return;
+                }
+
+
+                // Check password
+
+                if (password !== confirmPassword) {
+
+                    message.style.display = "block";
+                    message.textContent =
+                        "Passwords do not match.";
+
+                    return;
+                }
+
+
+                /*
+                    SUPABASE AUTHENTICATION
+                    WILL BE CONNECTED HERE.
+                */
+
+                message.style.display = "block";
+
+                message.textContent =
+                    "Registration system will be connected with Supabase.";
+
+            });
+
+    </script>
+
+</body>
+</html>
