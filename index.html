@@ -8,24 +8,15 @@
 
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
         }
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #123b75;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
+            background: #ffffff;
+            color: #174a91;
         }
 
         /* =========================
@@ -34,65 +25,59 @@
 
         .navbar {
             width: 100%;
-            background: linear-gradient(135deg, #164b9b, #0875dc);
+            background: linear-gradient(90deg, #124c9c, #0875d9);
             color: white;
             padding: 18px 6%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 30px;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 14px;
-            flex-shrink: 0;
+            gap: 15px;
         }
 
         .brand-logo {
-            width: 58px;
-            height: 58px;
+            width: 62px;
+            height: 62px;
             background: white;
-            color: #1260c9;
-            border-radius: 15px;
+            color: #1763bd;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            font-weight: 800;
+            font-size: 25px;
+            font-weight: bold;
         }
 
         .brand-text h1 {
-            font-size: 24px;
-            margin-bottom: 3px;
+            font-size: 26px;
+            margin-bottom: 5px;
         }
 
         .brand-text p {
-            font-size: 14px;
-            opacity: 0.9;
+            font-size: 15px;
+            opacity: 0.95;
         }
 
         .nav-links {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            gap: 28px;
-            font-weight: 600;
+            gap: 30px;
         }
 
         .nav-links a {
             color: white;
-            transition: 0.2s;
-            white-space: nowrap;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 600;
         }
 
         .nav-links a:hover {
-            opacity: 0.75;
+            opacity: 0.8;
         }
 
         /* =========================
@@ -100,198 +85,187 @@
         ========================== */
 
         .hero {
-            background: white;
             text-align: center;
-            padding: 90px 20px 70px;
+            padding: 65px 20px 55px;
+            background: white;
         }
 
         .hero h2 {
             font-size: 44px;
-            color: #124692;
-            margin-bottom: 28px;
+            margin-bottom: 30px;
+            color: #164a95;
         }
 
         .hero p {
-            max-width: 800px;
+            max-width: 850px;
             margin: auto;
-            font-size: 19px;
+            font-size: 20px;
             line-height: 1.6;
-            color: #516b8f;
+            color: #45648b;
         }
 
         .hero-buttons {
             margin-top: 38px;
             display: flex;
             justify-content: center;
-            gap: 14px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 16px 28px;
+        .hero-buttons a {
+            padding: 16px 32px;
             border-radius: 9px;
-            font-size: 17px;
-            font-weight: 700;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
             transition: 0.2s;
-            cursor: pointer;
         }
 
         .btn-primary {
-            background: #086bdc;
+            background: #0875df;
             color: white;
-            border: 2px solid #086bdc;
         }
 
         .btn-primary:hover {
-            background: #075ab8;
+            background: #075eb3;
         }
 
         .btn-outline {
+            border: 2px solid #0875df;
+            color: #0875df;
             background: white;
-            color: #086bdc;
-            border: 2px solid #086bdc;
         }
 
         .btn-outline:hover {
-            background: #edf5ff;
+            background: #0875df;
+            color: white;
         }
 
         /* =========================
-           ADVERTISEMENT SECTION
+           ADVERTISEMENT SLIDER
         ========================== */
 
         .advertisement-section {
-            background: white;
-            padding: 10px 4% 30px;
+            width: 92%;
+            max-width: 1500px;
+            margin: 0 auto 35px;
         }
 
         .ad-slider {
-            width: 100%;
-            max-width: 1500px;
-            height: 360px;
-            margin: 0 auto;
             position: relative;
-            overflow: hidden;
+            width: 100%;
+            height: 320px;
+
+            background: #edf4ff;
             border-radius: 18px;
-            background: #eaf1fc;
-            box-shadow: 0 10px 30px rgba(20,70,130,0.12);
+
+            overflow: hidden;
+
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.10);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .ad-track {
+        .ad-image {
             width: 100%;
             height: 100%;
-            position: relative;
-        }
 
-        .ad-slide {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.45s ease;
-            cursor: pointer;
-        }
-
-        .ad-slide.active {
-            opacity: 1;
-            visibility: visible;
-            z-index: 2;
-        }
-
-        .ad-slide img {
-            width: 100%;
-            height: 100%;
-            display: block;
-
-            /*
-              IMPORTANT:
-              contain = পুরো poster দেখা যাবে
-              crop হবে না
-            */
+            /* IMPORTANT:
+               পুরো image box-এর মধ্যে fit করবে */
             object-fit: contain;
-            object-position: center;
+
+            display: none;
+
+            cursor: pointer;
+
             background: white;
         }
 
-        /* Arrows */
+        .ad-image.active {
+            display: block;
+        }
 
-        .ad-arrow {
+        /* Arrow buttons */
+
+        .slider-arrow {
             position: absolute;
+
             top: 50%;
             transform: translateY(-50%);
-            width: 48px;
-            height: 48px;
+
+            width: 52px;
+            height: 52px;
+
             border: none;
             border-radius: 50%;
-            background: rgba(30, 40, 55, 0.58);
+
+            background: rgba(70, 80, 95, 0.72);
             color: white;
-            font-size: 30px;
-            line-height: 48px;
-            text-align: center;
+
+            font-size: 32px;
+            line-height: 52px;
+
             cursor: pointer;
+
             z-index: 10;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             transition: 0.2s;
         }
 
-        .ad-arrow:hover {
-            background: rgba(0, 89, 180, 0.9);
+        .slider-arrow:hover {
+            background: rgba(20, 90, 170, 0.9);
         }
 
-        .ad-prev {
-            left: 16px;
+        .slider-arrow.left {
+            left: 18px;
         }
 
-        .ad-next {
-            right: 16px;
+        .slider-arrow.right {
+            right: 18px;
         }
 
         /* Dots */
 
-        .ad-dots {
+        .slider-dots {
             position: absolute;
-            bottom: 12px;
+            bottom: 13px;
             left: 50%;
+
             transform: translateX(-50%);
+
             display: flex;
-            gap: 7px;
+            gap: 8px;
+
             z-index: 10;
         }
 
-        .ad-dot {
+        .dot {
             width: 9px;
             height: 9px;
+
             border-radius: 50%;
-            background: rgba(255,255,255,0.75);
+
+            background: rgba(255,255,255,0.7);
+
             cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.15);
         }
 
-        .ad-dot.active {
-            background: #0875dc;
-            transform: scale(1.2);
+        .dot.active {
+            background: #0875df;
+            transform: scale(1.25);
         }
 
         .ad-loading {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #55708f;
+            position: absolute;
+            color: #587399;
             font-size: 18px;
-        }
-
-        .ad-empty {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #55708f;
-            font-size: 17px;
+            z-index: 1;
         }
 
         /* =========================
@@ -299,94 +273,82 @@
         ========================== */
 
         .services-section {
-            background: #f4f7fb;
-            padding: 70px 5% 90px;
+            background: #f4f8fd;
+            padding: 65px 7% 80px;
         }
 
-        .section-heading {
+        .services-title {
             text-align: center;
-            margin-bottom: 45px;
+            margin-bottom: 50px;
         }
 
-        .section-heading h2 {
+        .services-title h2 {
             font-size: 38px;
-            color: #124692;
+            color: #164a95;
             margin-bottom: 15px;
         }
 
-        .section-heading p {
-            color: #607a9e;
-            font-size: 17px;
+        .services-title p {
+            font-size: 18px;
+            color: #607897;
         }
 
         .services-grid {
-            max-width: 1350px;
+            max-width: 1400px;
             margin: auto;
+
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
             gap: 28px;
         }
 
         .service-card {
             position: relative;
+
             background: white;
+
             min-height: 225px;
-            padding: 34px 22px 28px;
+
+            padding: 35px 25px;
+
             border-radius: 16px;
-            box-shadow: 0 10px 28px rgba(33,72,120,0.10);
+
             text-align: center;
+
+            box-shadow: 0 8px 25px rgba(40,70,100,0.08);
+
             cursor: pointer;
-            transition: 0.25s;
-            border: 1px solid transparent;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
         }
 
         .service-card:hover {
-            transform: translateY(-6px);
-            border-color: #bcd8fa;
-            box-shadow: 0 15px 35px rgba(33,72,120,0.16);
-        }
+            transform: translateY(-5px);
 
-        /* New arrow */
-
-        .service-arrow {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #eaf3ff;
-            color: #086bdc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 21px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .service-card:hover .service-arrow {
-            background: #086bdc;
-            color: white;
-            transform: translateX(3px);
+            box-shadow:
+                0 15px 35px rgba(40,70,100,0.15);
         }
 
         .service-icon {
-            font-size: 47px;
-            margin-bottom: 17px;
-            line-height: 1;
+            font-size: 48px;
+            margin-bottom: 18px;
         }
 
         .service-card h3 {
-            font-size: 21px;
-            color: #124692;
+            color: #164a95;
+            font-size: 23px;
             margin-bottom: 12px;
         }
 
         .service-card p {
-            color: #667f9f;
+            color: #69809e;
+            font-size: 16px;
             line-height: 1.5;
-            font-size: 15px;
         }
 
         /* =========================
@@ -394,14 +356,10 @@
         ========================== */
 
         footer {
-            background: #123b75;
+            background: #124c9c;
             color: white;
             text-align: center;
-            padding: 28px 20px;
-        }
-
-        footer p {
-            opacity: 0.9;
+            padding: 25px;
             font-size: 14px;
         }
 
@@ -409,124 +367,96 @@
            MOBILE
         ========================== */
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1000px) {
 
             .navbar {
-                padding: 15px 3%;
+                padding: 15px 4%;
             }
 
             .nav-links {
-                gap: 16px;
+                gap: 15px;
+            }
+
+            .nav-links a {
                 font-size: 14px;
             }
 
+            .hero h2 {
+                font-size: 36px;
+            }
+
             .services-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .ad-slider {
+                height: 270px;
             }
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 700px) {
 
             .navbar {
                 flex-direction: column;
-                align-items: flex-start;
+                gap: 18px;
             }
 
             .nav-links {
-                width: 100%;
-                justify-content: flex-start;
                 flex-wrap: wrap;
-                gap: 14px 20px;
-            }
-
-            .hero {
-                padding: 60px 20px 45px;
-            }
-
-            .hero h2 {
-                font-size: 34px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .ad-slider {
-                height: 250px;
-                border-radius: 12px;
-            }
-
-            .services-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 520px) {
-
-            .brand-logo {
-                width: 48px;
-                height: 48px;
-                font-size: 20px;
+                justify-content: center;
+                gap: 14px;
             }
 
             .brand-text h1 {
-                font-size: 20px;
+                font-size: 22px;
             }
 
             .brand-text p {
-                font-size: 12px;
+                font-size: 13px;
+            }
+
+            .hero {
+                padding: 45px 18px;
             }
 
             .hero h2 {
-                font-size: 29px;
+                font-size: 31px;
             }
 
-            .hero-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
+            .hero p {
+                font-size: 17px;
             }
 
             .advertisement-section {
-                padding-left: 3%;
-                padding-right: 3%;
+                width: 94%;
             }
 
             .ad-slider {
-                height: 190px;
+                height: 210px;
+                border-radius: 12px;
             }
 
-            .ad-arrow {
-                width: 38px;
-                height: 38px;
-                line-height: 38px;
-                font-size: 23px;
+            .slider-arrow {
+                width: 42px;
+                height: 42px;
+                font-size: 25px;
             }
 
-            .ad-prev {
-                left: 8px;
+            .slider-arrow.left {
+                left: 10px;
             }
 
-            .ad-next {
-                right: 8px;
+            .slider-arrow.right {
+                right: 10px;
             }
 
             .services-section {
-                padding: 50px 4%;
-            }
-
-            .section-heading h2 {
-                font-size: 30px;
+                padding: 45px 5%;
             }
 
             .services-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .service-card {
-                min-height: 205px;
             }
         }
     </style>
@@ -540,18 +470,24 @@
 
 <header class="navbar">
 
-    <a href="index.html" class="brand">
+    <div class="brand">
 
         <div class="brand-logo">
             DS
         </div>
 
         <div class="brand-text">
+
             <h1>Digital Service</h1>
-            <p>Digital • Tax • Business Services</p>
+
+            <p>
+                Digital • Tax • Business Services
+            </p>
+
         </div>
 
-    </a>
+    </div>
+
 
     <nav class="nav-links">
 
@@ -561,11 +497,17 @@
 
         <a href="apply.html">Apply</a>
 
-        <a href="customer-login.html">Customer Login</a>
+        <a href="customer-login.html">
+            Customer Login
+        </a>
 
-        <a href="signup.html">Sign Up</a>
+        <a href="signup.html">
+            Sign Up
+        </a>
 
-        <a href="admin-login.html">🔐 Admin Login</a>
+        <a href="admin-login.html">
+            🔐 Admin Login
+        </a>
 
     </nav>
 
@@ -578,20 +520,29 @@
 
 <section class="hero">
 
-    <h2>Your Digital Service Partner</h2>
+    <h2>
+        Your Digital Service Partner
+    </h2>
 
     <p>
-        Get Digital, Tax and Business related services easily from one place.
-        Submit your application online and manage your service request.
+        Get Digital, Tax and Business related services easily
+        from one place. Submit your application online and
+        manage your service request.
     </p>
 
     <div class="hero-buttons">
 
-        <a href="#services" class="btn btn-primary">
+        <a
+            href="#services"
+            class="hero-buttons btn-primary"
+        >
             Explore Services
         </a>
 
-        <a href="apply.html" class="btn btn-outline">
+        <a
+            href="apply.html"
+            class="hero-buttons btn-outline"
+        >
             Apply for a Service
         </a>
 
@@ -606,35 +557,49 @@
 
 <section class="advertisement-section">
 
-    <div class="ad-slider" id="adSlider">
+    <div class="ad-slider">
 
-        <div id="adTrack" class="ad-track">
-
-            <div class="ad-loading">
-                Loading advertisements...
-            </div>
-
+        <div
+            id="adLoading"
+            class="ad-loading"
+        >
+            Loading advertisements...
         </div>
 
+
         <button
-            type="button"
-            class="ad-arrow ad-prev"
-            id="adPrev"
-            aria-label="Previous advertisement">
+            class="slider-arrow left"
+            onclick="previousAd()"
+            aria-label="Previous advertisement"
+        >
             ‹
         </button>
 
+
+        <div id="adContainer"
+             style="
+                width:100%;
+                height:100%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+             ">
+        </div>
+
+
         <button
-            type="button"
-            class="ad-arrow ad-next"
-            id="adNext"
-            aria-label="Next advertisement">
+            class="slider-arrow right"
+            onclick="nextAd()"
+            aria-label="Next advertisement"
+        >
             ›
         </button>
 
+
         <div
-            class="ad-dots"
-            id="adDots">
+            id="sliderDots"
+            class="slider-dots"
+        >
         </div>
 
     </div>
@@ -646,11 +611,16 @@
      SERVICES
 ========================== -->
 
-<section class="services-section" id="services">
+<section
+    id="services"
+    class="services-section"
+>
 
-    <div class="section-heading">
+    <div class="services-title">
 
-        <h2>Our Services</h2>
+        <h2>
+            Our Services
+        </h2>
 
         <p>
             Select the service you require and apply online.
@@ -666,13 +636,16 @@
 
         <div
             class="service-card"
-            onclick="openService('PAN Card')">
+            onclick="applyService('PAN Card')"
+        >
 
-            <div class="service-arrow">›</div>
+            <div class="service-icon">
+                🪪
+            </div>
 
-            <div class="service-icon">🪪</div>
-
-            <h3>PAN Card</h3>
+            <h3>
+                PAN Card
+            </h3>
 
             <p>
                 New PAN, correction and related services.
@@ -685,13 +658,16 @@
 
         <div
             class="service-card"
-            onclick="openService('Aadhaar Card')">
+            onclick="applyService('Aadhaar Card')"
+        >
 
-            <div class="service-arrow">›</div>
+            <div class="service-icon">
+                🆔
+            </div>
 
-            <div class="service-icon">🆔</div>
-
-            <h3>Aadhaar Card</h3>
+            <h3>
+                Aadhaar Card
+            </h3>
 
             <p>
                 Aadhaar related digital assistance.
@@ -704,13 +680,16 @@
 
         <div
             class="service-card"
-            onclick="openService('Ration Card')">
+            onclick="applyService('Ration Card')"
+        >
 
-            <div class="service-arrow">›</div>
+            <div class="service-icon">
+                🍚
+            </div>
 
-            <div class="service-icon">🍚</div>
-
-            <h3>Ration Card</h3>
+            <h3>
+                Ration Card
+            </h3>
 
             <p>
                 Ration card application and correction.
@@ -719,17 +698,20 @@
         </div>
 
 
-        <!-- TRADE LICENSE -->
+        <!-- TRADE -->
 
         <div
             class="service-card"
-            onclick="openService('Trade License')">
+            onclick="applyService('Trade License')"
+        >
 
-            <div class="service-arrow">›</div>
+            <div class="service-icon">
+                🏪
+            </div>
 
-            <div class="service-icon">🏪</div>
-
-            <h3>Trade License</h3>
+            <h3>
+                Trade License
+            </h3>
 
             <p>
                 Trade license application assistance.
@@ -738,17 +720,20 @@
         </div>
 
 
-        <!-- SHOP ESTABLISHMENT -->
+        <!-- SHOP -->
 
         <div
             class="service-card"
-            onclick="openService('Shop Establishment')">
+            onclick="applyService('Shop Establishment')"
+        >
 
-            <div class="service-arrow">›</div>
+            <div class="service-icon">
+                🏢
+            </div>
 
-            <div class="service-icon">🏢</div>
-
-            <h3>Shop Establishment</h3>
+            <h3>
+                Shop Establishment
+            </h3>
 
             <p>
                 Shop and establishment registration services.
@@ -761,13 +746,16 @@
 
         <div
             class="service-card"
-            onclick="openService('FSSAI License')">
+            onclick="applyService('FSSAI License')"
+        >
 
-            <div class="service-arrow">›</div>
+            <div class="service-icon">
+                🍴
+            </div>
 
-            <div class="service-icon">🍴</div>
-
-            <h3>FSSAI License</h3>
+            <h3>
+                FSSAI License
+            </h3>
 
             <p>
                 Food business registration and licensing.
@@ -780,13 +768,16 @@
 
         <div
             class="service-card"
-            onclick="openService('GST')">
+            onclick="applyService('GST')"
+        >
 
-            <div class="service-arrow">›</div>
+            <div class="service-icon">
+                📊
+            </div>
 
-            <div class="service-icon">📊</div>
-
-            <h3>GST</h3>
+            <h3>
+                GST
+            </h3>
 
             <p>
                 GST registration and compliance services.
@@ -799,13 +790,16 @@
 
         <div
             class="service-card"
-            onclick="openService('TDS')">
+            onclick="applyService('TDS')"
+        >
 
-            <div class="service-arrow">›</div>
+            <div class="service-icon">
+                🧾
+            </div>
 
-            <div class="service-icon">🧾</div>
-
-            <h3>TDS</h3>
+            <h3>
+                TDS
+            </h3>
 
             <p>
                 TDS related filing and compliance assistance.
@@ -818,19 +812,23 @@
 
         <div
             class="service-card"
-            onclick="openService('Income Tax')">
+            onclick="applyService('Income Tax')"
+        >
 
-            <div class="service-arrow">›</div>
+            <div class="service-icon">
+                💰
+            </div>
 
-            <div class="service-icon">💰</div>
-
-            <h3>Income Tax</h3>
+            <h3>
+                Income Tax
+            </h3>
 
             <p>
                 ITR filing and income tax related services.
             </p>
 
         </div>
+
 
     </div>
 
@@ -843,89 +841,47 @@
 
 <footer>
 
-    <p>
-        © 2026 Digital Service. All Rights Reserved.
-    </p>
+    © 2026 Digital Service.
+    All Rights Reserved.
 
 </footer>
-
 
 
 <script>
 
 /* =====================================================
-   SERVICE CARD → APPLY PAGE
+   SUPABASE CONFIGURATION
+
+   IMPORTANT:
+   এখানে তোমার EXISTING Supabase URL এবং ANON KEY বসাও.
 ===================================================== */
 
-function openService(serviceName) {
+const SUPABASE_URL =
+    "https://nlzrdjvlkdqungmhnsrl.supabase.co";
 
-    window.location.href =
-        "apply.html?service=" +
-        encodeURIComponent(serviceName);
-
-}
+const SUPABASE_ANON_KEY =
+    "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
 
 
 /* =====================================================
-   ADVERTISEMENT SYSTEM
+   ADVERTISEMENT SETTINGS
 ===================================================== */
 
-/*
-   IMPORTANT
+const AD_BUCKET =
+    "advertisements";
 
-   Your public Supabase bucket name is:
+const AD_FOLDER =
+    "";
 
-       advertisements
+const SLIDE_TIME =
+    3000; // 3 seconds
 
-   If your Worker already has an API endpoint:
-
-       /api/advertisements
-
-   the website will try that first.
-
-   If API is unavailable, the fallback files below
-   will be used.
-*/
-
-
-const ADVERTISEMENT_FILES = [
-
-    /*
-      If necessary, put your public Supabase URLs here.
-
-      Example:
-
-      "https://YOUR-PROJECT.supabase.co/storage/v1/object/public/advertisements/advertisement_poster_01.png"
-
-    */
-
-];
-
-
-/* =====================================================
-   VARIABLES
-===================================================== */
 
 let advertisements = [];
 
-let currentAd = 0;
+let currentAdIndex = 0;
 
-let adTimer = null;
-
-const AD_INTERVAL = 3000; // 3 seconds
-
-
-const adTrack =
-    document.getElementById("adTrack");
-
-const adDots =
-    document.getElementById("adDots");
-
-const adPrev =
-    document.getElementById("adPrev");
-
-const adNext =
-    document.getElementById("adNext");
+let slideInterval = null;
 
 
 /* =====================================================
@@ -934,219 +890,244 @@ const adNext =
 
 async function loadAdvertisements() {
 
+    const loading =
+        document.getElementById("adLoading");
+
+    const container =
+        document.getElementById("adContainer");
+
     try {
 
+        loading.style.display = "block";
+
+        container.innerHTML = "";
+
         /*
-          First try existing Worker API.
-        */
+         * Supabase Storage public bucket
+         */
+
+        const listURL =
+            SUPABASE_URL +
+            "/storage/v1/object/list/" +
+            AD_BUCKET;
+
 
         const response =
-            await fetch("/api/advertisements", {
-                method: "GET",
-                cache: "no-store"
+            await fetch(listURL, {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json",
+
+                    "apikey":
+                        SUPABASE_ANON_KEY,
+
+                    "Authorization":
+                        "Bearer " +
+                        SUPABASE_ANON_KEY
+
+                },
+
+                body: JSON.stringify({
+
+                    prefix: AD_FOLDER,
+
+                    limit: 100,
+
+                    sortBy: {
+
+                        column: "name",
+
+                        order: "asc"
+
+                    }
+
+                })
+
             });
 
 
-        if (response.ok) {
+        if (!response.ok) {
 
-            const data =
-                await response.json();
-
-            if (Array.isArray(data) && data.length > 0) {
-
-                advertisements =
-                    normaliseAdvertisements(data);
-
-                renderAdvertisements();
-
-                return;
-            }
+            throw new Error(
+                "Unable to load advertisements"
+            );
 
         }
 
-    } catch (error) {
 
-        console.log(
-            "Advertisement API unavailable."
-        );
-
-    }
+        const files =
+            await response.json();
 
 
-    /*
-      Fallback to manually configured files.
-    */
-
-    if (ADVERTISEMENT_FILES.length > 0) {
+        /*
+         * Only image files
+         */
 
         advertisements =
-            ADVERTISEMENT_FILES.map(
-                (url, index) => ({
-                    id: index + 1,
-                    image_url: url,
-                    service: "",
-                    title: ""
-                })
-            );
+            files.filter(file => {
 
-        renderAdvertisements();
+                const name =
+                    file.name.toLowerCase();
 
-        return;
-    }
-
-
-    /*
-      If nothing found.
-    */
-
-    showNoAdvertisements();
-
-}
-
-
-/* =====================================================
-   NORMALISE API DATA
-===================================================== */
-
-function normaliseAdvertisements(data) {
-
-    return data
-        .map((item, index) => {
-
-            let imageUrl =
-                item.image_url ||
-                item.imageUrl ||
-                item.url ||
-                item.file_url ||
-                item.fileUrl;
-
-            if (!imageUrl && item.filename) {
-
-                imageUrl =
-                    item.filename;
-
-            }
-
-            return {
-
-                id:
-                    item.id ||
-                    index + 1,
-
-                image_url:
-                    imageUrl,
-
-                service:
-                    item.service ||
-                    item.service_name ||
-                    item.serviceName ||
-                    "",
-
-                title:
-                    item.title ||
-                    item.name ||
-                    ""
-
-            };
-
-        })
-        .filter(
-            item => item.image_url
-        );
-
-}
-
-
-/* =====================================================
-   RENDER ADS
-===================================================== */
-
-function renderAdvertisements() {
-
-    adTrack.innerHTML = "";
-
-    adDots.innerHTML = "";
-
-    if (!advertisements.length) {
-
-        showNoAdvertisements();
-
-        return;
-    }
-
-
-    advertisements.forEach(
-        (ad, index) => {
-
-            const slide =
-                document.createElement("div");
-
-            slide.className =
-                "ad-slide";
-
-
-            if (index === 0) {
-
-                slide.classList.add(
-                    "active"
+                return (
+                    name.endsWith(".jpg") ||
+                    name.endsWith(".jpeg") ||
+                    name.endsWith(".png") ||
+                    name.endsWith(".webp")
                 );
 
-            }
+            });
 
 
-            const image =
-                document.createElement("img");
+        if (advertisements.length === 0) {
+
+            loading.innerText =
+                "No advertisements available.";
+
+            return;
+
+        }
 
 
-            image.src =
-                ad.image_url;
-
-            image.alt =
-                ad.title ||
-                "Digital Service Advertisement";
+        loading.style.display =
+            "none";
 
 
-            image.loading =
-                index === 0
-                    ? "eager"
-                    : "lazy";
+        /*
+         * Create image elements
+         */
+
+        advertisements.forEach(
+            (file, index) => {
+
+                const image =
+                    document.createElement("img");
 
 
-            /*
-              CLICK POSTER
-            */
+                image.className =
+                    "ad-image";
 
-            slide.addEventListener(
-                "click",
-                function () {
 
-                    openAdvertisement(
-                        ad
+                if (index === 0) {
+
+                    image.classList.add(
+                        "active"
                     );
 
                 }
-            );
 
 
-            slide.appendChild(
-                image
-            );
+                /*
+                 * Public storage URL
+                 */
+
+                const imageURL =
+                    SUPABASE_URL +
+                    "/storage/v1/object/public/" +
+                    AD_BUCKET +
+                    "/" +
+                    encodeURIComponent(
+                        file.name
+                    );
 
 
-            adTrack.appendChild(
-                slide
-            );
+                image.src =
+                    imageURL;
 
 
-            /*
-              DOT
-            */
+                image.alt =
+                    "Digital Service Advertisement";
+
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * Advertisement click →
+                 * Apply page
+                 */
+
+                image.onclick =
+                    function () {
+
+                        window.location.href =
+                            "apply.html";
+
+                    };
+
+
+                image.onerror =
+                    function () {
+
+                        console.error(
+                            "Unable to load:",
+                            imageURL
+                        );
+
+                    };
+
+
+                container.appendChild(
+                    image
+                );
+
+            }
+        );
+
+
+        createDots();
+
+        currentAdIndex = 0;
+
+        startAutoSlide();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Advertisement Error:",
+            error
+        );
+
+
+        loading.innerText =
+            "Unable to load advertisements.";
+
+    }
+
+}
+
+
+/* =====================================================
+   CREATE DOTS
+===================================================== */
+
+function createDots() {
+
+    const dotsContainer =
+        document.getElementById(
+            "sliderDots"
+        );
+
+
+    dotsContainer.innerHTML = "";
+
+
+    advertisements.forEach(
+        (file, index) => {
 
             const dot =
-                document.createElement("span");
+                document.createElement(
+                    "span"
+                );
+
 
             dot.className =
-                "ad-dot";
+                "dot";
 
 
             if (index === 0) {
@@ -1158,62 +1139,20 @@ function renderAdvertisements() {
             }
 
 
-            dot.addEventListener(
-                "click",
-                function (event) {
-
-                    event.stopPropagation();
+            dot.onclick =
+                function () {
 
                     showAd(index);
 
-                    restartAdTimer();
-
-                }
-            );
+                };
 
 
-            adDots.appendChild(
+            dotsContainer.appendChild(
                 dot
             );
 
         }
     );
-
-
-    startAdTimer();
-
-}
-
-
-/* =====================================================
-   AD CLICK → APPLY PAGE
-===================================================== */
-
-function openAdvertisement(ad) {
-
-    /*
-      If admin has assigned a service to the poster,
-      automatically open that service.
-    */
-
-    if (ad.service) {
-
-        window.location.href =
-            "apply.html?service=" +
-            encodeURIComponent(
-                ad.service
-            );
-
-        return;
-    }
-
-
-    /*
-      Otherwise simply open Apply page.
-    */
-
-    window.location.href =
-        "apply.html";
 
 }
 
@@ -1224,57 +1163,86 @@ function openAdvertisement(ad) {
 
 function showAd(index) {
 
-    const slides =
+    const images =
         document.querySelectorAll(
-            ".ad-slide"
+            ".ad-image"
         );
 
     const dots =
         document.querySelectorAll(
-            ".ad-dot"
+            ".dot"
         );
 
 
-    if (!slides.length) {
+    if (
+        images.length === 0 ||
+        advertisements.length === 0
+    ) {
+
         return;
+
     }
 
 
-    currentAd =
-        (index + advertisements.length) %
-        advertisements.length;
+    /*
+     * Keep index inside range
+     */
+
+    if (
+        index >= advertisements.length
+    ) {
+
+        index = 0;
+
+    }
 
 
-    slides.forEach(
-        slide =>
-            slide.classList.remove(
+    if (index < 0) {
+
+        index =
+            advertisements.length - 1;
+
+    }
+
+
+    images.forEach(
+        image => {
+
+            image.classList.remove(
                 "active"
-            )
+            );
+
+        }
     );
 
 
     dots.forEach(
-        dot =>
+        dot => {
+
             dot.classList.remove(
-                "active"
-            )
-    );
-
-
-    slides[currentAd]
-        .classList.add(
-            "active"
-        );
-
-
-    if (dots[currentAd]) {
-
-        dots[currentAd]
-            .classList.add(
                 "active"
             );
 
+        }
+    );
+
+
+    images[index].classList.add(
+        "active"
+    );
+
+
+    if (dots[index]) {
+
+        dots[index].classList.add(
+            "active"
+        );
+
     }
+
+
+    currentAdIndex =
+        index;
 
 }
 
@@ -1285,9 +1253,21 @@ function showAd(index) {
 
 function nextAd() {
 
+    if (
+        advertisements.length === 0
+    ) {
+
+        return;
+
+    }
+
+
     showAd(
-        currentAd + 1
+        currentAdIndex + 1
     );
+
+
+    restartAutoSlide();
 
 }
 
@@ -1298,199 +1278,115 @@ function nextAd() {
 
 function previousAd() {
 
+    if (
+        advertisements.length === 0
+    ) {
+
+        return;
+
+    }
+
+
     showAd(
-        currentAd - 1
+        currentAdIndex - 1
     );
+
+
+    restartAutoSlide();
 
 }
 
 
 /* =====================================================
-   TIMER
+   AUTO SLIDE
 ===================================================== */
 
-function startAdTimer() {
+function startAutoSlide() {
 
-    stopAdTimer();
+    stopAutoSlide();
 
 
-    adTimer =
+    slideInterval =
         setInterval(
             function () {
 
-                nextAd();
+                if (
+                    advertisements.length > 1
+                ) {
+
+                    showAd(
+                        currentAdIndex + 1
+                    );
+
+                }
 
             },
-            AD_INTERVAL
+
+            SLIDE_TIME
         );
 
 }
 
 
-function stopAdTimer() {
+/* =====================================================
+   STOP AUTO SLIDE
+===================================================== */
 
-    if (adTimer) {
+function stopAutoSlide() {
+
+    if (slideInterval) {
 
         clearInterval(
-            adTimer
+            slideInterval
         );
 
-        adTimer = null;
+        slideInterval = null;
 
     }
 
 }
 
 
-function restartAdTimer() {
+/* =====================================================
+   RESTART AUTO SLIDE
+===================================================== */
 
-    startAdTimer();
+function restartAutoSlide() {
+
+    stopAutoSlide();
+
+    startAutoSlide();
 
 }
 
 
 /* =====================================================
-   ARROW EVENTS
+   SERVICE APPLY
 ===================================================== */
 
-adNext.addEventListener(
-    "click",
-    function (event) {
+function applyService(serviceName) {
 
-        event.stopPropagation();
+    window.location.href =
+        "apply.html?service=" +
+        encodeURIComponent(
+            serviceName
+        );
 
-        nextAd();
-
-        restartAdTimer();
-
-    }
-);
-
-
-adPrev.addEventListener(
-    "click",
-    function (event) {
-
-        event.stopPropagation();
-
-        previousAd();
-
-        restartAdTimer();
-
-    }
-);
+}
 
 
 /* =====================================================
-   PAUSE TIMER WHEN MOUSE IS OVER AD
+   START
 ===================================================== */
 
-const adSlider =
-    document.getElementById(
-        "adSlider"
-    );
-
-
-adSlider.addEventListener(
-    "mouseenter",
+document.addEventListener(
+    "DOMContentLoaded",
     function () {
 
-        stopAdTimer();
+        loadAdvertisements();
 
     }
 );
-
-
-adSlider.addEventListener(
-    "mouseleave",
-    function () {
-
-        startAdTimer();
-
-    }
-);
-
-
-/* =====================================================
-   TOUCH / SWIPE SUPPORT
-===================================================== */
-
-let touchStartX = 0;
-
-let touchEndX = 0;
-
-
-adSlider.addEventListener(
-    "touchstart",
-    function (event) {
-
-        touchStartX =
-            event.changedTouches[0].screenX;
-
-        stopAdTimer();
-
-    },
-    { passive: true }
-);
-
-
-adSlider.addEventListener(
-    "touchend",
-    function (event) {
-
-        touchEndX =
-            event.changedTouches[0].screenX;
-
-
-        const difference =
-            touchStartX - touchEndX;
-
-
-        if (Math.abs(difference) > 50) {
-
-            if (difference > 0) {
-
-                nextAd();
-
-            } else {
-
-                previousAd();
-
-            }
-
-        }
-
-
-        startAdTimer();
-
-    },
-    { passive: true }
-);
-
-
-/* =====================================================
-   NO ADVERTISEMENT
-===================================================== */
-
-function showNoAdvertisements() {
-
-    adTrack.innerHTML = `
-        <div class="ad-empty">
-            Advertisements will appear here.
-        </div>
-    `;
-
-    adDots.innerHTML = "";
-
-}
-
-
-/* =====================================================
-   INITIAL LOAD
-===================================================== */
-
-loadAdvertisements();
-
 
 </script>
 
