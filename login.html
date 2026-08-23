@@ -12,8 +12,9 @@
 
     <title>Customer Login | Digital Service</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
 
     <style>
 
@@ -22,7 +23,6 @@
             margin: 0;
             padding: 0;
         }
-
 
         body {
 
@@ -54,8 +54,7 @@
             border-radius: 15px;
 
             box-shadow:
-                0 10px 35px
-                rgba(0,0,0,0.12);
+                0 10px 35px rgba(0,0,0,0.12);
 
         }
 
@@ -128,7 +127,7 @@
 
             padding: 13px;
 
-            margin-bottom: 10px;
+            margin-bottom: 12px;
 
             border: 1px solid #ccc;
 
@@ -136,18 +135,17 @@
 
             font-size: 15px;
 
+            outline: none;
+
         }
 
 
         input:focus {
 
-            outline: none;
-
             border-color: #1769d1;
 
             box-shadow:
-                0 0 0 2px
-                rgba(23,105,209,0.10);
+                0 0 0 2px rgba(23,105,209,0.10);
 
         }
 
@@ -199,7 +197,7 @@
 
             text-align: right;
 
-            margin: 5px 0 15px;
+            margin: 3px 0 15px;
 
             color: #1769d1;
 
@@ -236,7 +234,7 @@
 
             margin-top: 20px;
 
-            color: #666;
+            color: #555;
 
         }
 
@@ -258,6 +256,14 @@
 
         }
 
+
+        /*
+        =========================================================
+        IMPORTANT:
+        NO ADMIN LOGIN LINK HERE
+        =========================================================
+        */
+
     </style>
 
 </head>
@@ -269,159 +275,81 @@
 <div class="login-box">
 
 
-    <!-- =====================================================
-         LOGO
-    ====================================================== -->
-
     <div class="logo">
-
         DS
-
     </div>
 
 
-    <!-- =====================================================
-         TITLE
-    ====================================================== -->
-
     <h1>
-
         Customer Login
-
     </h1>
 
 
     <p class="subtitle">
-
         Digital • Tax • Business Services
-
     </p>
 
 
-    <!-- =====================================================
-         LOGIN FORM
-    ====================================================== -->
-
-    <form
-        id="loginForm"
-    >
+    <form id="loginForm">
 
 
-        <!-- EMAIL -->
-
-        <label
-            for="email"
-        >
-
+        <label for="email">
             Email Address
-
         </label>
 
 
         <input
-
             type="email"
-
             id="email"
-
             placeholder="Enter your email"
-
             autocomplete="email"
-
             required
-
         >
 
 
-
-        <!-- PASSWORD -->
-
-        <label
-            for="password"
-        >
-
+        <label for="password">
             Password
-
         </label>
 
 
         <input
-
             type="password"
-
             id="password"
-
             placeholder="Enter your password"
-
             autocomplete="current-password"
-
             required
-
         >
 
-
-
-        <!-- FORGOT PASSWORD -->
 
         <a
-
             href="#"
-
             id="forgotPassword"
-
             class="forgot"
-
         >
-
             Forgot Password?
-
         </a>
 
 
-
-        <!-- LOGIN BUTTON -->
-
         <button
-
             type="submit"
-
             id="loginButton"
-
         >
-
             Login
-
         </button>
 
 
     </form>
 
 
+    <div id="message"></div>
 
-    <!-- =====================================================
-         MESSAGE
-    ====================================================== -->
-
-    <div
-        id="message"
-    ></div>
-
-
-
-    <!-- =====================================================
-         SIGNUP
-    ====================================================== -->
 
     <div class="links">
 
         Don't have an account?
 
-        <a
-            href="signup.html"
-        >
-
+        <a href="signup.html">
             Create Account
-
         </a>
 
     </div>
@@ -434,411 +362,308 @@
 <script>
 
 
-/* =========================================================
-   SUPABASE CONFIG
-========================================================= */
+    // =========================================================
+    // SUPABASE CONFIG
+    // =========================================================
 
-const SUPABASE_URL =
 
-    "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+    const SUPABASE_URL =
+        "https://nlzrdjvlkdqungmhnsrl.supabase.co";
 
 
-const SUPABASE_PUBLISHABLE_KEY =
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
 
-    "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
 
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
 
-const supabaseClient =
 
-    window.supabase.createClient(
 
-        SUPABASE_URL,
+    // =========================================================
+    // ELEMENTS
+    // =========================================================
 
-        SUPABASE_PUBLISHABLE_KEY
 
-    );
+    const loginForm =
+        document.getElementById("loginForm");
 
 
+    const emailInput =
+        document.getElementById("email");
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
 
-const loginForm =
+    const passwordInput =
+        document.getElementById("password");
 
-    document.getElementById(
-        "loginForm"
-    );
 
+    const loginButton =
+        document.getElementById("loginButton");
 
-const emailInput =
 
-    document.getElementById(
-        "email"
-    );
+    const forgotPassword =
+        document.getElementById("forgotPassword");
 
 
-const passwordInput =
+    const message =
+        document.getElementById("message");
 
-    document.getElementById(
-        "password"
-    );
 
 
-const loginButton =
+    // =========================================================
+    // CUSTOMER LOGIN
+    // =========================================================
 
-    document.getElementById(
-        "loginButton"
-    );
 
+    loginForm.addEventListener(
+        "submit",
+        async function(event) {
 
-const forgotPassword =
+            event.preventDefault();
 
-    document.getElementById(
-        "forgotPassword"
-    );
 
+            const email =
+                emailInput.value.trim();
 
-const message =
 
-    document.getElementById(
-        "message"
-    );
+            const password =
+                passwordInput.value;
 
 
+            message.textContent = "";
 
-/* =========================================================
-   CUSTOMER LOGIN
-========================================================= */
 
-loginForm.addEventListener(
+            loginButton.disabled = true;
 
-    "submit",
+            loginButton.textContent =
+                "Logging in...";
 
-    async function(event) {
 
+            try {
 
-        event.preventDefault();
 
+                const { data, error } =
+                    await supabaseClient.auth
+                        .signInWithPassword({
 
-        const email =
+                            email: email,
 
-            emailInput.value.trim();
+                            password: password
 
+                        });
 
-        const password =
 
-            passwordInput.value;
+                if (error) {
 
+                    throw error;
 
-        message.textContent = "";
+                }
 
 
-        loginButton.disabled = true;
+                const user =
+                    data.user;
 
 
-        loginButton.textContent =
-            "Logging in...";
+                if (!user) {
 
-
-        try {
-
-
-            const {
-                data,
-                error
-            } =
-
-                await supabaseClient
-                    .auth
-                    .signInWithPassword({
-
-                        email:
-                            email,
-
-                        password:
-                            password
-
-                    });
-
-
-            if (error) {
-
-                throw error;
-
-            }
-
-
-            if (!data.user) {
-
-                throw new Error(
-                    "Unable to verify account."
-                );
-
-            }
-
-
-            /*
-               Successful customer login
-            */
-
-            message.style.color =
-                "green";
-
-
-            message.textContent =
-                "Login successful!";
-
-
-            setTimeout(
-
-                function() {
-
-                    window.location.href =
-                        "customer-dashboard.html";
-
-                },
-
-                800
-
-            );
-
-
-        }
-
-        catch (error) {
-
-
-            console.error(
-
-                "Login error:",
-
-                error
-
-            );
-
-
-            message.style.color =
-                "red";
-
-
-            message.textContent =
-
-                error.message ||
-
-                "Login failed.";
-
-        }
-
-
-        loginButton.disabled =
-            false;
-
-
-        loginButton.textContent =
-            "Login";
-
-
-    }
-
-);
-
-
-
-/* =========================================================
-   FORGOT PASSWORD
-========================================================= */
-
-forgotPassword.addEventListener(
-
-    "click",
-
-    async function(event) {
-
-
-        event.preventDefault();
-
-
-        const email =
-
-            emailInput.value.trim();
-
-
-        message.textContent = "";
-
-
-        /*
-           Email required
-        */
-
-        if (!email) {
-
-
-            message.style.color =
-                "red";
-
-
-            message.textContent =
-
-                "Please enter your email address first.";
-
-
-            emailInput.focus();
-
-
-            return;
-
-        }
-
-
-
-        /*
-           Disable link
-        */
-
-        forgotPassword.style.pointerEvents =
-            "none";
-
-
-        forgotPassword.style.opacity =
-            "0.6";
-
-
-        message.style.color =
-            "#1769d1";
-
-
-        message.textContent =
-            "Sending password reset email...";
-
-
-
-        try {
-
-
-            /*
-               Save email
-               for reset-password page
-            */
-
-            localStorage.setItem(
-
-                "resetEmail",
-
-                email
-
-            );
-
-
-
-            /*
-               Send Supabase
-               password reset email
-            */
-
-            const {
-                error
-            } =
-
-                await supabaseClient
-
-                    .auth
-
-                    .resetPasswordForEmail(
-
-                        email,
-
-                        {
-
-                            redirectTo:
-
-                                window.location.origin +
-
-                                "/reset-password.html"
-
-                        }
-
+                    throw new Error(
+                        "Unable to verify account."
                     );
 
+                }
 
-            if (error) {
 
-                throw error;
+                message.style.color =
+                    "green";
+
+
+                message.textContent =
+                    "Login successful!";
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "customer-dashboard.html";
+
+                    },
+                    800
+                );
+
+
+            }
+
+            catch (error) {
+
+
+                console.error(
+                    "Login error:",
+                    error
+                );
+
+
+                message.style.color =
+                    "red";
+
+
+                message.textContent =
+                    error.message ||
+                    "Login failed.";
 
             }
 
 
-
-            /*
-               Success
-            */
-
-            message.style.color =
-                "green";
+            loginButton.disabled =
+                false;
 
 
-            message.textContent =
-
-                "Password reset email sent. Opening reset page...";
-
-
-
-            setTimeout(
-
-                function() {
-
-                    window.location.href =
-                        "reset-password.html";
-
-                },
-
-                1000
-
-            );
-
+            loginButton.textContent =
+                "Login";
 
         }
-
-        catch (error) {
-
-
-            console.error(
-
-                "Password reset error:",
-
-                error
-
-            );
+    );
 
 
-            message.style.color =
-                "red";
+
+    // =========================================================
+    // FORGOT PASSWORD
+    // =========================================================
 
 
-            message.textContent =
+    forgotPassword.addEventListener(
+        "click",
+        async function(event) {
 
-                error.message ||
-
-                "Failed to send password reset email.";
+            event.preventDefault();
 
 
-            /*
-               Re-enable link
-            */
+            const email =
+                emailInput.value.trim();
+
+
+            message.textContent = "";
+
+
+            if (!email) {
+
+
+                message.style.color =
+                    "red";
+
+
+                message.textContent =
+                    "Please enter your email address first.";
+
+
+                emailInput.focus();
+
+
+                return;
+
+            }
+
 
             forgotPassword.style.pointerEvents =
-                "auto";
+                "none";
 
 
             forgotPassword.style.opacity =
-                "1";
+                "0.6";
+
+
+            message.style.color =
+                "#1769d1";
+
+
+            message.textContent =
+                "Sending password reset email...";
+
+
+            try {
+
+
+                localStorage.setItem(
+                    "resetEmail",
+                    email
+                );
+
+
+                const { error } =
+                    await supabaseClient.auth
+                        .resetPasswordForEmail(
+                            email,
+                            {
+
+                                redirectTo:
+                                    window.location.origin +
+                                    "/reset-password.html"
+
+                            }
+                        );
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                message.style.color =
+                    "green";
+
+
+                message.textContent =
+                    "Password reset email sent. Opening reset page...";
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "reset-password.html";
+
+                    },
+                    1000
+                );
+
+
+            }
+
+            catch (error) {
+
+
+                console.error(
+                    "Password reset error:",
+                    error
+                );
+
+
+                message.style.color =
+                    "red";
+
+
+                message.textContent =
+                    error.message ||
+                    "Failed to send password reset email.";
+
+
+                forgotPassword.style.pointerEvents =
+                    "auto";
+
+
+                forgotPassword.style.opacity =
+                    "1";
+
+            }
 
         }
+    );
 
-
-    }
-
-);
 
 </script>
 
