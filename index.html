@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin Login | Digital Service</title>
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Digital Service | Digital • Tax • Business Services</title>
 
     <style>
         * {
@@ -16,483 +13,929 @@
             padding: 0;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            min-height: 100vh;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            padding: 20px;
+        html {
+            scroll-behavior: smooth;
         }
 
-        .login-box {
-            width: 100%;
-            max-width: 420px;
+        body {
+            font-family: Arial, sans-serif;
+            color: #172033;
+            background: #f4f7fb;
+            line-height: 1.6;
+        }
 
-            background: #ffffff;
+        /* ================= HEADER ================= */
 
-            padding: 35px;
+        header {
+            background: linear-gradient(135deg, #123f91, #1769d1);
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
 
-            border-radius: 15px;
-
-            box-shadow:
-                0 10px 35px rgba(0, 0, 0, 0.12);
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: white;
         }
 
         .logo {
-            width: 60px;
-            height: 60px;
-
-            background: #172033;
-            color: #ffffff;
-
-            border-radius: 12px;
-
+            width: 52px;
+            height: 52px;
+            background: white;
+            color: #1769d1;
+            border-radius: 13px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
 
-            margin: 0 auto 15px;
-
+        .brand-text h2 {
             font-size: 24px;
+            line-height: 1.1;
+        }
+
+        .brand-text p {
+            font-size: 14px;
+            margin-top: 3px;
+            opacity: 0.9;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            opacity: 0.75;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            background: white;
+            text-align: center;
+            padding: 85px 20px;
+        }
+
+        .hero h1 {
+            color: #123f91;
+            font-size: 44px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            max-width: 750px;
+            margin: 0 auto 35px;
+            color: #52627a;
+            font-size: 18px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #1769d1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1258b4;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #1769d1;
+            border: 2px solid #1769d1;
+        }
+
+        .btn-outline:hover {
+            background: #eef5ff;
+        }
+
+        /* ================= SERVICES ================= */
+
+        .services-section {
+            padding: 75px 6%;
+            background: #f4f7fb;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: #123f91;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #63738a;
+            font-size: 17px;
+        }
+
+        .services-grid {
+            max-width: 1250px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 32px 22px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+            transition: 0.25s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.11);
+        }
+
+        .service-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #172033;
+        }
+
+        .service-card p {
+            color: #68778d;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .service-link {
+            color: #1769d1;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .service-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= HOW IT WORKS ================= */
+
+        .how-section {
+            background: white;
+            padding: 75px 6%;
+        }
+
+        .steps {
+            max-width: 1100px;
+            margin: 40px auto 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .step-number {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #1769d1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
             font-weight: bold;
         }
 
-        h1 {
-            text-align: center;
-
-            color: #172033;
-
+        .step h3 {
             margin-bottom: 8px;
         }
 
-        .subtitle {
+        .step p {
+            color: #68778d;
+        }
+
+        /* ================= CTA ================= */
+
+        .cta {
+            background: linear-gradient(135deg, #123f91, #1769d1);
+            color: white;
             text-align: center;
+            padding: 70px 20px;
+        }
 
-            color: #666666;
+        .cta h2 {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
 
+        .cta p {
             margin-bottom: 25px;
+            opacity: 0.9;
         }
 
-        label {
-            display: block;
-
-            margin-bottom: 7px;
-
-            font-weight: bold;
-
-            color: #333333;
-        }
-
-        input {
-            width: 100%;
-
-            padding: 13px;
-
-            margin-bottom: 15px;
-
-            border: 1px solid #cccccc;
-
-            border-radius: 8px;
-
-            font-size: 15px;
-
-            outline: none;
-        }
-
-        input:focus {
-            border-color: #1769d1;
-
-            box-shadow:
-                0 0 0 3px rgba(23, 105, 209, 0.10);
-        }
-
-        button {
-            width: 100%;
-
-            padding: 14px;
-
-            border: none;
-
-            border-radius: 8px;
-
-            background: #172033;
-
-            color: #ffffff;
-
-            font-size: 16px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-            margin-top: 8px;
-        }
-
-        button:hover {
-            background: #0d1422;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-
-            cursor: not-allowed;
-        }
-
-        #message {
-            margin-top: 18px;
-
-            text-align: center;
-
-            font-weight: bold;
-
-            line-height: 1.5;
-
-            min-height: 22px;
-        }
-
-        .back {
-            display: block;
-
-            text-align: center;
-
-            margin-top: 20px;
-
+        .cta .btn {
+            background: white;
             color: #1769d1;
-
-            text-decoration: none;
-
-            font-size: 15px;
         }
 
-        .back:hover {
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #111827;
+            color: white;
+            padding: 35px 6%;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand h3 {
+            margin-bottom: 5px;
+        }
+
+        .footer-brand p {
+            color: #aab4c3;
+            font-size: 14px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #dbe4f0;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: white;
             text-decoration: underline;
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid #293241;
+            margin-top: 25px;
+            padding-top: 20px;
+            color: #9aa6b7;
+            font-size: 13px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 1000px) {
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            nav {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 18px 5%;
+            }
+
+            nav {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 15px;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            .hero {
+                padding: 60px 20px;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title h2 {
+                font-size: 30px;
+            }
+
+            .cta h2 {
+                font-size: 28px;
+            }
         }
     </style>
 </head>
 
-
 <body>
 
-<div class="login-box">
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
-    <!-- Logo -->
-    <div class="logo">
-        DS
+<header>
+
+    <a href="index.html" class="brand">
+
+        <div class="logo">
+            DS
+        </div>
+
+        <div class="brand-text">
+            <h2>Digital Service</h2>
+            <p>Digital • Tax • Business Services</p>
+        </div>
+
+    </a>
+
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="#services">
+            Services
+        </a>
+
+        <a href="apply.html">
+            Apply
+        </a>
+
+        <a href="login.html">
+            Customer Login
+        </a>
+
+        <!-- ADMIN LOGIN — ONLY HERE -->
+        <a href="admin-login.html">
+            Admin Login
+        </a>
+
+        <a href="signup.html">
+            Sign Up
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <h1>
+        Your Digital Service Partner
+    </h1>
+
+    <p>
+        Get Digital, Tax and Business related services easily
+        from one place. Submit your application online and
+        manage your service request.
+    </p>
+
+    <div class="hero-buttons">
+
+        <a
+            href="#services"
+            class="btn btn-primary"
+        >
+            Explore Services
+        </a>
+
+        <a
+            href="apply.html"
+            class="btn btn-outline"
+        >
+            Apply for a Service
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SERVICES
+========================================================= -->
+
+<section
+    class="services-section"
+    id="services"
+>
+
+    <div class="section-title">
+
+        <h2>
+            Our Services
+        </h2>
+
+        <p>
+            Select the service you require and apply online.
+        </p>
+
     </div>
 
 
-    <!-- Heading -->
-    <h1>
-        Admin Login
-    </h1>
+    <div class="services-grid">
 
 
-    <p class="subtitle">
-        Digital Service Administrator Panel
+        <!-- PAN CARD -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🪪
+            </div>
+
+            <h3>
+                PAN Card
+            </h3>
+
+            <p>
+                PAN card application, correction and related services.
+            </p>
+
+            <a
+                href="apply.html"
+                class="service-link"
+            >
+                Apply Now →
+            </a>
+
+        </div>
+
+
+        <!-- AADHAAR -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🆔
+            </div>
+
+            <h3>
+                Aadhaar Card
+            </h3>
+
+            <p>
+                Aadhaar related assistance and application services.
+            </p>
+
+            <a
+                href="apply.html"
+                class="service-link"
+            >
+                Apply Now →
+            </a>
+
+        </div>
+
+
+        <!-- RATION CARD -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🍚
+            </div>
+
+            <h3>
+                Ration Card
+            </h3>
+
+            <p>
+                Ration card application and related government services.
+            </p>
+
+            <a
+                href="apply.html"
+                class="service-link"
+            >
+                Apply Now →
+            </a>
+
+        </div>
+
+
+        <!-- TRADE LICENSE -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🏪
+            </div>
+
+            <h3>
+                Trade License
+            </h3>
+
+            <p>
+                Assistance with trade license application and processing.
+            </p>
+
+            <a
+                href="apply.html"
+                class="service-link"
+            >
+                Apply Now →
+            </a>
+
+        </div>
+
+
+        <!-- SHOP ESTABLISHMENT -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🏢
+            </div>
+
+            <h3>
+                Shop Establishment
+            </h3>
+
+            <p>
+                Shop and establishment registration related services.
+            </p>
+
+            <a
+                href="apply.html"
+                class="service-link"
+            >
+                Apply Now →
+            </a>
+
+        </div>
+
+
+        <!-- FSSAI -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🍽️
+            </div>
+
+            <h3>
+                FSSAI License
+            </h3>
+
+            <p>
+                FSSAI registration and license application assistance.
+            </p>
+
+            <a
+                href="apply.html"
+                class="service-link"
+            >
+                Apply Now →
+            </a>
+
+        </div>
+
+
+        <!-- GST -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                📊
+            </div>
+
+            <h3>
+                GST Services
+            </h3>
+
+            <p>
+                GST registration, return and compliance related services.
+            </p>
+
+            <a
+                href="apply.html"
+                class="service-link"
+            >
+                Apply Now →
+            </a>
+
+        </div>
+
+
+        <!-- TDS -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                💼
+            </div>
+
+            <h3>
+                TDS Services
+            </h3>
+
+            <p>
+                TDS return, certificate and compliance related assistance.
+            </p>
+
+            <a
+                href="apply.html"
+                class="service-link"
+            >
+                Apply Now →
+            </a>
+
+        </div>
+
+
+        <!-- INCOME TAX -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                🧾
+            </div>
+
+            <h3>
+                Income Tax
+            </h3>
+
+            <p>
+                Income tax return and related tax services.
+            </p>
+
+            <a
+                href="apply.html"
+                class="service-link"
+            >
+                Apply Now →
+            </a>
+
+        </div>
+
+
+        <!-- OTHER SERVICES -->
+
+        <div class="service-card">
+
+            <div class="service-icon">
+                📑
+            </div>
+
+            <h3>
+                Other Services
+            </h3>
+
+            <p>
+                Get assistance for various digital and business services.
+            </p>
+
+            <a
+                href="apply.html"
+                class="service-link"
+            >
+                Apply Now →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     HOW IT WORKS
+========================================================= -->
+
+<section class="how-section">
+
+    <div class="section-title">
+
+        <h2>
+            How It Works
+        </h2>
+
+        <p>
+            Simple and convenient online application process.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3>
+                Choose Service
+            </h3>
+
+            <p>
+                Select the digital, tax or business service you need.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3>
+                Submit Application
+            </h3>
+
+            <p>
+                Provide your details and submit your service request.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3>
+                Track Progress
+            </h3>
+
+            <p>
+                Login to your customer dashboard and check your application status.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CTA
+========================================================= -->
+
+<section class="cta">
+
+    <h2>
+        Need a Digital Service?
+    </h2>
+
+    <p>
+        Submit your application online and let us help you.
     </p>
 
-
-    <!-- Login Form -->
-    <form id="adminLoginForm">
-
-        <label for="email">
-            Admin Email
-        </label>
-
-        <input
-            type="email"
-            id="email"
-            placeholder="Enter admin email"
-            autocomplete="username"
-            required
-        >
-
-
-        <label for="password">
-            Password
-        </label>
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Enter password"
-            autocomplete="current-password"
-            required
-        >
-
-
-        <button
-            type="submit"
-            id="loginButton"
-        >
-            Admin Login
-        </button>
-
-    </form>
-
-
-    <!-- Message -->
-    <div id="message"></div>
-
-
-    <!-- Back to Customer Login -->
     <a
-        href="login.html"
-        class="back"
+        href="apply.html"
+        class="btn"
     >
-        ← Customer Login
+        Apply for a Service
     </a>
 
-</div>
+</section>
 
 
-<script>
+<!-- =========================================================
+     FOOTER
+========================================================= -->
 
-    // =========================================================
-    // SUPABASE CONFIGURATION
-    // =========================================================
+<footer>
 
-    const SUPABASE_URL =
-        "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+    <div class="footer-content">
 
+        <div class="footer-brand">
 
-    const SUPABASE_PUBLISHABLE_KEY =
-        "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+            <h3>
+                Digital Service
+            </h3>
 
+            <p>
+                Digital • Tax • Business Services
+            </p>
 
-    const supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY
-        );
+        </div>
 
 
-    // =========================================================
-    // ADMIN UID
-    // =========================================================
+        <div class="footer-links">
 
-    const ADMIN_UID =
-        "e3c0a5b6-7bb7-4efa-b7c4-64b37cc84b08";
+            <a href="index.html">
+                Home
+            </a>
 
+            <a href="#services">
+                Services
+            </a>
 
-    // =========================================================
-    // GET HTML ELEMENTS
-    // =========================================================
+            <a href="apply.html">
+                Apply
+            </a>
 
-    const form =
-        document.getElementById("adminLoginForm");
+            <a href="login.html">
+                Customer Login
+            </a>
 
+            <a href="admin-login.html">
+                Admin Login
+            </a>
 
-    const emailInput =
-        document.getElementById("email");
+            <a href="signup.html">
+                Sign Up
+            </a>
 
+        </div>
 
-    const passwordInput =
-        document.getElementById("password");
+    </div>
 
 
-    const loginButton =
-        document.getElementById("loginButton");
+    <div class="copyright">
 
+        © 2026 Digital Service. All Rights Reserved.
 
-    const message =
-        document.getElementById("message");
+    </div>
 
-
-    // =========================================================
-    // SHOW MESSAGE
-    // =========================================================
-
-    function showMessage(text, type) {
-
-        message.textContent = text;
-
-
-        if (type === "success") {
-
-            message.style.color = "#0a9f4b";
-
-        } else {
-
-            message.style.color = "#ff0000";
-
-        }
-
-    }
-
-
-    // =========================================================
-    // ADMIN LOGIN
-    // =========================================================
-
-    form.addEventListener(
-        "submit",
-        async function(event) {
-
-            event.preventDefault();
-
-
-            // -------------------------------------------------
-            // GET INPUT VALUES
-            // -------------------------------------------------
-
-            const email =
-                emailInput.value.trim();
-
-
-            const password =
-                passwordInput.value;
-
-
-            // -------------------------------------------------
-            // RESET MESSAGE
-            // -------------------------------------------------
-
-            message.textContent = "";
-
-
-            // -------------------------------------------------
-            // DISABLE BUTTON
-            // -------------------------------------------------
-
-            loginButton.disabled = true;
-
-            loginButton.textContent =
-                "Checking...";
-
-
-            try {
-
-                // =================================================
-                // SIGN IN WITH SUPABASE
-                // =================================================
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient.auth.signInWithPassword({
-
-                        email: email,
-
-                        password: password
-
-                    });
-
-
-                // -------------------------------------------------
-                // CHECK LOGIN ERROR
-                // -------------------------------------------------
-
-                if (error) {
-
-                    throw new Error(
-                        "Invalid login credentials."
-                    );
-
-                }
-
-
-                // =================================================
-                // GET LOGGED-IN USER
-                // =================================================
-
-                const user =
-                    data.user;
-
-
-                if (!user) {
-
-                    throw new Error(
-                        "Unable to verify account."
-                    );
-
-                }
-
-
-                // =================================================
-                // CHECK ADMIN UID
-                // =================================================
-
-                if (user.id !== ADMIN_UID) {
-
-                    // Logout non-admin user immediately
-
-                    await supabaseClient.auth.signOut();
-
-
-                    throw new Error(
-                        "Access denied. This account is not an administrator."
-                    );
-
-                }
-
-
-                // =================================================
-                // ADMIN VERIFIED
-                // =================================================
-
-                showMessage(
-                    "Admin login successful. Opening dashboard...",
-                    "success"
-                );
-
-
-                // -------------------------------------------------
-                // OPEN ADMIN DASHBOARD
-                // -------------------------------------------------
-
-                setTimeout(
-                    function() {
-
-                        window.location.href =
-                            "admin-dashboard.html";
-
-                    },
-                    700
-                );
-
-            }
-
-
-            catch (error) {
-
-                console.error(
-                    "Admin login error:",
-                    error
-                );
-
-
-                showMessage(
-                    error.message ||
-                    "Admin login failed.",
-                    "error"
-                );
-
-            }
-
-
-            finally {
-
-                // -------------------------------------------------
-                // ENABLE BUTTON AGAIN
-                // -------------------------------------------------
-
-                loginButton.disabled = false;
-
-                loginButton.textContent =
-                    "Admin Login";
-
-            }
-
-        }
-    );
-
-</script>
+</footer>
 
 </body>
 </html>
