@@ -6,15 +6,7 @@
 
     <title>Digital Service | Digital • Tax • Business Services</title>
 
-    <meta name="description"
-          content="Digital, Tax and Business related services from one place.">
-
     <style>
-
-        /* =========================
-           RESET
-        ========================= */
-
         * {
             margin: 0;
             padding: 0;
@@ -27,106 +19,104 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #ffffff;
-            color: #17233d;
+            background: #f4f7fb;
+            color: #123b75;
         }
 
         a {
             text-decoration: none;
+            color: inherit;
         }
-
-        button {
-            font-family: inherit;
-        }
-
 
         /* =========================
            NAVBAR
-        ========================= */
+        ========================== */
 
         .navbar {
             width: 100%;
-            background: linear-gradient(90deg, #16479a, #176fd3);
+            background: linear-gradient(135deg, #164b9b, #0875dc);
             color: white;
             padding: 18px 6%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
         }
 
         .brand {
             display: flex;
             align-items: center;
             gap: 14px;
-            min-width: max-content;
+            flex-shrink: 0;
         }
 
         .brand-logo {
             width: 58px;
             height: 58px;
             background: white;
-            color: #1760b7;
-            border-radius: 14px;
+            color: #1260c9;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 23px;
+            font-size: 24px;
             font-weight: 800;
         }
 
         .brand-text h1 {
-            font-size: 25px;
+            font-size: 24px;
             margin-bottom: 3px;
         }
 
         .brand-text p {
             font-size: 14px;
-            opacity: 0.92;
+            opacity: 0.9;
         }
 
         .nav-links {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             gap: 28px;
+            font-weight: 600;
         }
 
         .nav-links a {
             color: white;
-            font-size: 16px;
-            font-weight: 600;
             transition: 0.2s;
+            white-space: nowrap;
         }
 
         .nav-links a:hover {
             opacity: 0.75;
         }
 
-
         /* =========================
            HERO
-        ========================= */
+        ========================== */
 
         .hero {
-            min-height: 420px;
-            padding: 85px 20px 55px;
+            background: white;
             text-align: center;
-            background: #ffffff;
+            padding: 90px 20px 70px;
         }
 
         .hero h2 {
-            color: #15499a;
             font-size: 44px;
-            line-height: 1.15;
+            color: #124692;
             margin-bottom: 28px;
         }
 
         .hero p {
-            max-width: 850px;
-            margin: 0 auto;
-            color: #4f6486;
+            max-width: 800px;
+            margin: auto;
             font-size: 19px;
             line-height: 1.6;
+            color: #516b8f;
         }
 
         .hero-buttons {
@@ -137,67 +127,58 @@
             flex-wrap: wrap;
         }
 
-        .hero-btn {
+        .btn {
             display: inline-block;
-            padding: 15px 27px;
+            padding: 16px 28px;
             border-radius: 9px;
             font-size: 17px;
             font-weight: 700;
             transition: 0.2s;
+            cursor: pointer;
         }
 
-        .hero-btn.primary {
+        .btn-primary {
+            background: #086bdc;
             color: white;
-            background: #086be0;
-            border: 2px solid #086be0;
+            border: 2px solid #086bdc;
         }
 
-        .hero-btn.secondary {
-            color: #086be0;
+        .btn-primary:hover {
+            background: #075ab8;
+        }
+
+        .btn-outline {
             background: white;
-            border: 2px solid #086be0;
+            color: #086bdc;
+            border: 2px solid #086bdc;
         }
 
-        .hero-btn:hover {
-            transform: translateY(-2px);
+        .btn-outline:hover {
+            background: #edf5ff;
         }
-
 
         /* =========================
-           ADVERTISEMENT SLIDER
-        ========================= */
+           ADVERTISEMENT SECTION
+        ========================== */
 
         .advertisement-section {
-            width: 100%;
-            padding: 10px 4.5% 30px;
-            background: #ffffff;
+            background: white;
+            padding: 10px 4% 30px;
         }
 
-        .advertisement-slider {
-            position: relative;
+        .ad-slider {
             width: 100%;
             max-width: 1500px;
-
-            /*
-             * Height kept suitable for wide posters.
-             */
             height: 360px;
-
             margin: 0 auto;
-
-            background: #f3f6fb;
-
-            border-radius: 18px;
-
+            position: relative;
             overflow: hidden;
-
-            box-shadow:
-                0 8px 28px rgba(20, 50, 90, 0.12);
-
-            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            background: #eaf1fc;
+            box-shadow: 0 10px 30px rgba(20,70,130,0.12);
         }
 
-        .slides-wrapper {
+        .ad-track {
             width: 100%;
             height: 100%;
             position: relative;
@@ -206,24 +187,12 @@
         .ad-slide {
             position: absolute;
             inset: 0;
-
             width: 100%;
             height: 100%;
-
             opacity: 0;
             visibility: hidden;
-
-            transition:
-                opacity 0.45s ease,
-                visibility 0.45s ease;
-
+            transition: opacity 0.45s ease;
             cursor: pointer;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: #f3f6fb;
         }
 
         .ad-slide.active {
@@ -232,161 +201,106 @@
             z-index: 2;
         }
 
-        /*
-         * IMPORTANT:
-         * contain = complete poster visible.
-         * No cropping.
-         */
         .ad-slide img {
             width: 100%;
             height: 100%;
-
-            object-fit: contain;
-            object-position: center;
-
             display: block;
 
-            background: #f3f6fb;
-
-            user-select: none;
-            -webkit-user-drag: none;
+            /*
+              IMPORTANT:
+              contain = পুরো poster দেখা যাবে
+              crop হবে না
+            */
+            object-fit: contain;
+            object-position: center;
+            background: white;
         }
 
+        /* Arrows */
 
-        /* =========================
-           ARROWS
-        ========================= */
-
-        .slider-arrow {
+        .ad-arrow {
             position: absolute;
-
             top: 50%;
             transform: translateY(-50%);
-
             width: 48px;
             height: 48px;
-
             border: none;
             border-radius: 50%;
-
-            background: rgba(30, 38, 52, 0.58);
-
+            background: rgba(30, 40, 55, 0.58);
             color: white;
-
             font-size: 30px;
             line-height: 48px;
-
+            text-align: center;
             cursor: pointer;
-
             z-index: 10;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
             transition: 0.2s;
         }
 
-        .slider-arrow:hover {
-            background: rgba(30, 38, 52, 0.82);
-            transform: translateY(-50%) scale(1.05);
+        .ad-arrow:hover {
+            background: rgba(0, 89, 180, 0.9);
         }
 
-        .slider-arrow.prev {
-            left: 15px;
+        .ad-prev {
+            left: 16px;
         }
 
-        .slider-arrow.next {
-            right: 15px;
+        .ad-next {
+            right: 16px;
         }
 
+        /* Dots */
 
-        /* =========================
-           DOTS
-        ========================= */
-
-        .slider-dots {
+        .ad-dots {
             position: absolute;
-
             bottom: 12px;
             left: 50%;
-
             transform: translateX(-50%);
-
             display: flex;
-            gap: 8px;
-
-            z-index: 20;
-
-            padding: 5px 10px;
-
-            border-radius: 20px;
-
-            background: rgba(255, 255, 255, 0.5);
+            gap: 7px;
+            z-index: 10;
         }
 
-        .slider-dot {
+        .ad-dot {
             width: 9px;
             height: 9px;
-
-            border: none;
             border-radius: 50%;
-
-            background: #d0d6df;
-
+            background: rgba(255,255,255,0.75);
             cursor: pointer;
-
-            transition: 0.2s;
+            border: 1px solid rgba(0,0,0,0.15);
         }
 
-        .slider-dot.active {
-            width: 10px;
-            height: 10px;
-
-            background: #0876e8;
+        .ad-dot.active {
+            background: #0875dc;
+            transform: scale(1.2);
         }
 
-
-        /* =========================
-           LOADING
-        ========================= */
-
-        .advertisement-loading {
+        .ad-loading {
             width: 100%;
             height: 100%;
-
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #55708f;
+            font-size: 18px;
+        }
 
-            color: #5c6f8c;
-
+        .ad-empty {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #55708f;
             font-size: 17px;
         }
 
-        .advertisement-error {
-            width: 100%;
-            height: 100%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            text-align: center;
-
-            color: #64748b;
-
-            font-size: 16px;
-        }
-
-
         /* =========================
            SERVICES
-        ========================= */
+        ========================== */
 
         .services-section {
             background: #f4f7fb;
-            padding: 70px 6% 80px;
+            padding: 70px 5% 90px;
         }
 
         .section-heading {
@@ -395,141 +309,138 @@
         }
 
         .section-heading h2 {
-            color: #15499a;
             font-size: 38px;
+            color: #124692;
             margin-bottom: 15px;
         }
 
         .section-heading p {
-            color: #64748b;
-            font-size: 18px;
+            color: #607a9e;
+            font-size: 17px;
         }
 
         .services-grid {
-            max-width: 1250px;
+            max-width: 1350px;
             margin: auto;
-
             display: grid;
-
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-
-            gap: 25px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 28px;
         }
 
         .service-card {
+            position: relative;
             background: white;
-
+            min-height: 225px;
+            padding: 34px 22px 28px;
             border-radius: 16px;
-
-            padding: 32px 20px;
-
+            box-shadow: 0 10px 28px rgba(33,72,120,0.10);
             text-align: center;
-
-            box-shadow:
-                0 5px 20px rgba(40, 70, 110, 0.08);
-
-            transition: 0.25s;
-
             cursor: pointer;
+            transition: 0.25s;
+            border: 1px solid transparent;
         }
 
         .service-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-6px);
+            border-color: #bcd8fa;
+            box-shadow: 0 15px 35px rgba(33,72,120,0.16);
+        }
 
-            box-shadow:
-                0 12px 28px rgba(40, 70, 110, 0.13);
+        /* New arrow */
+
+        .service-arrow {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #eaf3ff;
+            color: #086bdc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .service-card:hover .service-arrow {
+            background: #086bdc;
+            color: white;
+            transform: translateX(3px);
         }
 
         .service-icon {
-            font-size: 45px;
-            margin-bottom: 20px;
+            font-size: 47px;
+            margin-bottom: 17px;
+            line-height: 1;
         }
 
         .service-card h3 {
-            color: #174b9d;
-            font-size: 20px;
-            margin-bottom: 10px;
+            font-size: 21px;
+            color: #124692;
+            margin-bottom: 12px;
         }
 
         .service-card p {
-            color: #718096;
-            font-size: 14px;
+            color: #667f9f;
             line-height: 1.5;
+            font-size: 15px;
         }
-
 
         /* =========================
            FOOTER
-        ========================= */
+        ========================== */
 
         footer {
-            background: #102f68;
+            background: #123b75;
             color: white;
-
             text-align: center;
+            padding: 28px 20px;
+        }
 
-            padding: 25px 20px;
-
+        footer p {
+            opacity: 0.9;
             font-size: 14px;
         }
 
-
         /* =========================
            MOBILE
-        ========================= */
+        ========================== */
 
-        @media (max-width: 1000px) {
+        @media (max-width: 1100px) {
 
-            .services-grid {
-                grid-template-columns:
-                    repeat(3, minmax(0, 1fr));
+            .navbar {
+                padding: 15px 3%;
             }
 
             .nav-links {
-                gap: 15px;
-            }
-
-            .nav-links a {
+                gap: 16px;
                 font-size: 14px;
             }
 
-            .hero h2 {
-                font-size: 38px;
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
-
-        @media (max-width: 750px) {
+        @media (max-width: 800px) {
 
             .navbar {
-                padding: 14px 20px;
-
                 flex-direction: column;
-
                 align-items: flex-start;
             }
 
             .nav-links {
                 width: 100%;
-
-                overflow-x: auto;
-
-                padding-bottom: 5px;
-
-                gap: 20px;
-            }
-
-            .nav-links a {
-                white-space: nowrap;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                gap: 14px 20px;
             }
 
             .hero {
-                min-height: auto;
-
-                padding:
-                    55px 20px
-                    40px;
+                padding: 60px 20px 45px;
             }
 
             .hero h2 {
@@ -537,66 +448,29 @@
             }
 
             .hero p {
-                font-size: 17px;
+                font-size: 16px;
             }
 
-            .advertisement-section {
-                padding:
-                    5px 15px
-                    25px;
-            }
-
-            .advertisement-slider {
+            .ad-slider {
                 height: 250px;
-
-                border-radius: 13px;
-            }
-
-            .slider-arrow {
-                width: 40px;
-                height: 40px;
-
-                font-size: 25px;
-            }
-
-            .slider-arrow.prev {
-                left: 8px;
-            }
-
-            .slider-arrow.next {
-                right: 8px;
-            }
-
-            .services-section {
-                padding:
-                    50px 20px
-                    60px;
+                border-radius: 12px;
             }
 
             .services-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-
-                gap: 15px;
-            }
-
-            .service-card {
-                padding: 25px 12px;
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-
-        @media (max-width: 480px) {
+        @media (max-width: 520px) {
 
             .brand-logo {
-                width: 50px;
-                height: 50px;
-
+                width: 48px;
+                height: 48px;
                 font-size: 20px;
             }
 
             .brand-text h1 {
-                font-size: 21px;
+                font-size: 20px;
             }
 
             .brand-text p {
@@ -609,1474 +483,1016 @@
 
             .hero-buttons {
                 flex-direction: column;
-                align-items: stretch;
             }
 
-            .hero-btn {
-                text-align: center;
+            .btn {
+                width: 100%;
             }
 
-            .advertisement-slider {
+            .advertisement-section {
+                padding-left: 3%;
+                padding-right: 3%;
+            }
+
+            .ad-slider {
                 height: 190px;
             }
 
-            .services-grid {
-                grid-template-columns:
-                    1fr;
+            .ad-arrow {
+                width: 38px;
+                height: 38px;
+                line-height: 38px;
+                font-size: 23px;
+            }
+
+            .ad-prev {
+                left: 8px;
+            }
+
+            .ad-next {
+                right: 8px;
+            }
+
+            .services-section {
+                padding: 50px 4%;
             }
 
             .section-heading h2 {
                 font-size: 30px;
             }
-        }
 
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-card {
+                min-height: 205px;
+            }
+        }
     </style>
 </head>
 
-
 <body>
 
+<!-- =========================
+     NAVBAR
+========================== -->
 
-    <!-- =========================
-         NAVBAR
-    ========================= -->
+<header class="navbar">
 
-    <header class="navbar">
+    <a href="index.html" class="brand">
 
-        <div class="brand">
+        <div class="brand-logo">
+            DS
+        </div>
 
-            <div class="brand-logo">
-                DS
-            </div>
+        <div class="brand-text">
+            <h1>Digital Service</h1>
+            <p>Digital • Tax • Business Services</p>
+        </div>
 
-            <div class="brand-text">
+    </a>
 
-                <h1>Digital Service</h1>
+    <nav class="nav-links">
 
-                <p>
-                    Digital • Tax • Business Services
-                </p>
+        <a href="index.html">Home</a>
 
+        <a href="#services">Services</a>
+
+        <a href="apply.html">Apply</a>
+
+        <a href="customer-login.html">Customer Login</a>
+
+        <a href="signup.html">Sign Up</a>
+
+        <a href="admin-login.html">🔐 Admin Login</a>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================
+     HERO
+========================== -->
+
+<section class="hero">
+
+    <h2>Your Digital Service Partner</h2>
+
+    <p>
+        Get Digital, Tax and Business related services easily from one place.
+        Submit your application online and manage your service request.
+    </p>
+
+    <div class="hero-buttons">
+
+        <a href="#services" class="btn btn-primary">
+            Explore Services
+        </a>
+
+        <a href="apply.html" class="btn btn-outline">
+            Apply for a Service
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ADVERTISEMENT SLIDER
+========================== -->
+
+<section class="advertisement-section">
+
+    <div class="ad-slider" id="adSlider">
+
+        <div id="adTrack" class="ad-track">
+
+            <div class="ad-loading">
+                Loading advertisements...
             </div>
 
         </div>
 
+        <button
+            type="button"
+            class="ad-arrow ad-prev"
+            id="adPrev"
+            aria-label="Previous advertisement">
+            ‹
+        </button>
 
-        <nav class="nav-links">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="#services">
-                Services
-            </a>
-
-            <a href="apply.html">
-                Apply
-            </a>
-
-            <a href="customer-login.html">
-                Customer Login
-            </a>
-
-            <a href="signup.html">
-                Sign Up
-            </a>
-
-            <a href="admin-login.html">
-                🔐 Admin Login
-            </a>
-
-        </nav>
-
-    </header>
-
-
-
-    <!-- =========================
-         HERO
-    ========================= -->
-
-    <section class="hero">
-
-        <h2>
-            Your Digital Service Partner
-        </h2>
-
-        <p>
-            Get Digital, Tax and Business related services easily
-            from one place. Submit your application online and
-            manage your service request.
-        </p>
-
-
-        <div class="hero-buttons">
-
-            <a
-                href="#services"
-                class="hero-btn primary"
-            >
-                Explore Services
-            </a>
-
-
-            <a
-                href="apply.html"
-                class="hero-btn secondary"
-            >
-                Apply for a Service
-            </a>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =========================
-         ADVERTISEMENT SLIDER
-    ========================= -->
-
-    <section class="advertisement-section">
+        <button
+            type="button"
+            class="ad-arrow ad-next"
+            id="adNext"
+            aria-label="Next advertisement">
+            ›
+        </button>
 
         <div
-            class="advertisement-slider"
-            id="advertisementSlider"
-        >
-
-            <div
-                id="slidesWrapper"
-                class="slides-wrapper"
-            >
-
-                <div class="advertisement-loading">
-                    Loading advertisements...
-                </div>
-
-            </div>
-
-
-            <!-- Previous -->
-
-            <button
-                type="button"
-                class="slider-arrow prev"
-                id="prevButton"
-                aria-label="Previous advertisement"
-            >
-                ‹
-            </button>
-
-
-            <!-- Next -->
-
-            <button
-                type="button"
-                class="slider-arrow next"
-                id="nextButton"
-                aria-label="Next advertisement"
-            >
-                ›
-            </button>
-
-
-            <!-- Dots -->
-
-            <div
-                class="slider-dots"
-                id="sliderDots"
-            ></div>
-
+            class="ad-dots"
+            id="adDots">
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
+<!-- =========================
+     SERVICES
+========================== -->
 
-    <!-- =========================
-         SERVICES
-    ========================= -->
+<section class="services-section" id="services">
 
-    <section
-        class="services-section"
-        id="services"
-    >
+    <div class="section-heading">
 
-        <div class="section-heading">
+        <h2>Our Services</h2>
 
-            <h2>
-                Our Services
-            </h2>
+        <p>
+            Select the service you require and apply online.
+        </p>
+
+    </div>
+
+
+    <div class="services-grid">
+
+
+        <!-- PAN -->
+
+        <div
+            class="service-card"
+            onclick="openService('PAN Card')">
+
+            <div class="service-arrow">›</div>
+
+            <div class="service-icon">🪪</div>
+
+            <h3>PAN Card</h3>
 
             <p>
-                Select the service you require and apply online.
+                New PAN, correction and related services.
             </p>
 
         </div>
 
 
-        <div class="services-grid">
+        <!-- AADHAAR -->
 
+        <div
+            class="service-card"
+            onclick="openService('Aadhaar Card')">
 
-            <!-- PAN -->
+            <div class="service-arrow">›</div>
 
-            <a
-                href="apply.html?service=PAN%20Card"
-                class="service-card"
-            >
+            <div class="service-icon">🆔</div>
 
-                <div class="service-icon">
-                    🪪
-                </div>
+            <h3>Aadhaar Card</h3>
 
-                <h3>
-                    PAN Card
-                </h3>
-
-                <p>
-                    New PAN, correction and related services.
-                </p>
-
-            </a>
-
-
-
-            <!-- Aadhaar -->
-
-            <a
-                href="apply.html?service=Aadhaar%20Card"
-                class="service-card"
-            >
-
-                <div class="service-icon">
-                    🆔
-                </div>
-
-                <h3>
-                    Aadhaar Card
-                </h3>
-
-                <p>
-                    Aadhaar related digital assistance.
-                </p>
-
-            </a>
-
-
-
-            <!-- Ration -->
-
-            <a
-                href="apply.html?service=Ration%20Card"
-                class="service-card"
-            >
-
-                <div class="service-icon">
-                    🍚
-                </div>
-
-                <h3>
-                    Ration Card
-                </h3>
-
-                <p>
-                    Ration card application and correction.
-                </p>
-
-            </a>
-
-
-
-            <!-- Trade License -->
-
-            <a
-                href="apply.html?service=Trade%20License"
-                class="service-card"
-            >
-
-                <div class="service-icon">
-                    🏪
-                </div>
-
-                <h3>
-                    Trade License
-                </h3>
-
-                <p>
-                    Trade license application assistance.
-                </p>
-
-            </a>
-
-
-
-            <!-- Shop Establishment -->
-
-            <a
-                href="apply.html?service=Shop%20Establishment"
-                class="service-card"
-            >
-
-                <div class="service-icon">
-                    🏢
-                </div>
-
-                <h3>
-                    Shop Establishment
-                </h3>
-
-                <p>
-                    Shop and establishment registration services.
-                </p>
-
-            </a>
-
-
-
-            <!-- FSSAI -->
-
-            <a
-                href="apply.html?service=FSSAI%20License"
-                class="service-card"
-            >
-
-                <div class="service-icon">
-                    🍴
-                </div>
-
-                <h3>
-                    FSSAI License
-                </h3>
-
-                <p>
-                    Food business registration and licensing.
-                </p>
-
-            </a>
-
-
-
-            <!-- GST -->
-
-            <a
-                href="apply.html?service=GST"
-                class="service-card"
-            >
-
-                <div class="service-icon">
-                    📊
-                </div>
-
-                <h3>
-                    GST
-                </h3>
-
-                <p>
-                    GST registration and compliance services.
-                </p>
-
-            </a>
-
-
-
-            <!-- TDS -->
-
-            <a
-                href="apply.html?service=TDS"
-                class="service-card"
-            >
-
-                <div class="service-icon">
-                    🧾
-                </div>
-
-                <h3>
-                    TDS
-                </h3>
-
-                <p>
-                    TDS related filing and compliance assistance.
-                </p>
-
-            </a>
-
-
-
-            <!-- Income Tax -->
-
-            <a
-                href="apply.html?service=Income%20Tax"
-                class="service-card"
-            >
-
-                <div class="service-icon">
-                    💰
-                </div>
-
-                <h3>
-                    Income Tax
-                </h3>
-
-                <p>
-                    ITR filing and income tax related services.
-                </p>
-
-            </a>
-
+            <p>
+                Aadhaar related digital assistance.
+            </p>
 
         </div>
 
-    </section>
 
+        <!-- RATION -->
 
+        <div
+            class="service-card"
+            onclick="openService('Ration Card')">
 
-    <!-- =========================
-         FOOTER
-    ========================= -->
+            <div class="service-arrow">›</div>
 
-    <footer>
+            <div class="service-icon">🍚</div>
 
-        © 2026 Digital Service.
-        All Rights Reserved.
+            <h3>Ration Card</h3>
 
-    </footer>
+            <p>
+                Ration card application and correction.
+            </p>
 
+        </div>
 
 
-    <!-- =========================
-         SUPABASE
-    ========================= -->
+        <!-- TRADE LICENSE -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <div
+            class="service-card"
+            onclick="openService('Trade License')">
 
+            <div class="service-arrow">›</div>
 
-    <script>
+            <div class="service-icon">🏪</div>
 
-        /* =========================================================
-           SUPABASE CONFIGURATION
-           =========================================================
+            <h3>Trade License</h3>
 
-           IMPORTANT:
+            <p>
+                Trade license application assistance.
+            </p>
 
-           এখানে তোমার আগের index.html-এ ব্যবহৃত
-           একই SUPABASE_URL এবং SUPABASE_ANON_KEY বসাবে.
+        </div>
 
-        ========================================================= */
 
-        const SUPABASE_URL = "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+        <!-- SHOP ESTABLISHMENT -->
 
-        const SUPABASE_ANON_KEY = "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+        <div
+            class="service-card"
+            onclick="openService('Shop Establishment')">
 
+            <div class="service-arrow">›</div>
 
-        const supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
+            <div class="service-icon">🏢</div>
 
+            <h3>Shop Establishment</h3>
 
+            <p>
+                Shop and establishment registration services.
+            </p>
 
-        /* =========================================================
-           ADVERTISEMENT SETTINGS
-        ========================================================= */
+        </div>
 
-        const AD_BUCKET = "advertisements";
 
-        const AUTO_SLIDE_TIME = 3000;
+        <!-- FSSAI -->
 
+        <div
+            class="service-card"
+            onclick="openService('FSSAI License')">
 
-        let advertisements = [];
+            <div class="service-arrow">›</div>
 
-        let currentSlide = 0;
+            <div class="service-icon">🍴</div>
 
-        let slideTimer = null;
+            <h3>FSSAI License</h3>
 
+            <p>
+                Food business registration and licensing.
+            </p>
 
+        </div>
 
-        /* =========================================================
-           DOM ELEMENTS
-        ========================================================= */
 
-        const slidesWrapper =
-            document.getElementById("slidesWrapper");
+        <!-- GST -->
 
-        const sliderDots =
-            document.getElementById("sliderDots");
+        <div
+            class="service-card"
+            onclick="openService('GST')">
 
-        const prevButton =
-            document.getElementById("prevButton");
+            <div class="service-arrow">›</div>
 
-        const nextButton =
-            document.getElementById("nextButton");
+            <div class="service-icon">📊</div>
 
+            <h3>GST</h3>
 
+            <p>
+                GST registration and compliance services.
+            </p>
 
-        /* =========================================================
-           CREATE PUBLIC STORAGE URL
-        ========================================================= */
+        </div>
 
-        function createStorageUrl(fileName) {
 
-            if (!fileName) {
-                return "";
-            }
+        <!-- TDS -->
 
-            /*
-             * If database already contains a full URL,
-             * use it directly.
-             */
+        <div
+            class="service-card"
+            onclick="openService('TDS')">
 
-            if (
-                fileName.startsWith("http://") ||
-                fileName.startsWith("https://")
-            ) {
-                return fileName;
-            }
+            <div class="service-arrow">›</div>
 
+            <div class="service-icon">🧾</div>
 
-            /*
-             * Otherwise assume database contains
-             * the file name/path.
-             */
+            <h3>TDS</h3>
 
-            const cleanPath =
-                String(fileName)
-                    .replace(/^\/+/, "")
-                    .split("/")
-                    .map(part =>
-                        encodeURIComponent(part)
-                    )
-                    .join("/");
+            <p>
+                TDS related filing and compliance assistance.
+            </p>
 
+        </div>
 
-            return (
-                SUPABASE_URL +
-                "/storage/v1/object/public/" +
-                AD_BUCKET +
-                "/" +
-                cleanPath
-            );
-        }
 
+        <!-- INCOME TAX -->
 
+        <div
+            class="service-card"
+            onclick="openService('Income Tax')">
 
-        /* =========================================================
-           GET IMAGE URL FROM DATABASE ROW
-        ========================================================= */
+            <div class="service-arrow">›</div>
 
-        function getImageUrl(ad) {
+            <div class="service-icon">💰</div>
 
-            const possibleFields = [
+            <h3>Income Tax</h3>
 
-                "image_url",
+            <p>
+                ITR filing and income tax related services.
+            </p>
 
-                "image",
+        </div>
 
-                "image_path",
+    </div>
 
-                "file_url",
+</section>
 
-                "file_path",
 
-                "poster_url",
+<!-- =========================
+     FOOTER
+========================== -->
 
-                "poster",
+<footer>
 
-                "url"
+    <p>
+        © 2026 Digital Service. All Rights Reserved.
+    </p>
 
-            ];
+</footer>
 
 
-            for (
-                const field of possibleFields
-                ) {
 
-                if (
-                    ad[field] &&
-                    String(ad[field]).trim()
-                ) {
+<script>
 
-                    return createStorageUrl(
-                        String(ad[field]).trim()
-                    );
+/* =====================================================
+   SERVICE CARD → APPLY PAGE
+===================================================== */
 
-                }
+function openService(serviceName) {
 
-            }
+    window.location.href =
+        "apply.html?service=" +
+        encodeURIComponent(serviceName);
 
+}
 
-            return "";
-        }
 
+/* =====================================================
+   ADVERTISEMENT SYSTEM
+===================================================== */
 
+/*
+   IMPORTANT
 
-        /* =========================================================
-           GET CLICK URL
-        ========================================================= */
+   Your public Supabase bucket name is:
 
-        function getClickUrl(ad) {
+       advertisements
 
-            const possibleFields = [
+   If your Worker already has an API endpoint:
 
-                "link_url",
+       /api/advertisements
 
-                "apply_url",
+   the website will try that first.
 
-                "redirect_url",
+   If API is unavailable, the fallback files below
+   will be used.
+*/
 
-                "link",
 
-                "target_url"
+const ADVERTISEMENT_FILES = [
 
-            ];
+    /*
+      If necessary, put your public Supabase URLs here.
 
+      Example:
 
-            for (
-                const field of possibleFields
-                ) {
+      "https://YOUR-PROJECT.supabase.co/storage/v1/object/public/advertisements/advertisement_poster_01.png"
 
-                if (
-                    ad[field] &&
-                    String(ad[field]).trim()
-                ) {
+    */
 
-                    return String(
-                        ad[field]
-                    ).trim();
+];
 
-                }
 
-            }
+/* =====================================================
+   VARIABLES
+===================================================== */
 
+let advertisements = [];
 
-            /*
-             * If no custom link is stored,
-             * always open Apply page.
-             */
+let currentAd = 0;
 
-            return "apply.html";
+let adTimer = null;
 
-        }
+const AD_INTERVAL = 3000; // 3 seconds
 
 
+const adTrack =
+    document.getElementById("adTrack");
 
-        /* =========================================================
-           GET TITLE
-        ========================================================= */
+const adDots =
+    document.getElementById("adDots");
 
-        function getAdTitle(ad) {
+const adPrev =
+    document.getElementById("adPrev");
 
-            return (
-                ad.title ||
-                ad.name ||
-                ad.service_name ||
-                "Digital Service Advertisement"
-            );
+const adNext =
+    document.getElementById("adNext");
 
-        }
 
+/* =====================================================
+   LOAD ADVERTISEMENTS
+===================================================== */
 
+async function loadAdvertisements() {
 
-        /* =========================================================
-           LOAD ADVERTISEMENTS
-        ========================================================= */
+    try {
 
-        async function loadAdvertisements() {
+        /*
+          First try existing Worker API.
+        */
 
-            try {
+        const response =
+            await fetch("/api/advertisements", {
+                method: "GET",
+                cache: "no-store"
+            });
 
-                const {
-                    data,
-                    error
-                } = await supabaseClient
 
-                    .from("advertisements")
+        if (response.ok) {
 
-                    .select("*");
+            const data =
+                await response.json();
 
-
-                if (error) {
-
-                    console.error(
-                        "Advertisement loading error:",
-                        error
-                    );
-
-                    /*
-                     * Use fallback posters.
-                     */
-
-                    loadFallbackAdvertisements();
-
-                    return;
-                }
-
-
-                let rows =
-                    Array.isArray(data)
-                        ? data
-                        : [];
-
-
-                /*
-                 * Filter active advertisements if
-                 * the table has active/is_active column.
-                 */
-
-                rows =
-                    rows.filter(ad => {
-
-                        if (
-                            Object.prototype
-                                .hasOwnProperty
-                                .call(ad, "is_active")
-                        ) {
-
-                            return (
-                                ad.is_active === true
-                            );
-
-                        }
-
-
-                        if (
-                            Object.prototype
-                                .hasOwnProperty
-                                .call(ad, "active")
-                        ) {
-
-                            return (
-                                ad.active === true
-                            );
-
-                        }
-
-
-                        /*
-                         * If no active column exists,
-                         * keep the advertisement.
-                         */
-
-                        return true;
-
-                    });
-
-
-                /*
-                 * Sort by display_order if available.
-                 */
-
-                rows.sort((a, b) => {
-
-                    const orderA =
-                        Number(
-                            a.display_order ??
-                            a.sort_order ??
-                            a.position ??
-                            9999
-                        );
-
-                    const orderB =
-                        Number(
-                            b.display_order ??
-                            b.sort_order ??
-                            b.position ??
-                            9999
-                        );
-
-                    return orderA - orderB;
-
-                });
-
-
-                /*
-                 * Only keep rows having an image.
-                 */
+            if (Array.isArray(data) && data.length > 0) {
 
                 advertisements =
-                    rows.filter(ad => {
-
-                        return Boolean(
-                            getImageUrl(ad)
-                        );
-
-                    });
-
-
-                /*
-                 * If table returned nothing,
-                 * use uploaded files directly.
-                 */
-
-                if (
-                    advertisements.length === 0
-                ) {
-
-                    loadFallbackAdvertisements();
-
-                    return;
-                }
-
+                    normaliseAdvertisements(data);
 
                 renderAdvertisements();
 
-            }
-
-            catch (error) {
-
-                console.error(
-                    "Unexpected advertisement error:",
-                    error
-                );
-
-                loadFallbackAdvertisements();
-
-            }
-
-        }
-
-
-
-        /* =========================================================
-           FALLBACK POSTERS
-           =========================================================
-
-           These are the 6 files you uploaded.
-        ========================================================= */
-
-        function loadFallbackAdvertisements() {
-
-            advertisements = [
-
-                {
-                    image_url:
-                        "advertisement_poster_01.png",
-                    title:
-                        "Digital Service",
-                    link_url:
-                        "apply.html"
-                },
-
-                {
-                    image_url:
-                        "advertisement_poster_02.png",
-                    title:
-                        "Digital Service",
-                    link_url:
-                        "apply.html"
-                },
-
-                {
-                    image_url:
-                        "advertisement_poster_03.png",
-                    title:
-                        "Digital Service",
-                    link_url:
-                        "apply.html"
-                },
-
-                {
-                    image_url:
-                        "advertisement_poster_04.png",
-                    title:
-                        "Digital Service",
-                    link_url:
-                        "apply.html"
-                },
-
-                {
-                    image_url:
-                        "advertisement_poster_05.png",
-                    title:
-                        "Digital Service",
-                    link_url:
-                        "apply.html"
-                },
-
-                {
-                    image_url:
-                        "advertisement_poster_06.png",
-                    title:
-                        "Digital Service",
-                    link_url:
-                        "apply.html"
-                }
-
-            ];
-
-
-            renderAdvertisements();
-
-        }
-
-
-
-        /* =========================================================
-           RENDER SLIDES
-        ========================================================= */
-
-        function renderAdvertisements() {
-
-            slidesWrapper.innerHTML = "";
-
-            sliderDots.innerHTML = "";
-
-
-            if (
-                !advertisements ||
-                advertisements.length === 0
-            ) {
-
-                slidesWrapper.innerHTML = `
-
-                    <div class="advertisement-error">
-
-                        No advertisements available.
-
-                    </div>
-
-                `;
-
                 return;
             }
 
-
-            advertisements.forEach(
-                (ad, index) => {
-
-                    const imageUrl =
-                        getImageUrl(ad);
-
-
-                    const clickUrl =
-                        getClickUrl(ad);
-
-
-                    const title =
-                        getAdTitle(ad);
-
-
-                    /*
-                     * Slide
-                     */
-
-                    const slide =
-                        document.createElement("div");
-
-
-                    slide.className =
-                        "ad-slide";
-
-
-                    if (index === 0) {
-
-                        slide.classList.add(
-                            "active"
-                        );
-
-                    }
-
-
-                    slide.setAttribute(
-                        "data-index",
-                        index
-                    );
-
-
-                    /*
-                     * Image
-                     */
-
-                    const img =
-                        document.createElement("img");
-
-
-                    img.src =
-                        imageUrl;
-
-
-                    img.alt =
-                        title;
-
-
-                    img.loading =
-                        index === 0
-                            ? "eager"
-                            : "lazy";
-
-
-                    /*
-                     * Prevent broken image
-                     * from destroying layout.
-                     */
-
-                    img.onerror =
-                        function () {
-
-                            this.style.display =
-                                "none";
-
-                        };
-
-
-                    slide.appendChild(img);
-
-
-                    /*
-                     * CLICK
-                     */
-
-                    slide.addEventListener(
-                        "click",
-                        function () {
-
-                            openAdvertisement(
-                                ad,
-                                clickUrl
-                            );
-
-                        }
-                    );
-
-
-                    slidesWrapper.appendChild(
-                        slide
-                    );
-
-
-                    /*
-                     * DOT
-                     */
-
-                    const dot =
-                        document.createElement(
-                            "button"
-                        );
-
-
-                    dot.type =
-                        "button";
-
-
-                    dot.className =
-                        "slider-dot";
-
-
-                    if (index === 0) {
-
-                        dot.classList.add(
-                            "active"
-                        );
-
-                    }
-
-
-                    dot.setAttribute(
-                        "aria-label",
-                        "Go to advertisement " +
-                        (index + 1)
-                    );
-
-
-                    dot.addEventListener(
-                        "click",
-                        function (event) {
-
-                            event.stopPropagation();
-
-                            goToSlide(index);
-
-                            restartAutoSlide();
-
-                        }
-                    );
-
-
-                    sliderDots.appendChild(
-                        dot
-                    );
-
-                }
-            );
-
-
-            currentSlide = 0;
-
-            startAutoSlide();
-
         }
 
+    } catch (error) {
+
+        console.log(
+            "Advertisement API unavailable."
+        );
+
+    }
 
 
-        /* =========================================================
-           OPEN ADVERTISEMENT
-        ========================================================= */
+    /*
+      Fallback to manually configured files.
+    */
 
-        function openAdvertisement(
-            ad,
-            clickUrl
-        ) {
+    if (ADVERTISEMENT_FILES.length > 0) {
 
-            /*
-             * If advertisement has a custom URL,
-             * use it.
-             */
-
-            if (
-                clickUrl &&
-                clickUrl !== "apply.html"
-            ) {
-
-                window.location.href =
-                    clickUrl;
-
-                return;
-            }
-
-
-            /*
-             * Otherwise open Apply form.
-
-             * If database has service_name,
-             * pass it to Apply page.
-             */
-
-            const service =
-                ad.service_name ||
-                ad.service ||
-                ad.title ||
-                "";
-
-
-            if (service) {
-
-                window.location.href =
-                    "apply.html?service=" +
-                    encodeURIComponent(
-                        service
-                    );
-
-            }
-            else {
-
-                window.location.href =
-                    "apply.html";
-
-            }
-
-        }
-
-
-
-        /* =========================================================
-           GO TO SLIDE
-        ========================================================= */
-
-        function goToSlide(index) {
-
-            const slides =
-                document.querySelectorAll(
-                    ".ad-slide"
-                );
-
-            const dots =
-                document.querySelectorAll(
-                    ".slider-dot"
-                );
-
-
-            if (
-                slides.length === 0
-            ) {
-
-                return;
-
-            }
-
-
-            /*
-             * Loop around.
-             */
-
-            if (
-                index < 0
-            ) {
-
-                index =
-                    slides.length - 1;
-
-            }
-
-
-            if (
-                index >= slides.length
-            ) {
-
-                index = 0;
-
-            }
-
-
-            slides.forEach(
-                slide => {
-
-                    slide.classList.remove(
-                        "active"
-                    );
-
-                }
+        advertisements =
+            ADVERTISEMENT_FILES.map(
+                (url, index) => ({
+                    id: index + 1,
+                    image_url: url,
+                    service: "",
+                    title: ""
+                })
             );
 
+        renderAdvertisements();
 
-            dots.forEach(
-                dot => {
-
-                    dot.classList.remove(
-                        "active"
-                    );
-
-                }
-            );
+        return;
+    }
 
 
-            slides[index].classList.add(
-                "active"
-            );
+    /*
+      If nothing found.
+    */
+
+    showNoAdvertisements();
+
+}
 
 
-            if (dots[index]) {
+/* =====================================================
+   NORMALISE API DATA
+===================================================== */
 
-                dots[index].classList.add(
+function normaliseAdvertisements(data) {
+
+    return data
+        .map((item, index) => {
+
+            let imageUrl =
+                item.image_url ||
+                item.imageUrl ||
+                item.url ||
+                item.file_url ||
+                item.fileUrl;
+
+            if (!imageUrl && item.filename) {
+
+                imageUrl =
+                    item.filename;
+
+            }
+
+            return {
+
+                id:
+                    item.id ||
+                    index + 1,
+
+                image_url:
+                    imageUrl,
+
+                service:
+                    item.service ||
+                    item.service_name ||
+                    item.serviceName ||
+                    "",
+
+                title:
+                    item.title ||
+                    item.name ||
+                    ""
+
+            };
+
+        })
+        .filter(
+            item => item.image_url
+        );
+
+}
+
+
+/* =====================================================
+   RENDER ADS
+===================================================== */
+
+function renderAdvertisements() {
+
+    adTrack.innerHTML = "";
+
+    adDots.innerHTML = "";
+
+    if (!advertisements.length) {
+
+        showNoAdvertisements();
+
+        return;
+    }
+
+
+    advertisements.forEach(
+        (ad, index) => {
+
+            const slide =
+                document.createElement("div");
+
+            slide.className =
+                "ad-slide";
+
+
+            if (index === 0) {
+
+                slide.classList.add(
                     "active"
                 );
 
             }
 
 
-            currentSlide =
-                index;
-
-        }
+            const image =
+                document.createElement("img");
 
 
+            image.src =
+                ad.image_url;
 
-        /* =========================================================
-           NEXT
-        ========================================================= */
+            image.alt =
+                ad.title ||
+                "Digital Service Advertisement";
 
-        function nextSlide() {
 
-            goToSlide(
-                currentSlide + 1
+            image.loading =
+                index === 0
+                    ? "eager"
+                    : "lazy";
+
+
+            /*
+              CLICK POSTER
+            */
+
+            slide.addEventListener(
+                "click",
+                function () {
+
+                    openAdvertisement(
+                        ad
+                    );
+
+                }
             );
 
-        }
 
-
-
-        /* =========================================================
-           PREVIOUS
-        ========================================================= */
-
-        function previousSlide() {
-
-            goToSlide(
-                currentSlide - 1
+            slide.appendChild(
+                image
             );
 
-        }
+
+            adTrack.appendChild(
+                slide
+            );
 
 
+            /*
+              DOT
+            */
 
-        /* =========================================================
-           AUTO SLIDE
-        ========================================================= */
+            const dot =
+                document.createElement("span");
 
-        function startAutoSlide() {
-
-            stopAutoSlide();
+            dot.className =
+                "ad-dot";
 
 
-            slideTimer =
-                setInterval(
-                    function () {
+            if (index === 0) {
 
-                        nextSlide();
-
-                    },
-                    AUTO_SLIDE_TIME
+                dot.classList.add(
+                    "active"
                 );
 
-        }
-
-
-
-        function stopAutoSlide() {
-
-            if (
-                slideTimer
-            ) {
-
-                clearInterval(
-                    slideTimer
-                );
-
-                slideTimer =
-                    null;
-
             }
 
-        }
 
+            dot.addEventListener(
+                "click",
+                function (event) {
 
+                    event.stopPropagation();
 
-        function restartAutoSlide() {
+                    showAd(index);
 
-            startAutoSlide();
+                    restartAdTimer();
 
-        }
-
-
-
-        /* =========================================================
-           BUTTON EVENTS
-        ========================================================= */
-
-        prevButton.addEventListener(
-            "click",
-            function () {
-
-                previousSlide();
-
-                restartAutoSlide();
-
-            }
-        );
-
-
-        nextButton.addEventListener(
-            "click",
-            function () {
-
-                nextSlide();
-
-                restartAutoSlide();
-
-            }
-        );
-
-
-
-        /* =========================================================
-           PAUSE ON MOUSE OVER
-        ========================================================= */
-
-        const slider =
-            document.getElementById(
-                "advertisementSlider"
+                }
             );
 
 
-        slider.addEventListener(
-            "mouseenter",
+            adDots.appendChild(
+                dot
+            );
+
+        }
+    );
+
+
+    startAdTimer();
+
+}
+
+
+/* =====================================================
+   AD CLICK → APPLY PAGE
+===================================================== */
+
+function openAdvertisement(ad) {
+
+    /*
+      If admin has assigned a service to the poster,
+      automatically open that service.
+    */
+
+    if (ad.service) {
+
+        window.location.href =
+            "apply.html?service=" +
+            encodeURIComponent(
+                ad.service
+            );
+
+        return;
+    }
+
+
+    /*
+      Otherwise simply open Apply page.
+    */
+
+    window.location.href =
+        "apply.html";
+
+}
+
+
+/* =====================================================
+   SHOW AD
+===================================================== */
+
+function showAd(index) {
+
+    const slides =
+        document.querySelectorAll(
+            ".ad-slide"
+        );
+
+    const dots =
+        document.querySelectorAll(
+            ".ad-dot"
+        );
+
+
+    if (!slides.length) {
+        return;
+    }
+
+
+    currentAd =
+        (index + advertisements.length) %
+        advertisements.length;
+
+
+    slides.forEach(
+        slide =>
+            slide.classList.remove(
+                "active"
+            )
+    );
+
+
+    dots.forEach(
+        dot =>
+            dot.classList.remove(
+                "active"
+            )
+    );
+
+
+    slides[currentAd]
+        .classList.add(
+            "active"
+        );
+
+
+    if (dots[currentAd]) {
+
+        dots[currentAd]
+            .classList.add(
+                "active"
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   NEXT AD
+===================================================== */
+
+function nextAd() {
+
+    showAd(
+        currentAd + 1
+    );
+
+}
+
+
+/* =====================================================
+   PREVIOUS AD
+===================================================== */
+
+function previousAd() {
+
+    showAd(
+        currentAd - 1
+    );
+
+}
+
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+function startAdTimer() {
+
+    stopAdTimer();
+
+
+    adTimer =
+        setInterval(
             function () {
 
-                stopAutoSlide();
-
-            }
-        );
-
-
-        slider.addEventListener(
-            "mouseleave",
-            function () {
-
-                startAutoSlide();
-
-            }
-        );
-
-
-
-        /* =========================================================
-           TOUCH / SWIPE SUPPORT
-        ========================================================= */
-
-        let touchStartX = 0;
-
-        let touchEndX = 0;
-
-
-        slider.addEventListener(
-            "touchstart",
-            function (event) {
-
-                touchStartX =
-                    event.changedTouches[0]
-                        .screenX;
+                nextAd();
 
             },
-            {
-                passive: true
-            }
+            AD_INTERVAL
         );
 
-
-        slider.addEventListener(
-            "touchend",
-            function (event) {
-
-                touchEndX =
-                    event.changedTouches[0]
-                        .screenX;
+}
 
 
-                const distance =
-                    touchEndX -
-                    touchStartX;
+function stopAdTimer() {
 
+    if (adTimer) {
 
-                if (
-                    Math.abs(distance) < 50
-                ) {
-
-                    return;
-
-                }
-
-
-                if (
-                    distance < 0
-                ) {
-
-                    nextSlide();
-
-                }
-                else {
-
-                    previousSlide();
-
-                }
-
-
-                restartAutoSlide();
-
-            },
-            {
-                passive: true
-            }
+        clearInterval(
+            adTimer
         );
 
+        adTimer = null;
+
+    }
+
+}
 
 
-        /* =========================================================
-           START
-        ========================================================= */
+function restartAdTimer() {
 
-        loadAdvertisements();
+    startAdTimer();
 
-    </script>
+}
+
+
+/* =====================================================
+   ARROW EVENTS
+===================================================== */
+
+adNext.addEventListener(
+    "click",
+    function (event) {
+
+        event.stopPropagation();
+
+        nextAd();
+
+        restartAdTimer();
+
+    }
+);
+
+
+adPrev.addEventListener(
+    "click",
+    function (event) {
+
+        event.stopPropagation();
+
+        previousAd();
+
+        restartAdTimer();
+
+    }
+);
+
+
+/* =====================================================
+   PAUSE TIMER WHEN MOUSE IS OVER AD
+===================================================== */
+
+const adSlider =
+    document.getElementById(
+        "adSlider"
+    );
+
+
+adSlider.addEventListener(
+    "mouseenter",
+    function () {
+
+        stopAdTimer();
+
+    }
+);
+
+
+adSlider.addEventListener(
+    "mouseleave",
+    function () {
+
+        startAdTimer();
+
+    }
+);
+
+
+/* =====================================================
+   TOUCH / SWIPE SUPPORT
+===================================================== */
+
+let touchStartX = 0;
+
+let touchEndX = 0;
+
+
+adSlider.addEventListener(
+    "touchstart",
+    function (event) {
+
+        touchStartX =
+            event.changedTouches[0].screenX;
+
+        stopAdTimer();
+
+    },
+    { passive: true }
+);
+
+
+adSlider.addEventListener(
+    "touchend",
+    function (event) {
+
+        touchEndX =
+            event.changedTouches[0].screenX;
+
+
+        const difference =
+            touchStartX - touchEndX;
+
+
+        if (Math.abs(difference) > 50) {
+
+            if (difference > 0) {
+
+                nextAd();
+
+            } else {
+
+                previousAd();
+
+            }
+
+        }
+
+
+        startAdTimer();
+
+    },
+    { passive: true }
+);
+
+
+/* =====================================================
+   NO ADVERTISEMENT
+===================================================== */
+
+function showNoAdvertisements() {
+
+    adTrack.innerHTML = `
+        <div class="ad-empty">
+            Advertisements will appear here.
+        </div>
+    `;
+
+    adDots.innerHTML = "";
+
+}
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+loadAdvertisements();
+
+
+</script>
 
 </body>
 </html>
