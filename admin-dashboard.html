@@ -750,6 +750,134 @@ tbody tr:hover{
     border-radius:8px;
 }
 
+
+/* ================= APPLICATION FILTERS / TOOLS ================= */
+.application-tools{
+    padding:16px 20px;
+    border-bottom:1px solid #edf0f5;
+    background:#fbfcfe;
+}
+.application-tools-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr auto auto;
+    gap:10px;
+    align-items:center;
+}
+.application-tools input,
+.application-tools select{
+    width:100%;
+    min-height:40px;
+    padding:9px 11px;
+    border:1px solid #d6dce5;
+    border-radius:8px;
+    background:white;
+    color:#172033;
+    font-size:13px;
+}
+.tool-btn{
+    border:0;
+    min-height:40px;
+    padding:9px 13px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    white-space:nowrap;
+}
+.tool-btn.clear{
+    background:#eef3f9;
+    color:#173f7a;
+}
+.tool-btn.export{
+    background:#16a34a;
+    color:white;
+}
+.filter-summary{
+    margin-top:9px;
+    color:#64748b;
+    font-size:12px;
+}
+.pagination-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:13px 20px;
+    border-top:1px solid #edf0f5;
+    background:#fbfcfe;
+}
+.pagination-info{
+    color:#64748b;
+    font-size:12px;
+}
+.pagination-controls{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+.page-btn{
+    min-width:34px;
+    height:34px;
+    border:1px solid #d6dce5;
+    background:white;
+    color:#173f7a;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+.page-btn.active{
+    background:#1769d1;
+    color:white;
+    border-color:#1769d1;
+}
+.page-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+.quick-actions{
+    display:flex;
+    gap:5px;
+    margin-top:6px;
+    flex-wrap:wrap;
+}
+.quick-action{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:30px;
+    height:30px;
+    border-radius:7px;
+    text-decoration:none;
+    font-size:14px;
+}
+.quick-whatsapp{background:#e8f7ee;color:#16803c;}
+.quick-email{background:#eef4ff;color:#1769d1;}
+
+@media(max-width:1100px){
+    .application-tools-grid{
+        grid-template-columns:2fr 1fr 1fr 1fr;
+    }
+}
+@media(max-width:700px){
+    .application-tools-grid{
+        grid-template-columns:1fr 1fr;
+    }
+    .application-tools-grid .search-field{
+        grid-column:1/-1;
+    }
+    .pagination-bar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+@media(max-width:450px){
+    .application-tools-grid{
+        grid-template-columns:1fr;
+    }
+    .application-tools-grid .search-field{
+        grid-column:auto;
+    }
+}
+
 /* ================= MOBILE ================= */
 
 @media(max-width:1050px){
@@ -1047,6 +1175,50 @@ tbody tr:hover{
     </div>
 
 
+<div class="application-tools">
+    <div class="application-tools-grid">
+        <div class="search-field">
+            <input
+                type="search"
+                id="applicationSearch"
+                placeholder="🔎 Search ID, customer, mobile, email or service..."
+                autocomplete="off"
+            >
+        </div>
+
+        <select id="applicationStatusFilter">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="completed">Completed</option>
+        </select>
+
+        <select id="applicationServiceFilter">
+            <option value="">All Services</option>
+        </select>
+
+        <select id="applicationPageSize">
+            <option value="10">10 / page</option>
+            <option value="20" selected>20 / page</option>
+            <option value="50">50 / page</option>
+            <option value="all">All</option>
+        </select>
+
+        <button class="tool-btn clear" id="clearApplicationFilters">
+            ✕ Clear
+        </button>
+
+        <button class="tool-btn export" id="exportApplications">
+            📥 Export CSV
+        </button>
+    </div>
+
+    <div class="filter-summary" id="applicationFilterSummary">
+        Showing all applications
+    </div>
+</div>
+
+
     <div
         id="applicationsContent"
     >
@@ -1056,6 +1228,12 @@ tbody tr:hover{
         </div>
 
     </div>
+
+    <div class="pagination-bar" id="applicationPagination" style="display:none;">
+        <div class="pagination-info" id="paginationInfo"></div>
+        <div class="pagination-controls" id="paginationControls"></div>
+    </div>
+
 
 </div>
 
@@ -1345,6 +1523,10 @@ const supabaseClient =
 
 
 let applicationsCache = [];
+let applicationPage = 1;
+let applicationPageSize = 20;
+let applicationFilteredCache = [];
+
 
 
 /* =========================================================
@@ -1794,7 +1976,7 @@ function renderDocuments(app){
    RENDER APPLICATIONS
 ========================================================= */
 
-function renderApplications(apps){
+function renderApplicationsBase(apps){
 
     if(
         !apps.length
@@ -2160,6 +2342,341 @@ function renderApplications(apps){
 
         `;
 
+}
+
+
+
+/* =========================================================
+   APPLICATION FILTER / SEARCH / PAGINATION
+========================================================= */
+
+function getFilteredApplications(){
+    const search =
+        ($("applicationSearch")?.value || "")
+            .trim()
+            .toLowerCase();
+
+    const status =
+        ($("applicationStatusFilter")?.value || "")
+            .trim()
+            .toLowerCase();
+
+    const service =
+        ($("applicationServiceFilter")?.value || "")
+            .trim()
+            .toLowerCase();
+
+    return applicationsCache.filter(function(app){
+        const searchable = [
+            app.application_id,
+            app.customer_name,
+            app.mobile,
+            app.email,
+            app.whatsapp,
+            app.service,
+            app.requirement,
+            app.address
+        ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+        const appStatus =
+            String(app.status || "pending").toLowerCase();
+
+        const appService =
+            String(app.service || "").toLowerCase();
+
+        const matchesSearch =
+            !search || searchable.includes(search);
+
+        const matchesStatus =
+            !status || appStatus === status;
+
+        const matchesService =
+            !service || appService === service;
+
+        return matchesSearch &&
+               matchesStatus &&
+               matchesService;
+    });
+}
+
+function populateServiceFilter(){
+    const select = $("applicationServiceFilter");
+    if(!select){
+        return;
+    }
+
+    const current = select.value;
+
+    const services = [...new Set(
+        applicationsCache
+            .map(app => String(app.service || "").trim())
+            .filter(Boolean)
+    )].sort(function(a,b){
+        return a.localeCompare(b);
+    });
+
+    select.innerHTML =
+        `<option value="">All Services</option>` +
+        services.map(function(service){
+            return `<option value="${escapeHtml(service)}">${escapeHtml(service)}</option>`;
+        }).join("");
+
+    if(services.some(s => s === current)){
+        select.value = current;
+    }
+}
+
+function renderApplicationResults(){
+    applicationFilteredCache =
+        getFilteredApplications();
+
+    const total =
+        applicationFilteredCache.length;
+
+    const pageSizeValue =
+        $("applicationPageSize")?.value || "20";
+
+    applicationPageSize =
+        pageSizeValue === "all"
+            ? total || 1
+            : parseInt(pageSizeValue,10) || 20;
+
+    const totalPages =
+        pageSizeValue === "all"
+            ? 1
+            : Math.max(
+                1,
+                Math.ceil(total / applicationPageSize)
+            );
+
+    if(applicationPage > totalPages){
+        applicationPage = totalPages;
+    }
+
+    if(applicationPage < 1){
+        applicationPage = 1;
+    }
+
+    const start =
+        pageSizeValue === "all"
+            ? 0
+            : (applicationPage - 1) * applicationPageSize;
+
+    const visible =
+        pageSizeValue === "all"
+            ? applicationFilteredCache
+            : applicationFilteredCache.slice(
+                start,
+                start + applicationPageSize
+            );
+
+    renderApplicationsBase(visible);
+    renderPagination(
+        total,
+        start,
+        visible.length,
+        totalPages
+    );
+
+    const summary = $("applicationFilterSummary");
+    if(summary){
+        if(!total){
+            summary.textContent =
+                "No applications match the current filters.";
+        }else{
+            const first = start + 1;
+            const last = start + visible.length;
+            summary.textContent =
+                `Showing ${first}-${last} of ${total} matching application(s) • ${applicationsCache.length} total`;
+        }
+    }
+}
+
+function renderPagination(
+    total,
+    start,
+    visibleCount,
+    totalPages
+){
+    const bar = $("applicationPagination");
+    const info = $("paginationInfo");
+    const controls = $("paginationControls");
+
+    if(!bar || !info || !controls){
+        return;
+    }
+
+    if(total === 0 || totalPages <= 1){
+        bar.style.display = total > 0 ? "flex" : "none";
+        info.textContent =
+            total > 0
+                ? `Showing ${start + 1}-${start + visibleCount} of ${total}`
+                : "";
+        controls.innerHTML = "";
+        return;
+    }
+
+    bar.style.display = "flex";
+
+    info.textContent =
+        `Page ${applicationPage} of ${totalPages} • ${total} result(s)`;
+
+    let buttons = `
+        <button
+            class="page-btn"
+            ${applicationPage === 1 ? "disabled" : ""}
+            onclick="goToApplicationPage(${applicationPage - 1})"
+        >‹</button>
+    `;
+
+    const maxButtons = 7;
+    let firstPage = Math.max(1, applicationPage - 3);
+    let lastPage = Math.min(totalPages, firstPage + maxButtons - 1);
+
+    if(lastPage - firstPage < maxButtons - 1){
+        firstPage = Math.max(1, lastPage - maxButtons + 1);
+    }
+
+    for(let p = firstPage; p <= lastPage; p++){
+        buttons += `
+            <button
+                class="page-btn ${p === applicationPage ? "active" : ""}"
+                onclick="goToApplicationPage(${p})"
+            >${p}</button>
+        `;
+    }
+
+    buttons += `
+        <button
+            class="page-btn"
+            ${applicationPage === totalPages ? "disabled" : ""}
+            onclick="goToApplicationPage(${applicationPage + 1})"
+        >›</button>
+    `;
+
+    controls.innerHTML = buttons;
+}
+
+function goToApplicationPage(page){
+    applicationPage = page;
+    renderApplicationResults();
+
+    const panel =
+        document.getElementById("applicationsPanel");
+
+    if(panel){
+        panel.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+    }
+}
+
+function clearApplicationFilters(){
+    if($("applicationSearch")){
+        $("applicationSearch").value = "";
+    }
+
+    if($("applicationStatusFilter")){
+        $("applicationStatusFilter").value = "";
+    }
+
+    if($("applicationServiceFilter")){
+        $("applicationServiceFilter").value = "";
+    }
+
+    applicationPage = 1;
+    renderApplicationResults();
+}
+
+function csvCell(value){
+    const text =
+        value === null ||
+        value === undefined
+            ? ""
+            : String(value);
+
+    return `"${text.replace(/"/g,'""')}"`;
+}
+
+function exportApplicationsCSV(){
+    const apps =
+        applicationFilteredCache.length
+            ? applicationFilteredCache
+            : getFilteredApplications();
+
+    if(!apps.length){
+        toast(
+            "There are no applications to export.",
+            "error"
+        );
+        return;
+    }
+
+    const headers = [
+        "Application ID",
+        "Customer Name",
+        "Mobile",
+        "Email",
+        "WhatsApp",
+        "Service",
+        "Status",
+        "Requirement",
+        "Address",
+        "Admin Note",
+        "Submitted"
+    ];
+
+    const rows = apps.map(function(app){
+        return [
+            app.application_id,
+            app.customer_name,
+            app.mobile,
+            app.email,
+            app.whatsapp,
+            app.service,
+            app.status,
+            app.requirement,
+            app.address,
+            app.admin_note,
+            app.created_at
+                ? new Date(app.created_at).toLocaleString("en-IN")
+                : ""
+        ].map(csvCell).join(",");
+    });
+
+    const csv =
+        [headers.map(csvCell).join(","), ...rows]
+            .join("\r\n");
+
+    const blob =
+        new Blob(
+            ["\uFEFF" + csv],
+            {type:"text/csv;charset=utf-8;"}
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+    a.download =
+        `digital-service-applications-${new Date().toISOString().slice(0,10)}.csv`;
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    toast(
+        `${apps.length} application(s) exported successfully.`
+    );
 }
 
 
