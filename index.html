@@ -1,630 +1,528 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Digital Service | Digital • Tax • Business Services</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #ffffff;
-            color: #174a91;
-        }
-
-        /* =========================
-           NAVBAR
-        ========================== */
-
-        .navbar {
-            width: 100%;
-            background: linear-gradient(90deg, #124c9c, #0875d9);
-            color: white;
-            padding: 18px 6%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .brand-logo {
-            width: 62px;
-            height: 62px;
-            background: white;
-            color: #1763bd;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 25px;
-            font-weight: bold;
-        }
-
-        .brand-text h1 {
-            font-size: 26px;
-            margin-bottom: 5px;
-        }
-
-        .brand-text p {
-            font-size: 15px;
-            opacity: 0.95;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 17px;
-            font-weight: 600;
-        }
-
-        .nav-links a:hover {
-            opacity: 0.8;
-        }
-
-        /* =========================
-           HERO
-        ========================== */
-
-        .hero {
-            text-align: center;
-            padding: 65px 20px 55px;
-            background: white;
-        }
-
-        .hero h2 {
-            font-size: 44px;
-            margin-bottom: 30px;
-            color: #164a95;
-        }
-
-        .hero p {
-            max-width: 850px;
-            margin: auto;
-            font-size: 20px;
-            line-height: 1.6;
-            color: #45648b;
-        }
-
-        .hero-buttons {
-            margin-top: 38px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .hero-buttons a {
-            padding: 16px 32px;
-            border-radius: 9px;
-            font-size: 18px;
-            font-weight: bold;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-
-        .btn-primary {
-            background: #0875df;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #075eb3;
-        }
-
-        .btn-outline {
-            border: 2px solid #0875df;
-            color: #0875df;
-            background: white;
-        }
-
-        .btn-outline:hover {
-            background: #0875df;
-            color: white;
-        }
-
-        /* =========================
-           ADVERTISEMENT SLIDER
-        ========================== */
-
-        .advertisement-section {
-            width: 92%;
-            max-width: 1500px;
-            margin: 0 auto 35px;
-        }
-
-        .ad-slider {
-            position: relative;
-            width: 100%;
-            height: 320px;
-
-            background: #edf4ff;
-            border-radius: 18px;
-
-            overflow: hidden;
-
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.10);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ad-image {
-            width: 100%;
-            height: 100%;
-
-            /* IMPORTANT:
-               পুরো image box-এর মধ্যে fit করবে */
-            object-fit: contain;
-
-            display: none;
-
-            cursor: pointer;
-
-            background: white;
-        }
-
-        .ad-image.active {
-            display: block;
-        }
-
-        /* Arrow buttons */
-
-        .slider-arrow {
-            position: absolute;
-
-            top: 50%;
-            transform: translateY(-50%);
-
-            width: 52px;
-            height: 52px;
-
-            border: none;
-            border-radius: 50%;
-
-            background: rgba(70, 80, 95, 0.72);
-            color: white;
-
-            font-size: 32px;
-            line-height: 52px;
-
-            cursor: pointer;
-
-            z-index: 10;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            transition: 0.2s;
-        }
-
-        .slider-arrow:hover {
-            background: rgba(20, 90, 170, 0.9);
-        }
-
-        .slider-arrow.left {
-            left: 18px;
-        }
-
-        .slider-arrow.right {
-            right: 18px;
-        }
-
-        /* Dots */
-
-        .slider-dots {
-            position: absolute;
-            bottom: 13px;
-            left: 50%;
-
-            transform: translateX(-50%);
-
-            display: flex;
-            gap: 8px;
-
-            z-index: 10;
-        }
-
-        .dot {
-            width: 9px;
-            height: 9px;
-
-            border-radius: 50%;
-
-            background: rgba(255,255,255,0.7);
-
-            cursor: pointer;
-        }
-
-        .dot.active {
-            background: #0875df;
-            transform: scale(1.25);
-        }
-
-        .ad-loading {
-            position: absolute;
-            color: #587399;
-            font-size: 18px;
-            z-index: 1;
-        }
-
-        /* =========================
-           SERVICES
-        ========================== */
-
-        .services-section {
-            background: #f4f8fd;
-            padding: 65px 7% 80px;
-        }
-
-        .services-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .services-title h2 {
-            font-size: 38px;
-            color: #164a95;
-            margin-bottom: 15px;
-        }
-
-        .services-title p {
-            font-size: 18px;
-            color: #607897;
-        }
-
-        .services-grid {
-            max-width: 1400px;
-            margin: auto;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, minmax(0, 1fr));
-
-            gap: 28px;
-        }
-
-        .service-card {
-            position: relative;
-
-            background: white;
-
-            min-height: 225px;
-
-            padding: 35px 25px;
-
-            border-radius: 16px;
-
-            text-align: center;
-
-            box-shadow: 0 8px 25px rgba(40,70,100,0.08);
-
-            cursor: pointer;
-
-            transition:
-                transform 0.2s,
-                box-shadow 0.2s;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-
-            box-shadow:
-                0 15px 35px rgba(40,70,100,0.15);
-        }
-
-        .service-icon {
-            font-size: 48px;
-            margin-bottom: 18px;
-        }
-
-        .service-card h3 {
-            color: #164a95;
-            font-size: 23px;
-            margin-bottom: 12px;
-        }
-
-        .service-card p {
-            color: #69809e;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        /* =========================
-           FOOTER
-        ========================== */
-
-        footer {
-            background: #124c9c;
-            color: white;
-            text-align: center;
-            padding: 25px;
-            font-size: 14px;
-        }
-
-        /* =========================
-           MOBILE
-        ========================== */
-
-        @media (max-width: 1000px) {
-
-            .navbar {
-                padding: 15px 4%;
-            }
-
-            .nav-links {
-                gap: 15px;
-            }
-
-            .nav-links a {
-                font-size: 14px;
-            }
-
-            .hero h2 {
-                font-size: 36px;
-            }
-
-            .services-grid {
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-
-            .ad-slider {
-                height: 270px;
-            }
-        }
-
-        @media (max-width: 700px) {
-
-            .navbar {
-                flex-direction: column;
-                gap: 18px;
-            }
-
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 14px;
-            }
-
-            .brand-text h1 {
-                font-size: 22px;
-            }
-
-            .brand-text p {
-                font-size: 13px;
-            }
-
-            .hero {
-                padding: 45px 18px;
-            }
-
-            .hero h2 {
-                font-size: 31px;
-            }
-
-            .hero p {
-                font-size: 17px;
-            }
-
-            .advertisement-section {
-                width: 94%;
-            }
-
-            .ad-slider {
-                height: 210px;
-                border-radius: 12px;
-            }
-
-            .slider-arrow {
-                width: 42px;
-                height: 42px;
-                font-size: 25px;
-            }
-
-            .slider-arrow.left {
-                left: 10px;
-            }
-
-            .slider-arrow.right {
-                right: 10px;
-            }
-
-            .services-section {
-                padding: 45px 5%;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Digital Service | Digital • Tax • Business Services</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f7fb;
+      color: #174a96;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================== */
+
+    .navbar {
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(135deg, #174a96, #0879e8);
+      display: flex;
+      align-items: center;
+      padding: 0 6%;
+      color: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo {
+      width: 58px;
+      height: 58px;
+      background: white;
+      color: #1760b9;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .brand-text h2 {
+      font-size: 25px;
+      margin-bottom: 4px;
+    }
+
+    .brand-text p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .nav-links {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .nav-links a:hover {
+      opacity: 0.75;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero {
+      background: white;
+      text-align: center;
+      padding: 55px 20px 65px;
+    }
+
+    .hero h1 {
+      font-size: 46px;
+      color: #174a96;
+      margin-bottom: 30px;
+    }
+
+    .hero p {
+      max-width: 900px;
+      margin: auto;
+      font-size: 20px;
+      line-height: 1.7;
+      color: #45658d;
+    }
+
+    .hero-buttons {
+      margin-top: 38px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      padding: 17px 30px;
+      border-radius: 9px;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      border: 2px solid #0879e8;
+      transition: 0.25s;
+    }
+
+    .hero-btn.primary {
+      background: #0879e8;
+      color: white;
+    }
+
+    .hero-btn.secondary {
+      background: white;
+      color: #0879e8;
+    }
+
+    .hero-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* =========================
+       ADVERTISEMENT SLIDER
+    ========================== */
+
+    .advertisement-section {
+      background: white;
+      padding: 0 4% 35px;
+    }
+
+    .ad-slider {
+      width: 100%;
+      max-width: 1500px;
+      height: 330px;
+      margin: auto;
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #eaf2ff;
+      box-shadow: 0 8px 30px rgba(0, 55, 130, 0.10);
+    }
+
+    .ad-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease;
+      cursor: pointer;
+    }
+
+    .ad-slide.active {
+      opacity: 1;
+      visibility: visible;
+      z-index: 2;
+    }
+
+    .ad-slide img {
+      width: 100%;
+      height: 100%;
+      display: block;
+
+      /*
+        IMPORTANT:
+        Poster পুরো box-এর মধ্যে fit করবে।
+        কোন অংশ crop হবে না।
+      */
+      object-fit: contain;
+
+      background: white;
+    }
+
+    /* arrows */
+
+    .ad-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(80, 92, 110, 0.75);
+      color: white;
+      font-size: 32px;
+      line-height: 54px;
+      cursor: pointer;
+      z-index: 10;
+      transition: 0.2s;
+    }
+
+    .ad-arrow:hover {
+      background: rgba(30, 70, 120, 0.95);
+    }
+
+    .ad-prev {
+      left: 18px;
+    }
+
+    .ad-next {
+      right: 18px;
+    }
+
+    /* dots */
+
+    .ad-dots {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .ad-dot {
+      width: 10px;
+      height: 10px;
+      background: rgba(255,255,255,0.75);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 1px solid rgba(0,0,0,0.15);
+    }
+
+    .ad-dot.active {
+      background: #0879e8;
+    }
+
+    .ad-message {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #50709b;
+      font-size: 18px;
+      z-index: 1;
+    }
+
+    /* =========================
+       SERVICES
+    ========================== */
+
+    .services-section {
+      padding: 70px 7%;
+      background: #f4f7fb;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-size: 38px;
+      margin-bottom: 14px;
+      color: #174a96;
+    }
+
+    .section-title p {
+      color: #617896;
+      font-size: 18px;
+    }
+
+    .services-grid {
+      max-width: 1250px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+    }
+
+    .service-card {
+      background: white;
+      min-height: 230px;
+      border-radius: 16px;
+      padding: 35px 25px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0,50,100,0.08);
+      transition: 0.25s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,50,100,0.14);
+    }
+
+    .service-icon {
+      font-size: 45px;
+      margin-bottom: 18px;
+    }
+
+    .service-card h3 {
+      font-size: 22px;
+      color: #174a96;
+      margin-bottom: 14px;
+    }
+
+    .service-card p {
+      color: #6b7f99;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 1000px) {
+
+      .navbar {
+        padding: 0 25px;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .nav-links a {
+        font-size: 14px;
+      }
+
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+
+      .navbar {
+        height: auto;
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .nav-links {
+        margin-left: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero {
+        padding: 40px 20px;
+      }
+
+      .hero h1 {
+        font-size: 31px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .ad-slider {
+        height: 210px;
+        border-radius: 12px;
+      }
+
+      .ad-arrow {
+        width: 42px;
+        height: 42px;
+        line-height: 42px;
+        font-size: 24px;
+      }
+
+      .ad-prev {
+        left: 10px;
+      }
+
+      .ad-next {
+        right: 10px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title h2 {
+        font-size: 30px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- =========================
-     NAVBAR
-========================== -->
+  <!-- =========================
+       NAVBAR
+  ========================== -->
 
-<header class="navbar">
+  <nav class="navbar">
 
     <div class="brand">
 
-        <div class="brand-logo">
-            DS
-        </div>
+      <div class="brand-logo">
+        DS
+      </div>
 
-        <div class="brand-text">
-
-            <h1>Digital Service</h1>
-
-            <p>
-                Digital • Tax • Business Services
-            </p>
-
-        </div>
+      <div class="brand-text">
+        <h2>Digital Service</h2>
+        <p>Digital • Tax • Business Services</p>
+      </div>
 
     </div>
 
+    <div class="nav-links">
 
-    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#services">Services</a>
+      <a href="apply.html">Apply</a>
+      <a href="customer-login.html">Customer Login</a>
+      <a href="signup.html">Sign Up</a>
+      <a href="admin-login.html">🔐 Admin Login</a>
 
-        <a href="index.html">Home</a>
+    </div>
 
-        <a href="#services">Services</a>
-
-        <a href="apply.html">Apply</a>
-
-        <a href="customer-login.html">
-            Customer Login
-        </a>
-
-        <a href="signup.html">
-            Sign Up
-        </a>
-
-        <a href="admin-login.html">
-            🔐 Admin Login
-        </a>
-
-    </nav>
-
-</header>
+  </nav>
 
 
-<!-- =========================
-     HERO
-========================== -->
+  <!-- =========================
+       HERO
+  ========================== -->
 
-<section class="hero">
+  <section class="hero">
 
-    <h2>
-        Your Digital Service Partner
-    </h2>
+    <h1>Your Digital Service Partner</h1>
 
     <p>
-        Get Digital, Tax and Business related services easily
-        from one place. Submit your application online and
-        manage your service request.
+      Get Digital, Tax and Business related services easily from one place.
+      Submit your application online and manage your service request.
     </p>
 
     <div class="hero-buttons">
 
-        <a
-            href="#services"
-            class="hero-buttons btn-primary"
-        >
-            Explore Services
-        </a>
+      <a href="#services" class="hero-btn primary">
+        Explore Services
+      </a>
 
-        <a
-            href="apply.html"
-            class="hero-buttons btn-outline"
-        >
-            Apply for a Service
-        </a>
+      <a href="apply.html" class="hero-btn secondary">
+        Apply for a Service
+      </a>
 
     </div>
 
-</section>
+  </section>
 
 
-<!-- =========================
-     ADVERTISEMENT SLIDER
-========================== -->
+  <!-- =========================
+       ADVERTISEMENT
+  ========================== -->
 
-<section class="advertisement-section">
+  <section class="advertisement-section">
 
-    <div class="ad-slider">
+    <div class="ad-slider" id="adSlider">
 
-        <div
-            id="adLoading"
-            class="ad-loading"
-        >
-            Loading advertisements...
-        </div>
+      <div class="ad-message" id="adMessage">
+        Loading advertisements...
+      </div>
 
+      <button
+        class="ad-arrow ad-prev"
+        id="adPrev"
+        type="button"
+        aria-label="Previous advertisement">
+        ‹
+      </button>
 
-        <button
-            class="slider-arrow left"
-            onclick="previousAd()"
-            aria-label="Previous advertisement"
-        >
-            ‹
-        </button>
+      <button
+        class="ad-arrow ad-next"
+        id="adNext"
+        type="button"
+        aria-label="Next advertisement">
+        ›
+      </button>
 
-
-        <div id="adContainer"
-             style="
-                width:100%;
-                height:100%;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-             ">
-        </div>
-
-
-        <button
-            class="slider-arrow right"
-            onclick="nextAd()"
-            aria-label="Next advertisement"
-        >
-            ›
-        </button>
-
-
-        <div
-            id="sliderDots"
-            class="slider-dots"
-        >
-        </div>
+      <div class="ad-dots" id="adDots"></div>
 
     </div>
 
-</section>
+  </section>
 
 
-<!-- =========================
-     SERVICES
-========================== -->
+  <!-- =========================
+       SERVICES
+  ========================== -->
 
-<section
-    id="services"
-    class="services-section"
->
+  <section class="services-section" id="services">
 
-    <div class="services-title">
+    <div class="section-title">
 
-        <h2>
-            Our Services
-        </h2>
+      <h2>Our Services</h2>
 
-        <p>
-            Select the service you require and apply online.
-        </p>
+      <p>
+        Select the service you require and apply online.
+      </p>
 
     </div>
 
@@ -632,763 +530,749 @@
     <div class="services-grid">
 
 
-        <!-- PAN -->
+      <a class="service-card"
+         href="apply.html?service=PAN%20Card">
 
-        <div
-            class="service-card"
-            onclick="applyService('PAN Card')"
-        >
+        <div class="service-icon">🪪</div>
 
-            <div class="service-icon">
-                🪪
-            </div>
+        <h3>PAN Card</h3>
 
-            <h3>
-                PAN Card
-            </h3>
+        <p>
+          New PAN, correction and related services.
+        </p>
 
-            <p>
-                New PAN, correction and related services.
-            </p>
-
-        </div>
+      </a>
 
 
-        <!-- AADHAAR -->
+      <a class="service-card"
+         href="apply.html?service=Aadhaar%20Card">
 
-        <div
-            class="service-card"
-            onclick="applyService('Aadhaar Card')"
-        >
+        <div class="service-icon">🆔</div>
 
-            <div class="service-icon">
-                🆔
-            </div>
+        <h3>Aadhaar Card</h3>
 
-            <h3>
-                Aadhaar Card
-            </h3>
+        <p>
+          Aadhaar related digital assistance.
+        </p>
 
-            <p>
-                Aadhaar related digital assistance.
-            </p>
-
-        </div>
+      </a>
 
 
-        <!-- RATION -->
+      <a class="service-card"
+         href="apply.html?service=Ration%20Card">
 
-        <div
-            class="service-card"
-            onclick="applyService('Ration Card')"
-        >
+        <div class="service-icon">🍚</div>
 
-            <div class="service-icon">
-                🍚
-            </div>
+        <h3>Ration Card</h3>
 
-            <h3>
-                Ration Card
-            </h3>
+        <p>
+          Ration card application and correction.
+        </p>
 
-            <p>
-                Ration card application and correction.
-            </p>
-
-        </div>
+      </a>
 
 
-        <!-- TRADE -->
+      <a class="service-card"
+         href="apply.html?service=Trade%20License">
 
-        <div
-            class="service-card"
-            onclick="applyService('Trade License')"
-        >
+        <div class="service-icon">🏪</div>
 
-            <div class="service-icon">
-                🏪
-            </div>
+        <h3>Trade License</h3>
 
-            <h3>
-                Trade License
-            </h3>
+        <p>
+          Trade license application assistance.
+        </p>
 
-            <p>
-                Trade license application assistance.
-            </p>
-
-        </div>
+      </a>
 
 
-        <!-- SHOP -->
+      <a class="service-card"
+         href="apply.html?service=Shop%20Establishment">
 
-        <div
-            class="service-card"
-            onclick="applyService('Shop Establishment')"
-        >
+        <div class="service-icon">🏢</div>
 
-            <div class="service-icon">
-                🏢
-            </div>
+        <h3>Shop Establishment</h3>
 
-            <h3>
-                Shop Establishment
-            </h3>
+        <p>
+          Shop and establishment registration services.
+        </p>
 
-            <p>
-                Shop and establishment registration services.
-            </p>
-
-        </div>
+      </a>
 
 
-        <!-- FSSAI -->
+      <a class="service-card"
+         href="apply.html?service=FSSAI%20License">
 
-        <div
-            class="service-card"
-            onclick="applyService('FSSAI License')"
-        >
+        <div class="service-icon">🍴</div>
 
-            <div class="service-icon">
-                🍴
-            </div>
+        <h3>FSSAI License</h3>
 
-            <h3>
-                FSSAI License
-            </h3>
+        <p>
+          Food business registration and licensing.
+        </p>
 
-            <p>
-                Food business registration and licensing.
-            </p>
-
-        </div>
+      </a>
 
 
-        <!-- GST -->
+      <a class="service-card"
+         href="apply.html?service=GST">
 
-        <div
-            class="service-card"
-            onclick="applyService('GST')"
-        >
+        <div class="service-icon">📊</div>
 
-            <div class="service-icon">
-                📊
-            </div>
+        <h3>GST</h3>
 
-            <h3>
-                GST
-            </h3>
+        <p>
+          GST registration and compliance services.
+        </p>
 
-            <p>
-                GST registration and compliance services.
-            </p>
-
-        </div>
+      </a>
 
 
-        <!-- TDS -->
+      <a class="service-card"
+         href="apply.html?service=TDS">
 
-        <div
-            class="service-card"
-            onclick="applyService('TDS')"
-        >
+        <div class="service-icon">🧾</div>
 
-            <div class="service-icon">
-                🧾
-            </div>
+        <h3>TDS</h3>
 
-            <h3>
-                TDS
-            </h3>
+        <p>
+          TDS related filing and compliance assistance.
+        </p>
 
-            <p>
-                TDS related filing and compliance assistance.
-            </p>
-
-        </div>
+      </a>
 
 
-        <!-- INCOME TAX -->
+      <a class="service-card"
+         href="apply.html?service=Income%20Tax">
 
-        <div
-            class="service-card"
-            onclick="applyService('Income Tax')"
-        >
+        <div class="service-icon">💰</div>
 
-            <div class="service-icon">
-                💰
-            </div>
+        <h3>Income Tax</h3>
 
-            <h3>
-                Income Tax
-            </h3>
+        <p>
+          ITR filing and income tax related services.
+        </p>
 
-            <p>
-                ITR filing and income tax related services.
-            </p>
-
-        </div>
-
+      </a>
 
     </div>
 
-</section>
+  </section>
 
 
-<!-- =========================
-     FOOTER
-========================== -->
+  <!-- =========================
+       ADVERTISEMENT SCRIPT
+  ========================== -->
 
-<footer>
+  <script>
 
-    © 2026 Digital Service.
-    All Rights Reserved.
+    /*
+      =========================================================
+      SUPABASE SETTINGS
+      =========================================================
 
-</footer>
+      এখানে তোমার existing Supabase URL এবং ANON KEY বসাবে।
+    */
 
+    const SUPABASE_URL = "https://nlzrdjvlkdqungmhnsrl.supabase.co";
 
-<script>
-
-/* =====================================================
-   SUPABASE CONFIGURATION
-
-   IMPORTANT:
-   এখানে তোমার EXISTING Supabase URL এবং ANON KEY বসাও.
-===================================================== */
-
-const SUPABASE_URL =
-    "https://nlzrdjvlkdqungmhnsrl.supabase.co";
-
-const SUPABASE_ANON_KEY =
-    "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+    const SUPABASE_ANON_KEY = "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
 
 
-/* =====================================================
-   ADVERTISEMENT SETTINGS
-===================================================== */
+    /*
+      Storage bucket name
+    */
 
-const AD_BUCKET =
-    "advertisements";
-
-const AD_FOLDER =
-    "";
-
-const SLIDE_TIME =
-    3000; // 3 seconds
+    const BUCKET_NAME = "advertisements";
 
 
-let advertisements = [];
+    /*
+      Advertisement settings
+    */
 
-let currentAdIndex = 0;
-
-let slideInterval = null;
+    const SLIDE_TIME = 3000; // 3 seconds
 
 
-/* =====================================================
-   LOAD ADVERTISEMENTS
-===================================================== */
+    let advertisements = [];
 
-async function loadAdvertisements() {
+    let currentAd = 0;
 
-    const loading =
-        document.getElementById("adLoading");
+    let slideTimer = null;
 
-    const container =
-        document.getElementById("adContainer");
 
-    try {
+    /*
+      DOM
+    */
 
-        loading.style.display = "block";
+    const slider = document.getElementById("adSlider");
 
-        container.innerHTML = "";
+    const dotsContainer = document.getElementById("adDots");
+
+    const message = document.getElementById("adMessage");
+
+    const prevButton = document.getElementById("adPrev");
+
+    const nextButton = document.getElementById("adNext");
+
+
+    /*
+      =========================================================
+      LOAD ADVERTISEMENTS
+      =========================================================
+    */
+
+    async function loadAdvertisements() {
+
+      try {
+
+        message.textContent = "Loading advertisements...";
 
         /*
-         * Supabase Storage public bucket
-         */
+          Supabase Storage API থেকে files list নেওয়া হচ্ছে
+        */
 
-        const listURL =
-            SUPABASE_URL +
-            "/storage/v1/object/list/" +
-            AD_BUCKET;
+        const response = await fetch(
+          `${SUPABASE_URL}/storage/v1/object/list/${BUCKET_NAME}`,
+          {
+            method: "POST",
 
+            headers: {
+              "apikey": SUPABASE_ANON_KEY,
+              "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+              "Content-Type": "application/json"
+            },
 
-        const response =
-            await fetch(listURL, {
-
-                method: "POST",
-
-                headers: {
-
-                    "Content-Type":
-                        "application/json",
-
-                    "apikey":
-                        SUPABASE_ANON_KEY,
-
-                    "Authorization":
-                        "Bearer " +
-                        SUPABASE_ANON_KEY
-
-                },
-
-                body: JSON.stringify({
-
-                    prefix: AD_FOLDER,
-
-                    limit: 100,
-
-                    sortBy: {
-
-                        column: "name",
-
-                        order: "asc"
-
-                    }
-
-                })
-
-            });
+            body: JSON.stringify({
+              prefix: "",
+              limit: 100,
+              offset: 0,
+              sortBy: {
+                column: "name",
+                order: "asc"
+              }
+            })
+          }
+        );
 
 
         if (!response.ok) {
 
-            throw new Error(
-                "Unable to load advertisements"
-            );
+          throw new Error(
+            "Storage request failed: " + response.status
+          );
 
         }
 
 
-        const files =
-            await response.json();
+        const files = await response.json();
 
 
         /*
-         * Only image files
-         */
+          শুধুমাত্র image files নেওয়া হবে
+        */
 
-        advertisements =
-            files.filter(file => {
+        const imageFiles = files.filter(file => {
 
-                const name =
-                    file.name.toLowerCase();
+          if (!file.name) return false;
 
-                return (
-                    name.endsWith(".jpg") ||
-                    name.endsWith(".jpeg") ||
-                    name.endsWith(".png") ||
-                    name.endsWith(".webp")
-                );
+          const name = file.name.toLowerCase();
 
-            });
+          return (
+            name.endsWith(".jpg") ||
+            name.endsWith(".jpeg") ||
+            name.endsWith(".png") ||
+            name.endsWith(".webp") ||
+            name.endsWith(".gif")
+          );
+
+        });
 
 
-        if (advertisements.length === 0) {
+        /*
+          যদি image না পাওয়া যায়
+        */
 
-            loading.innerText =
-                "No advertisements available.";
+        if (imageFiles.length === 0) {
 
-            return;
+          message.textContent = "No advertisements available.";
+
+          return;
 
         }
 
 
-        loading.style.display =
-            "none";
+        /*
+          Public URL তৈরি
+        */
+
+        advertisements = imageFiles.map(file => {
+
+          return {
+
+            name: file.name,
+
+            url:
+              `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${encodeURIComponent(file.name)}`
+
+          };
+
+        });
 
 
         /*
-         * Create image elements
-         */
+          Message hide
+        */
 
-        advertisements.forEach(
-            (file, index) => {
-
-                const image =
-                    document.createElement("img");
+        message.style.display = "none";
 
 
-                image.className =
-                    "ad-image";
+        /*
+          Slider তৈরি
+        */
+
+        createAdvertisements();
 
 
-                if (index === 0) {
+        /*
+          First slide
+        */
 
-                    image.classList.add(
-                        "active"
-                    );
-
-                }
+        showAd(0);
 
 
-                /*
-                 * Public storage URL
-                 */
-
-                const imageURL =
-                    SUPABASE_URL +
-                    "/storage/v1/object/public/" +
-                    AD_BUCKET +
-                    "/" +
-                    encodeURIComponent(
-                        file.name
-                    );
-
-
-                image.src =
-                    imageURL;
-
-
-                image.alt =
-                    "Digital Service Advertisement";
-
-
-                /*
-                 * IMPORTANT:
-                 *
-                 * Advertisement click →
-                 * Apply page
-                 */
-
-                image.onclick =
-                    function () {
-
-                        window.location.href =
-                            "apply.html";
-
-                    };
-
-
-                image.onerror =
-                    function () {
-
-                        console.error(
-                            "Unable to load:",
-                            imageURL
-                        );
-
-                    };
-
-
-                container.appendChild(
-                    image
-                );
-
-            }
-        );
-
-
-        createDots();
-
-        currentAdIndex = 0;
+        /*
+          Automatic slider
+        */
 
         startAutoSlide();
 
-    }
+      }
 
-    catch (error) {
+      catch (error) {
 
         console.error(
-            "Advertisement Error:",
-            error
+          "Advertisement loading error:",
+          error
         );
 
+        message.textContent =
+          "Unable to load advertisements.";
 
-        loading.innerText =
-            "Unable to load advertisements.";
-
-    }
-
-}
-
-
-/* =====================================================
-   CREATE DOTS
-===================================================== */
-
-function createDots() {
-
-    const dotsContainer =
-        document.getElementById(
-            "sliderDots"
-        );
-
-
-    dotsContainer.innerHTML = "";
-
-
-    advertisements.forEach(
-        (file, index) => {
-
-            const dot =
-                document.createElement(
-                    "span"
-                );
-
-
-            dot.className =
-                "dot";
-
-
-            if (index === 0) {
-
-                dot.classList.add(
-                    "active"
-                );
-
-            }
-
-
-            dot.onclick =
-                function () {
-
-                    showAd(index);
-
-                };
-
-
-            dotsContainer.appendChild(
-                dot
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   SHOW AD
-===================================================== */
-
-function showAd(index) {
-
-    const images =
-        document.querySelectorAll(
-            ".ad-image"
-        );
-
-    const dots =
-        document.querySelectorAll(
-            ".dot"
-        );
-
-
-    if (
-        images.length === 0 ||
-        advertisements.length === 0
-    ) {
-
-        return;
+      }
 
     }
 
 
     /*
-     * Keep index inside range
-     */
+      =========================================================
+      CREATE SLIDES
+      =========================================================
+    */
 
-    if (
-        index >= advertisements.length
-    ) {
+    function createAdvertisements() {
 
-        index = 0;
+      /*
+        পুরনো slides remove
+      */
+
+      document
+        .querySelectorAll(".ad-slide")
+        .forEach(el => el.remove());
+
+
+      dotsContainer.innerHTML = "";
+
+
+      advertisements.forEach((ad, index) => {
+
+
+        /*
+          Slide
+        */
+
+        const slide = document.createElement("div");
+
+        slide.className = "ad-slide";
+
+
+        /*
+          Image
+        */
+
+        const img = document.createElement("img");
+
+        img.src = ad.url;
+
+        img.alt = "Digital Service Advertisement";
+
+
+        /*
+          Image load error
+        */
+
+        img.onerror = function () {
+
+          console.error(
+            "Unable to load image:",
+            ad.url
+          );
+
+        };
+
+
+        slide.appendChild(img);
+
+
+        /*
+          =====================================================
+          AD CLICK → APPLY FORM
+          =====================================================
+
+          Filename অনুযায়ী service detect করা হচ্ছে।
+        */
+
+        slide.addEventListener("click", function () {
+
+          const service =
+            getServiceFromFilename(ad.name);
+
+          if (service) {
+
+            window.location.href =
+              "apply.html?service=" +
+              encodeURIComponent(service);
+
+          }
+
+          else {
+
+            window.location.href =
+              "apply.html";
+
+          }
+
+        });
+
+
+        slider.appendChild(slide);
+
+
+        /*
+          Dot
+        */
+
+        const dot =
+          document.createElement("div");
+
+        dot.className = "ad-dot";
+
+
+        dot.addEventListener("click", function (event) {
+
+          event.stopPropagation();
+
+          showAd(index);
+
+          restartAutoSlide();
+
+        });
+
+
+        dotsContainer.appendChild(dot);
+
+      });
 
     }
 
 
-    if (index < 0) {
+    /*
+      =========================================================
+      SERVICE DETECTION
+      =========================================================
 
-        index =
-            advertisements.length - 1;
+      Poster filename-এর মধ্যে service-এর নাম থাকলে
+      সেই service-এর Apply form open হবে।
+
+      Example:
+
+      advertisement_pan_card.png
+      advertisement_aadhaar_card.png
+      advertisement_gst.png
+      advertisement_income_tax.png
+    */
+
+    function getServiceFromFilename(filename) {
+
+      const name =
+        filename.toLowerCase();
+
+
+      if (
+        name.includes("pan")
+      ) {
+
+        return "PAN Card";
+
+      }
+
+
+      if (
+        name.includes("aadhaar") ||
+        name.includes("aadhar")
+      ) {
+
+        return "Aadhaar Card";
+
+      }
+
+
+      if (
+        name.includes("ration")
+      ) {
+
+        return "Ration Card";
+
+      }
+
+
+      if (
+        name.includes("trade")
+      ) {
+
+        return "Trade License";
+
+      }
+
+
+      if (
+        name.includes("shop")
+      ) {
+
+        return "Shop Establishment";
+
+      }
+
+
+      if (
+        name.includes("fssai")
+      ) {
+
+        return "FSSAI License";
+
+      }
+
+
+      if (
+        name.includes("gst")
+      ) {
+
+        return "GST";
+
+      }
+
+
+      if (
+        name.includes("tds")
+      ) {
+
+        return "TDS";
+
+      }
+
+
+      if (
+        name.includes("income") ||
+        name.includes("itr")
+      ) {
+
+        return "Income Tax";
+
+      }
+
+
+      return null;
 
     }
 
 
-    images.forEach(
-        image => {
+    /*
+      =========================================================
+      SHOW AD
+      =========================================================
+    */
 
-            image.classList.remove(
-                "active"
-            );
+    function showAd(index) {
 
-        }
-    );
+      const slides =
+        document.querySelectorAll(".ad-slide");
 
-
-    dots.forEach(
-        dot => {
-
-            dot.classList.remove(
-                "active"
-            );
-
-        }
-    );
+      const dots =
+        document.querySelectorAll(".ad-dot");
 
 
-    images[index].classList.add(
-        "active"
-    );
+      if (!slides.length) return;
 
 
-    if (dots[index]) {
+      currentAd =
+        (index + slides.length) %
+        slides.length;
 
-        dots[index].classList.add(
-            "active"
+
+      slides.forEach((slide, i) => {
+
+        slide.classList.toggle(
+          "active",
+          i === currentAd
         );
 
-    }
+      });
 
 
-    currentAdIndex =
-        index;
+      dots.forEach((dot, i) => {
 
-}
+        dot.classList.toggle(
+          "active",
+          i === currentAd
+        );
 
-
-/* =====================================================
-   NEXT AD
-===================================================== */
-
-function nextAd() {
-
-    if (
-        advertisements.length === 0
-    ) {
-
-        return;
+      });
 
     }
 
 
-    showAd(
-        currentAdIndex + 1
-    );
+    /*
+      =========================================================
+      NEXT
+      =========================================================
+    */
 
+    function nextAd() {
 
-    restartAutoSlide();
-
-}
-
-
-/* =====================================================
-   PREVIOUS AD
-===================================================== */
-
-function previousAd() {
-
-    if (
-        advertisements.length === 0
-    ) {
-
-        return;
+      showAd(currentAd + 1);
 
     }
 
 
-    showAd(
-        currentAdIndex - 1
-    );
+    /*
+      =========================================================
+      PREVIOUS
+      =========================================================
+    */
+
+    function previousAd() {
+
+      showAd(currentAd - 1);
+
+    }
 
 
-    restartAutoSlide();
+    /*
+      =========================================================
+      AUTO SLIDE
+      =========================================================
+    */
 
-}
+    function startAutoSlide() {
 
-
-/* =====================================================
-   AUTO SLIDE
-===================================================== */
-
-function startAutoSlide() {
-
-    stopAutoSlide();
+      stopAutoSlide();
 
 
-    slideInterval =
+      slideTimer =
         setInterval(
-            function () {
-
-                if (
-                    advertisements.length > 1
-                ) {
-
-                    showAd(
-                        currentAdIndex + 1
-                    );
-
-                }
-
-            },
-
-            SLIDE_TIME
+          nextAd,
+          SLIDE_TIME
         );
-
-}
-
-
-/* =====================================================
-   STOP AUTO SLIDE
-===================================================== */
-
-function stopAutoSlide() {
-
-    if (slideInterval) {
-
-        clearInterval(
-            slideInterval
-        );
-
-        slideInterval = null;
 
     }
 
-}
 
+    function stopAutoSlide() {
 
-/* =====================================================
-   RESTART AUTO SLIDE
-===================================================== */
+      if (slideTimer) {
 
-function restartAutoSlide() {
+        clearInterval(slideTimer);
 
-    stopAutoSlide();
+        slideTimer = null;
 
-    startAutoSlide();
-
-}
-
-
-/* =====================================================
-   SERVICE APPLY
-===================================================== */
-
-function applyService(serviceName) {
-
-    window.location.href =
-        "apply.html?service=" +
-        encodeURIComponent(
-            serviceName
-        );
-
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        loadAdvertisements();
+      }
 
     }
-);
 
-</script>
+
+    function restartAutoSlide() {
+
+      startAutoSlide();
+
+    }
+
+
+    /*
+      =========================================================
+      ARROW EVENTS
+      =========================================================
+    */
+
+    nextButton.addEventListener(
+      "click",
+      function () {
+
+        nextAd();
+
+        restartAutoSlide();
+
+      }
+    );
+
+
+    prevButton.addEventListener(
+      "click",
+      function () {
+
+        previousAd();
+
+        restartAutoSlide();
+
+      }
+    );
+
+
+    /*
+      =========================================================
+      MOUSE HOVER
+      =========================================================
+
+      Mouse slider-এর উপর থাকলে auto-slide pause হবে।
+    */
+
+    slider.addEventListener(
+      "mouseenter",
+      stopAutoSlide
+    );
+
+
+    slider.addEventListener(
+      "mouseleave",
+      function () {
+
+        if (advertisements.length > 1) {
+
+          startAutoSlide();
+
+        }
+
+      }
+    );
+
+
+    /*
+      =========================================================
+      START
+      =========================================================
+    */
+
+    loadAdvertisements();
+
+  </script>
 
 </body>
 </html>
