@@ -261,67 +261,75 @@ localStorage.setItem("resetEmail", email);
         });
 
 
-    // ==============================
-    // FORGOT PASSWORD
-    // ==============================
+// ==============================
+// FORGOT PASSWORD
+// ==============================
 
-    document
-        .getElementById("forgotPassword")
-        .addEventListener("click", async function(event) {
+document
+    .getElementById("forgotPassword")
+    .addEventListener("click", async function(event) {
 
-            event.preventDefault();
+        event.preventDefault();
 
-            const email =
-                document.getElementById("email").value.trim();
+        const email =
+            document.getElementById("email").value.trim();
 
-            const message =
-                document.getElementById("message");
+        const message =
+            document.getElementById("message");
 
+        if (!email) {
 
-            if (!email) {
+            message.style.color = "red";
+            message.textContent =
+                "Please enter your email address first.";
 
-                message.style.color = "red";
-                message.textContent =
-                    "Please enter your email address first.";
+            return;
+        }
 
-                return;
+        // Save email for reset page
+        localStorage.setItem("resetEmail", email);
+
+        try {
+
+            const { error } =
+                await supabaseClient.auth.resetPasswordForEmail(
+                    email,
+                    {
+                        redirectTo:
+                            window.location.origin +
+                            "/digitalservices/reset-password.html"
+                    }
+                );
+
+            if (error) {
+                throw error;
             }
 
+            message.style.color = "green";
 
-            try {
+            message.textContent =
+                "OTP sent to your email. Opening OTP page...";
 
-                const { error } =
-                    await supabaseClient.auth.resetPasswordForEmail(
-                        email,
-                        {
-                            redirectTo:
-    window.location.origin +
-    "/reset-password.html"
-                        }
-                    );
+            // IMPORTANT:
+            // Go directly to OTP page
+            setTimeout(function() {
 
+                window.location.href =
+                    "reset-password.html";
 
-                if (error) {
-                    throw error;
-                }
+            }, 800);
 
+        } catch (error) {
 
-                message.style.color = "green";
+            message.style.color = "red";
 
-                message.textContent =
-                    "Password reset email sent. Please check your email.";
+            message.textContent =
+                error.message ||
+                "Failed to send password reset OTP.";
 
-            } catch (error) {
+        }
 
-                message.style.color = "red";
-
-                message.textContent =
-                    error.message;
-
-            }
-
-        });
-
+    });
 </script>
 
 </body>
