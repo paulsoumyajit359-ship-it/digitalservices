@@ -177,7 +177,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1450px;
+            min-width: 1550px;
         }
 
         th {
@@ -235,6 +235,10 @@
             cursor: pointer;
             font-weight: bold;
             white-space: nowrap;
+        }
+
+        .view-btn:hover {
+            background: #000;
         }
 
         .status-select {
@@ -302,10 +306,10 @@
             font-weight: bold;
         }
 
-        /* DOCUMENT AREA */
+        /* DOCUMENT */
 
         .upload-box {
-            min-width: 260px;
+            min-width: 280px;
         }
 
         .file-input {
@@ -335,14 +339,15 @@
         }
 
         .documents {
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .document-item {
             display: flex;
             align-items: center;
             gap: 7px;
-            margin-top: 5px;
+            margin-top: 6px;
+            flex-wrap: wrap;
         }
 
         .document-link {
@@ -369,6 +374,12 @@
         .no-document {
             color: #888;
             font-size: 12px;
+        }
+
+        .replace-info {
+            color: #64748b;
+            font-size: 11px;
+            margin-top: 5px;
         }
 
         /* MODAL */
@@ -511,6 +522,7 @@
         }
 
         @media (max-width: 900px) {
+
             .stats {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -525,6 +537,7 @@
         }
 
         @media (max-width: 550px) {
+
             .stats {
                 grid-template-columns: 1fr;
             }
@@ -633,9 +646,11 @@
         </div>
 
         <div id="content">
+
             <div class="loading">
                 Loading applications...
             </div>
+
         </div>
 
     </section>
@@ -716,7 +731,7 @@ const supabaseClient =
 
 
 /* =========================================================
-   EXISTING SINGLE STORAGE BUCKET
+   STORAGE BUCKET
 ========================================================= */
 
 const STORAGE_BUCKET = "documents";
@@ -849,7 +864,8 @@ function getDocuments(app) {
 
 
 /* =========================================================
-   RENDER DOCUMENTS
+   RENDER DOCUMENT
+   ONE DOCUMENT ONLY
 ========================================================= */
 
 function renderDocuments(app) {
@@ -866,45 +882,39 @@ function renderDocuments(app) {
         `;
     }
 
-    let html = "";
+    const path =
+        documents[0];
 
-    documents.forEach(
-        (path, index) => {
+    return `
+        <div class="document-item">
 
-            html += `
-                <div class="document-item">
+            <a
+                href="#"
+                class="document-link"
+                onclick="
+                    openDocument(
+                        '${escapeJs(String(path))}'
+                    );
+                    return false;
+                "
+            >
+                📄 View / Open Document
+            </a>
 
-                    <a
-                        href="#"
-                        class="document-link"
-                        onclick="
-                            openDocument(
-                                '${escapeJs(String(path))}'
-                            );
-                            return false;
-                        "
-                    >
-                        📄 Document ${index + 1}
-                    </a>
+            <button
+                class="delete-document-btn"
+                onclick="
+                    deleteDocument(
+                        '${escapeJs(String(app.id))}',
+                        '${escapeJs(String(path))}'
+                    )
+                "
+            >
+                Delete
+            </button>
 
-                    <button
-                        class="delete-document-btn"
-                        onclick="
-                            deleteDocument(
-                                '${escapeJs(String(app.id))}',
-                                '${escapeJs(String(path))}'
-                            )
-                        "
-                    >
-                        Delete
-                    </button>
-
-                </div>
-            `;
-        }
-    );
-
-    return html;
+        </div>
+    `;
 }
 
 
@@ -922,10 +932,13 @@ function renderApplications(applications) {
 
         content.innerHTML = `
             <div class="empty">
+
                 <h3>No Applications Found</h3>
+
                 <p>
                     There are currently no customer applications.
                 </p>
+
             </div>
         `;
 
@@ -963,56 +976,80 @@ function renderApplications(applications) {
                     : "N/A";
 
 
+            const hasDocument =
+                getDocuments(app).length > 0;
+
+
             rows += `
 
                 <tr>
 
                     <td>
+
                         <div class="application-id">
+
                             ${escapeHtml(
                                 app.application_id || "N/A"
                             )}
+
                         </div>
+
                     </td>
 
 
                     <td>
 
                         <div class="customer-name">
+
                             ${escapeHtml(
                                 app.customer_name || "N/A"
                             )}
+
                         </div>
 
                         <div class="mobile">
+
                             ${escapeHtml(
                                 app.mobile || ""
                             )}
+
                         </div>
 
                     </td>
 
 
                     <td>
+
                         ${escapeHtml(
                             app.email || "N/A"
                         )}
+
                     </td>
 
 
                     <td>
+
                         <div class="service">
+
                             ${escapeHtml(
                                 app.service || "N/A"
                             )}
+
                         </div>
+
                     </td>
 
 
                     <td>
+
                         <div class="date">
-                            ${escapeHtml(createdDate)}
+
+                            ${escapeHtml(
+                                createdDate
+                            )}
+
                         </div>
+
                     </td>
 
 
@@ -1112,8 +1149,6 @@ function renderApplications(applications) {
                     </td>
 
 
-                    <!-- DOCUMENT -->
-
                     <td>
 
                         <div class="upload-box">
@@ -1134,9 +1169,12 @@ function renderApplications(applications) {
                                     )
                                 "
                             >
-                                📤 Upload Document
+                                📤 ${hasDocument ? "Replace Document" : "Upload Document"}
                             </button>
 
+                            <div class="replace-info">
+                                PDF / JPG / PNG / WEBP • Max 10 MB
+                            </div>
 
                             <div
                                 class="documents"
@@ -1183,7 +1221,9 @@ function renderApplications(applications) {
 
 
                 <tbody>
+
                     ${rows}
+
                 </tbody>
 
             </table>
@@ -1203,15 +1243,18 @@ function viewApplication(id) {
     const application =
         applicationsCache.find(
             app =>
-                String(app.id) === String(id)
+                String(app.id) ===
+                String(id)
         );
 
 
     if (!application) {
+
         showToast(
             "Application not found.",
             "error-toast"
         );
+
         return;
     }
 
@@ -1224,7 +1267,7 @@ function viewApplication(id) {
             : "N/A";
 
 
-    let documentsHtml =
+    const documentsHtml =
         renderDocuments(application);
 
 
@@ -1241,9 +1284,11 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${escapeHtml(
                         application.application_id || "N/A"
                     )}
+
                 </div>
 
             </div>
@@ -1256,11 +1301,13 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${escapeHtml(
                         capitalize(
                             application.status || "pending"
                         )
                     )}
+
                 </div>
 
             </div>
@@ -1273,9 +1320,11 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${escapeHtml(
                         application.customer_name || "N/A"
                     )}
+
                 </div>
 
             </div>
@@ -1288,9 +1337,11 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${escapeHtml(
                         application.mobile || "N/A"
                     )}
+
                 </div>
 
             </div>
@@ -1303,9 +1354,11 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${escapeHtml(
                         application.email || "N/A"
                     )}
+
                 </div>
 
             </div>
@@ -1318,9 +1371,11 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${escapeHtml(
                         application.whatsapp || "N/A"
                     )}
+
                 </div>
 
             </div>
@@ -1333,9 +1388,11 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${escapeHtml(
                         application.service || "N/A"
                     )}
+
                 </div>
 
             </div>
@@ -1348,7 +1405,11 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
-                    ${escapeHtml(createdDate)}
+
+                    ${escapeHtml(
+                        createdDate
+                    )}
+
                 </div>
 
             </div>
@@ -1361,10 +1422,12 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${escapeHtml(
                         application.requirement ||
                         "No requirement provided."
                     )}
+
                 </div>
 
             </div>
@@ -1377,10 +1440,12 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${escapeHtml(
                         application.address ||
                         "No address provided."
                     )}
+
                 </div>
 
             </div>
@@ -1393,10 +1458,12 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${escapeHtml(
                         application.admin_note ||
                         "No admin note."
                     )}
+
                 </div>
 
             </div>
@@ -1409,7 +1476,9 @@ function viewApplication(id) {
                 </div>
 
                 <div class="detail-value">
+
                     ${documentsHtml}
+
                 </div>
 
             </div>
@@ -1426,7 +1495,7 @@ function viewApplication(id) {
 
 
 /* =========================================================
-   UPLOAD DOCUMENT
+   UPLOAD / REPLACE DOCUMENT
 ========================================================= */
 
 async function uploadDocument(id) {
@@ -1497,7 +1566,8 @@ async function uploadDocument(id) {
     const application =
         applicationsCache.find(
             app =>
-                String(app.id) === String(id)
+                String(app.id) ===
+                String(id)
         );
 
 
@@ -1516,6 +1586,9 @@ async function uploadDocument(id) {
     button.textContent = "Uploading...";
 
 
+    let newFilePath = null;
+
+
     try {
 
         const applicationId =
@@ -1523,24 +1596,20 @@ async function uploadDocument(id) {
             String(id);
 
 
-        const extension =
-            file.name
-                .split(".")
-                .pop()
-                .toLowerCase();
-
-
         const safeName =
-            file.name
-                .replace(
-                    /[^a-zA-Z0-9._-]/g,
-                    "_"
-                );
+            file.name.replace(
+                /[^a-zA-Z0-9._-]/g,
+                "_"
+            );
 
 
-        const filePath =
+        newFilePath =
             `applications/${applicationId}/${Date.now()}_${safeName}`;
 
+
+        /*
+         * 1. Upload new document
+         */
 
         const {
             error: uploadError
@@ -1548,7 +1617,7 @@ async function uploadDocument(id) {
             .storage
             .from(STORAGE_BUCKET)
             .upload(
-                filePath,
+                newFilePath,
                 file,
                 {
                     cacheControl: "3600",
@@ -1563,23 +1632,26 @@ async function uploadDocument(id) {
         }
 
 
-        let existingDocuments = [];
+        /*
+         * 2. Existing document
+         */
 
-        if (
-            Array.isArray(
-                application.document_urls
-            )
-        ) {
-            existingDocuments =
-                application.document_urls;
-        }
+        const existingDocuments =
+            getDocuments(application);
 
+
+        /*
+         * 3. Keep only NEW document
+         */
 
         const newDocuments = [
-            ...existingDocuments,
-            filePath
+            newFilePath
         ];
 
+
+        /*
+         * 4. Save new path in database
+         */
 
         const {
             error: updateError
@@ -1597,16 +1669,60 @@ async function uploadDocument(id) {
 
         if (updateError) {
 
+            /*
+             * Database update failed.
+             * Remove newly uploaded file.
+             */
+
             await supabaseClient
                 .storage
                 .from(STORAGE_BUCKET)
                 .remove([
-                    filePath
+                    newFilePath
                 ]);
 
             throw updateError;
         }
 
+
+        /*
+         * 5. Delete old document from Storage
+         */
+
+        if (
+            existingDocuments.length > 0
+        ) {
+
+            for (
+                const oldPath
+                of existingDocuments
+            ) {
+
+                if (
+                    String(oldPath) !==
+                    String(newFilePath)
+                ) {
+
+                    if (
+                        !String(oldPath)
+                            .startsWith("http")
+                    ) {
+
+                        await supabaseClient
+                            .storage
+                            .from(STORAGE_BUCKET)
+                            .remove([
+                                oldPath
+                            ]);
+                    }
+                }
+            }
+        }
+
+
+        /*
+         * 6. Update local cache
+         */
 
         application.document_urls =
             newDocuments;
@@ -1618,7 +1734,9 @@ async function uploadDocument(id) {
 
 
         showToast(
-            "Document uploaded successfully.",
+            existingDocuments.length > 0
+                ? "Document replaced successfully."
+                : "Document uploaded successfully.",
             "success"
         );
 
@@ -1641,8 +1759,13 @@ async function uploadDocument(id) {
     } finally {
 
         button.disabled = false;
+
         button.textContent =
-            "📤 Upload Document";
+            getDocuments(application).length > 0
+                ? "📤 Replace Document"
+                : "📤 Upload Document";
+
+        input.value = "";
     }
 }
 
@@ -1654,11 +1777,6 @@ async function uploadDocument(id) {
 async function openDocument(path) {
 
     try {
-
-        /*
-         * New format:
-         * Storage path
-         */
 
         if (
             String(path).startsWith("http://") ||
@@ -1691,7 +1809,11 @@ async function openDocument(path) {
         }
 
 
-        if (!data || !data.signedUrl) {
+        if (
+            !data ||
+            !data.signedUrl
+        ) {
+
             throw new Error(
                 "Unable to create document URL."
             );
@@ -1746,6 +1868,7 @@ async function deleteDocument(
 
 
         if (!application) {
+
             throw new Error(
                 "Application not found."
             );
@@ -1757,7 +1880,8 @@ async function deleteDocument(
          */
 
         if (
-            !String(path).startsWith("http")
+            !String(path)
+                .startsWith("http")
         ) {
 
             const {
@@ -1777,25 +1901,15 @@ async function deleteDocument(
 
 
         /*
-         * Remove path from database array
+         * Remove from database
          */
-
-        const remaining =
-            getDocuments(application)
-                .filter(
-                    item =>
-                        String(item) !==
-                        String(path)
-                );
-
 
         const {
             error: updateError
         } = await supabaseClient
             .from("applications")
             .update({
-                document_urls:
-                    remaining
+                document_urls: []
             })
             .eq(
                 "id",
@@ -1808,8 +1922,7 @@ async function deleteDocument(
         }
 
 
-        application.document_urls =
-            remaining;
+        application.document_urls = [];
 
 
         renderApplications(
@@ -2037,6 +2150,7 @@ function closeModalOutside(event) {
         event.target.id ===
         "detailsModal"
     ) {
+
         closeDetails();
     }
 }
@@ -2049,6 +2163,7 @@ document.addEventListener(
         if (
             event.key === "Escape"
         ) {
+
             closeDetails();
         }
     }
@@ -2078,6 +2193,7 @@ function escapeHtml(value) {
         value === null ||
         value === undefined
     ) {
+
         return "";
     }
 
@@ -2141,6 +2257,7 @@ function showToast(
     toast.textContent =
         message;
 
+
     toast.className =
         "toast " + type;
 
@@ -2166,6 +2283,7 @@ async function logout() {
     await supabaseClient
         .auth
         .signOut();
+
 
     window.location.href =
         "admin-login.html";
