@@ -1,954 +1,839 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Admin Dashboard | Digital Service</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        body {
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            background: #f4f7fb;
-
-            color: #172033;
-
-            min-height: 100vh;
-        }
-
-
-        /* =====================================================
-           HEADER
-        ====================================================== */
-
-        .header {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #063b8f,
-                    #1769d1
-                );
-
-            color: white;
-
-            padding:
-                16px 30px;
-
-            display: flex;
-
-            justify-content:
-                space-between;
-
-            align-items:
-                center;
-
-            box-shadow:
-                0 3px 15px
-                rgba(0,0,0,0.15);
-        }
-
-
-        .brand {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-        }
-
-
-        .logo {
-
-            width: 50px;
-
-            height: 50px;
-
-            border-radius: 12px;
-
-            background: white;
-
-            color: #1769d1;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-weight: bold;
-
-            font-size: 20px;
-        }
-
-
-        .brand h1 {
-
-            font-size: 21px;
-
-            margin-bottom: 3px;
-        }
-
-
-        .brand p {
-
-            font-size: 13px;
-
-            opacity: 0.9;
-        }
-
-
-        .header-right {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 15px;
-        }
-
-
-        .admin-email {
-
-            font-size: 14px;
-
-            opacity: 0.9;
-        }
-
-
-        .logout-btn {
-
-            border: none;
-
-            background: #dc3545;
-
-            color: white;
-
-            padding:
-                10px 16px;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-
-        .logout-btn:hover {
-
-            background: #bb2d3b;
-        }
-
-
-        /* =====================================================
-           MAIN
-        ====================================================== */
-
-        .container {
-
-            max-width: 1250px;
-
-            margin:
-                30px auto;
-
-            padding:
-                0 20px;
-        }
-
-
-        /* =====================================================
-           WELCOME
-        ====================================================== */
-
-        .welcome {
-
-            background: white;
-
-            padding: 25px;
-
-            border-radius: 15px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0,0,0,0.07);
-
-            margin-bottom: 25px;
-        }
-
-
-        .welcome h2 {
-
-            color: #173f7a;
-
-            margin-bottom: 8px;
-        }
-
-
-        .welcome p {
-
-            color: #687386;
-        }
-
-
-        /* =====================================================
-           STATS
-        ====================================================== */
-
-        .stats {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 18px;
-
-            margin-bottom: 25px;
-        }
-
-
-        .stat-card {
-
-            background: white;
-
-            padding: 22px;
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0,0,0,0.07);
-        }
-
-
-        .stat-title {
-
-            color: #687386;
-
-            font-size: 14px;
-
-            margin-bottom: 8px;
-        }
-
-
-        .stat-number {
-
-            font-size: 30px;
-
-            font-weight: bold;
-
-            color: #1769d1;
-        }
-
-
-        /* =====================================================
-           AD MANAGEMENT HEADER
-        ====================================================== */
-
-        .section-header {
-
-            background: white;
-
-            padding: 20px;
-
-            border-radius: 15px 15px 0 0;
-
-            display: flex;
-
-            justify-content:
-                space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0,0,0,0.05);
-        }
-
-
-        .section-header h2 {
-
-            color: #173f7a;
-
-            font-size: 21px;
-        }
-
-
-        .section-header p {
-
-            color: #687386;
-
-            font-size: 13px;
-
-            margin-top: 5px;
-        }
-
-
-        .header-buttons {
-
-            display: flex;
-
-            gap: 10px;
-        }
-
-
-        .btn {
-
-            border: none;
-
-            padding:
-                11px 16px;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-
-            font-size: 14px;
-        }
-
-
-        .btn-primary {
-
-            background: #1769d1;
-
-            color: white;
-        }
-
-
-        .btn-primary:hover {
-
-            background: #0755b8;
-        }
-
-
-        .btn-secondary {
-
-            background: #eef3f9;
-
-            color: #173f7a;
-        }
-
-
-        .btn-secondary:hover {
-
-            background: #dfe8f4;
-        }
-
-
-        /* =====================================================
-           UPLOAD BOX
-        ====================================================== */
-
-        .upload-box {
-
-            background: white;
-
-            padding: 20px;
-
-            border-top:
-                1px solid #edf0f5;
-
-            display: none;
-        }
-
-
-        .upload-box.show {
-
-            display: block;
-        }
-
-
-        .upload-area {
-
-            border:
-                2px dashed #b8c7dc;
-
-            border-radius: 12px;
-
-            padding: 30px;
-
-            text-align: center;
-
-            background: #f8faff;
-        }
-
-
-        .upload-icon {
-
-            font-size: 40px;
-
-            margin-bottom: 10px;
-        }
-
-
-        .upload-area h3 {
-
-            margin-bottom: 7px;
-
-            color: #173f7a;
-        }
-
-
-        .upload-area p {
-
-            color: #687386;
-
-            font-size: 13px;
-
-            margin-bottom: 18px;
-        }
-
-
-        #fileInput {
-
-            display: none;
-        }
-
-
-        .choose-file {
-
-            display: inline-block;
-
-            background: #1769d1;
-
-            color: white;
-
-            padding:
-                11px 18px;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-
-        .selected-file {
-
-            margin-top: 15px;
-
-            color: #1769d1;
-
-            font-weight: bold;
-        }
-
-
-        .upload-action {
-
-            margin-top: 15px;
-
-            display: none;
-        }
-
-
-        .upload-action.show {
-
-            display: block;
-        }
-
-
-        /* =====================================================
-           MESSAGE
-        ====================================================== */
-
-        #message {
-
-            padding:
-                13px 18px;
-
-            margin:
-                15px 20px;
-
-            border-radius: 8px;
-
-            display: none;
-
-            font-size: 14px;
-
-            font-weight: bold;
-        }
-
-
-        #message.success {
-
-            display: block;
-
-            background: #e8f7ee;
-
-            color: #187a3d;
-        }
-
-
-        #message.error {
-
-            display: block;
-
-            background: #fdecec;
-
-            color: #b42318;
-        }
-
-
-        /* =====================================================
-           AD GRID
-        ====================================================== */
-
-        .ads-container {
-
-            background: white;
-
-            padding: 20px;
-
-            border-radius:
-                0 0 15px 15px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0,0,0,0.05);
-        }
-
-
-        .ads-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 20px;
-        }
-
-
-        .ad-card {
-
-            border:
-                1px solid #e3e8f0;
-
-            border-radius: 12px;
-
-            overflow: hidden;
-
-            background: white;
-
-            transition:
-                transform 0.2s,
-                box-shadow 0.2s;
-        }
-
-
-        .ad-card:hover {
-
-            transform:
-                translateY(-3px);
-
-            box-shadow:
-                0 8px 25px
-                rgba(0,0,0,0.10);
-        }
-
-
-        .ad-image {
-
-            width: 100%;
-
-            aspect-ratio:
-                16 / 9;
-
-            background: #eef3f9;
-
-            overflow: hidden;
-
-            cursor: pointer;
-        }
-
-
-        .ad-image img {
-
-            width: 100%;
-
-            height: 100%;
-
-            object-fit: contain;
-
-            display: block;
-
-            background: #f5f7fa;
-        }
-
-
-        .ad-info {
-
-            padding: 14px;
-        }
-
-
-        .ad-name {
-
-            font-weight: bold;
-
-            font-size: 14px;
-
-            color: #173f7a;
-
-            word-break:
-                break-word;
-
-            margin-bottom: 6px;
-        }
-
-
-        .ad-status {
-
-            font-size: 12px;
-
-            color: #198754;
-
-            margin-bottom: 12px;
-        }
-
-
-        .ad-actions {
-
-            display: flex;
-
-            gap: 8px;
-        }
-
-
-        .view-btn {
-
-            flex: 1;
-
-            border: none;
-
-            background: #eef4ff;
-
-            color: #1769d1;
-
-            padding: 9px;
-
-            border-radius: 7px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-
-        .delete-btn {
-
-            flex: 1;
-
-            border: none;
-
-            background: #fff0f0;
-
-            color: #dc3545;
-
-            padding: 9px;
-
-            border-radius: 7px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-
-        .view-btn:hover {
-
-            background: #dceaff;
-        }
-
-
-        .delete-btn:hover {
-
-            background: #ffe0e0;
-        }
-
-
-        /* =====================================================
-           EMPTY
-        ====================================================== */
-
-        .empty {
-
-            text-align: center;
-
-            padding: 60px 20px;
-
-            color: #687386;
-
-            display: none;
-        }
-
-
-        .empty-icon {
-
-            font-size: 50px;
-
-            margin-bottom: 12px;
-        }
-
-
-        /* =====================================================
-           LOADING
-        ====================================================== */
-
-        .loading {
-
-            text-align: center;
-
-            padding: 50px;
-
-            color: #687386;
-        }
-
-
-        .spinner {
-
-            width: 35px;
-
-            height: 35px;
-
-            border:
-                4px solid #e1e8f2;
-
-            border-top-color:
-                #1769d1;
-
-            border-radius: 50%;
-
-            animation:
-                spin 0.8s linear infinite;
-
-            margin:
-                0 auto 15px;
-        }
-
-
-        @keyframes spin {
-
-            to {
-                transform: rotate(360deg);
-            }
-
-        }
-
-
-        /* =====================================================
-           MODAL
-        ====================================================== */
-
-        .modal {
-
-            position: fixed;
-
-            inset: 0;
-
-            background:
-                rgba(0,0,0,0.75);
-
-            display: none;
-
-            align-items: center;
-
-            justify-content: center;
-
-            padding: 20px;
-
-            z-index: 9999;
-        }
-
-
-        .modal.show {
-
-            display: flex;
-        }
-
-
-        .modal-content {
-
-            max-width: 1000px;
-
-            max-height: 90vh;
-
-            position: relative;
-
-            background: white;
-
-            padding: 10px;
-
-            border-radius: 12px;
-        }
-
-
-        .modal-content img {
-
-            max-width: 100%;
-
-            max-height: 82vh;
-
-            display: block;
-
-            object-fit: contain;
-        }
-
-
-        .close-modal {
-
-            position: absolute;
-
-            right: -12px;
-
-            top: -12px;
-
-            width: 36px;
-
-            height: 36px;
-
-            border: none;
-
-            border-radius: 50%;
-
-            background: #dc3545;
-
-            color: white;
-
-            font-size: 20px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ====================================================== */
-
-        @media(max-width: 900px) {
-
-            .ads-grid {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .stats {
-
-                grid-template-columns:
-                    repeat(3, 1fr);
-            }
-
-        }
-
-
-        @media(max-width: 650px) {
-
-            .header {
-
-                padding: 15px;
-
-                flex-direction: column;
-
-                gap: 12px;
-
-                text-align: center;
-            }
-
-
-            .header-right {
-
-                flex-direction: column;
-
-                gap: 8px;
-            }
-
-
-            .container {
-
-                margin-top: 20px;
-
-                padding: 0 12px;
-            }
-
-
-            .stats {
-
-                grid-template-columns:
-                    1fr;
-            }
-
-
-            .ads-grid {
-
-                grid-template-columns:
-                    1fr;
-            }
-
-
-            .section-header {
-
-                flex-direction: column;
-
-                align-items: flex-start;
-            }
-
-
-            .header-buttons {
-
-                width: 100%;
-            }
-
-
-            .header-buttons .btn {
-
-                flex: 1;
-            }
-
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard | Digital Service</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+    min-height:100vh;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    background:linear-gradient(135deg,#063b8f,#1769d1);
+    color:white;
+    padding:15px 28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 3px 15px rgba(0,0,0,.15);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:50px;
+    height:50px;
+    border-radius:12px;
+    background:white;
+    color:#1769d1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.brand h1{
+    font-size:21px;
+}
+
+.brand p{
+    font-size:13px;
+    opacity:.9;
+    margin-top:3px;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.admin-email{
+    font-size:13px;
+    opacity:.9;
+}
+
+.logout-btn{
+    border:0;
+    background:#dc3545;
+    color:white;
+    padding:10px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.logout-btn:hover{
+    background:#bb2d3b;
+}
+
+/* ================= MAIN ================= */
+
+.container{
+    max-width:1500px;
+    margin:28px auto;
+    padding:0 20px;
+}
+
+.welcome{
+    background:white;
+    padding:24px;
+    border-radius:14px;
+    box-shadow:0 4px 18px rgba(0,0,0,.06);
+    margin-bottom:20px;
+}
+
+.welcome h2{
+    color:#173f7a;
+    margin-bottom:7px;
+}
+
+.welcome p{
+    color:#687386;
+}
+
+/* ================= STATS ================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+    margin-bottom:22px;
+}
+
+.stat-card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 18px rgba(0,0,0,.06);
+}
+
+.stat-card h3{
+    font-size:13px;
+    color:#64748b;
+    margin-bottom:8px;
+}
+
+.number{
+    font-size:30px;
+    font-weight:bold;
+    color:#1769d1;
+}
+
+.pending{
+    color:#d99a00;
+}
+
+.processing{
+    color:#1769e0;
+}
+
+.completed{
+    color:#16a34a;
+}
+
+.ads-number{
+    color:#7c3aed;
+}
+
+/* ================= TABS ================= */
+
+.tabs{
+    display:flex;
+    gap:8px;
+    background:white;
+    padding:10px;
+    border-radius:12px 12px 0 0;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.tab{
+    border:0;
+    background:#eef3f9;
+    color:#173f7a;
+    padding:11px 17px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.tab.active{
+    background:#1769d1;
+    color:white;
+}
+
+.panel{
+    display:none;
+}
+
+.panel.active{
+    display:block;
+}
+
+/* ================= BOX ================= */
+
+.box{
+    background:white;
+    border-radius:0 0 12px 12px;
+    box-shadow:0 3px 12px rgba(0,0,0,.06);
+    overflow:hidden;
+    margin-bottom:28px;
+}
+
+.box-header{
+    padding:20px 24px;
+    border-bottom:1px solid #e5e7eb;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+}
+
+.box-header h2{
+    font-size:20px;
+}
+
+.box-header p{
+    font-size:13px;
+    color:#687386;
+    margin-top:5px;
+}
+
+.refresh-btn,
+.primary-btn{
+    border:0;
+    background:#1769d1;
+    color:white;
+    padding:10px 15px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.secondary-btn{
+    border:0;
+    background:#eef3f9;
+    color:#173f7a;
+    padding:10px 15px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* ================= APPLICATION TABLE ================= */
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1450px;
+}
+
+th{
+    background:#f8fafc;
+    color:#475569;
+    text-align:left;
+    padding:14px;
+    font-size:12px;
+    border-bottom:1px solid #e5e7eb;
+    white-space:nowrap;
+}
+
+td{
+    padding:14px;
+    border-bottom:1px solid #eef0f3;
+    vertical-align:middle;
+    font-size:13px;
+}
+
+tbody tr:hover{
+    background:#fafcff;
+}
+
+.app-id{
+    font-weight:bold;
+    color:#1769e0;
+}
+
+.customer{
+    font-weight:bold;
+}
+
+.mobile{
+    font-size:12px;
+    color:#6b7280;
+    margin-top:3px;
+}
+
+.service{
+    font-weight:bold;
+}
+
+.date{
+    font-size:12px;
+    color:#6b7280;
+    white-space:nowrap;
+}
+
+.view-btn{
+    border:0;
+    background:#172033;
+    color:white;
+    padding:8px 12px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.status-select{
+    padding:8px 10px;
+    border-radius:7px;
+    border:1px solid #d1d5db;
+    font-weight:bold;
+    min-width:125px;
+}
+
+.status-select.pending{
+    color:#b77900;
+    background:#fff8df;
+    border-color:#f4d47c;
+}
+
+.status-select.processing{
+    color:#1769e0;
+    background:#eaf2ff;
+    border-color:#a9c8ff;
+}
+
+.status-select.completed{
+    color:#15803d;
+    background:#ecfdf3;
+    border-color:#9ae6b4;
+}
+
+.save-btn{
+    display:none;
+    padding:7px 11px;
+    border:0;
+    border-radius:6px;
+    background:#16a34a;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.save-btn.show{
+    display:inline-block;
+}
+
+.note-input{
+    width:190px;
+    min-height:55px;
+    padding:8px;
+    border:1px solid #d1d5db;
+    border-radius:7px;
+    resize:vertical;
+    font-family:Arial;
+}
+
+.note-save{
+    margin-top:5px;
+    padding:6px 10px;
+    border:0;
+    border-radius:6px;
+    background:#475569;
+    color:white;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.file-input{
+    width:100%;
+    font-size:12px;
+    margin-bottom:6px;
+}
+
+.upload-doc{
+    border:0;
+    background:#1769d1;
+    color:white;
+    padding:7px 10px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.replace-info{
+    font-size:10px;
+    color:#64748b;
+    margin-top:5px;
+}
+
+.document-item{
+    margin-top:6px;
+}
+
+.document-link{
+    color:#1769d1;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.delete-document{
+    border:0;
+    background:#fee2e2;
+    color:#b91c1c;
+    padding:3px 6px;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:10px;
+    margin-left:5px;
+}
+
+.no-document{
+    font-size:12px;
+    color:#888;
+    margin-top:5px;
+}
+
+/* ================= ADS ================= */
+
+.ad-toolbar{
+    display:flex;
+    gap:8px;
+}
+
+.upload-box{
+    display:none;
+    padding:20px;
+    border-bottom:1px solid #edf0f5;
+}
+
+.upload-box.show{
+    display:block;
+}
+
+.upload-area{
+    border:2px dashed #b8c7dc;
+    border-radius:12px;
+    padding:28px;
+    text-align:center;
+    background:#f8faff;
+}
+
+.upload-area h3{
+    color:#173f7a;
+    margin-bottom:6px;
+}
+
+.upload-area p{
+    color:#687386;
+    font-size:13px;
+    margin-bottom:16px;
+}
+
+.choose-file{
+    display:inline-block;
+    background:#1769d1;
+    color:white;
+    padding:10px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+#adFile{
+    display:none;
+}
+
+.selected-file{
+    margin-top:12px;
+    color:#1769d1;
+    font-weight:bold;
+}
+
+.ad-upload-action{
+    margin-top:12px;
+    display:none;
+}
+
+.ad-upload-action.show{
+    display:block;
+}
+
+.message{
+    display:none;
+    margin:15px 20px;
+    padding:12px 15px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.message.success{
+    display:block;
+    background:#e8f7ee;
+    color:#187a3d;
+}
+
+.message.error{
+    display:block;
+    background:#fdecec;
+    color:#b42318;
+}
+
+.ads-grid{
+    padding:20px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.ad-card{
+    border:1px solid #e3e8f0;
+    border-radius:12px;
+    overflow:hidden;
+    background:white;
+}
+
+.ad-image{
+    aspect-ratio:16/9;
+    background:#eef3f9;
+    overflow:hidden;
+    cursor:pointer;
+}
+
+.ad-image img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    background:#f5f7fa;
+}
+
+.ad-info{
+    padding:13px;
+}
+
+.ad-name{
+    font-weight:bold;
+    font-size:13px;
+    color:#173f7a;
+    word-break:break-word;
+    margin-bottom:5px;
+}
+
+.ad-status{
+    font-size:11px;
+    color:#198754;
+    margin-bottom:10px;
+}
+
+.ad-actions{
+    display:flex;
+    gap:7px;
+}
+
+.ad-actions button{
+    flex:1;
+    border:0;
+    padding:8px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.ad-view{
+    background:#eef4ff;
+    color:#1769d1;
+}
+
+.ad-delete{
+    background:#fff0f0;
+    color:#dc3545;
+}
+
+/* ================= MODALS ================= */
+
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.7);
+    z-index:1000;
+    padding:20px;
+    overflow:auto;
+    align-items:center;
+    justify-content:center;
+}
+
+.modal-overlay.show{
+    display:flex;
+}
+
+.modal{
+    width:100%;
+    max-width:850px;
+    background:white;
+    border-radius:14px;
+    overflow:hidden;
+}
+
+.modal-header{
+    background:#172033;
+    color:white;
+    padding:18px 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.modal-close{
+    border:0;
+    background:transparent;
+    color:white;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.modal-body{
+    padding:22px;
+    max-height:75vh;
+    overflow:auto;
+}
+
+.details-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+}
+
+.detail-card{
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:9px;
+    padding:13px;
+}
+
+.detail-card.full{
+    grid-column:1/-1;
+}
+
+.detail-label{
+    font-size:11px;
+    color:#64748b;
+    font-weight:bold;
+    text-transform:uppercase;
+    margin-bottom:5px;
+}
+
+.detail-value{
+    font-size:14px;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.modal-footer{
+    padding:14px 22px;
+    border-top:1px solid #e5e7eb;
+    text-align:right;
+}
+
+.close-btn{
+    border:0;
+    background:#475569;
+    color:white;
+    padding:9px 16px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.image-modal .modal{
+    max-width:1000px;
+    background:#111;
+    padding:10px;
+    position:relative;
+}
+
+.image-modal img{
+    max-width:100%;
+    max-height:82vh;
+    display:block;
+    margin:auto;
+    object-fit:contain;
+}
+
+.image-close{
+    position:absolute;
+    right:-10px;
+    top:-10px;
+    width:35px;
+    height:35px;
+    border:0;
+    border-radius:50%;
+    background:#dc3545;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+    position:fixed;
+    right:22px;
+    bottom:22px;
+    padding:13px 18px;
+    border-radius:8px;
+    color:white;
+    font-weight:bold;
+    display:none;
+    z-index:9999;
+}
+
+.toast.success{
+    display:block;
+    background:#16a34a;
+}
+
+.toast.error{
+    display:block;
+    background:#dc2626;
+}
+
+/* ================= LOADING ================= */
+
+.loading,
+.empty{
+    padding:55px 20px;
+    text-align:center;
+    color:#777;
+}
+
+.error{
+    margin:20px;
+    padding:15px;
+    background:#fee2e2;
+    color:#991b1b;
+    border-radius:8px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:1050px){
+
+    .stats{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .ads-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+
+    .header{
+        padding:14px;
+        flex-direction:column;
+        gap:10px;
+        text-align:center;
+    }
+
+    .header-right{
+        flex-direction:column;
+    }
+
+    .container{
+        padding:0 10px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .box-header{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .ad-toolbar{
+        width:100%;
+    }
+
+    .ad-toolbar button{
+        flex:1;
+    }
+
+    .ads-grid{
+        grid-template-columns:1fr;
+    }
+
+    .details-grid{
+        grid-template-columns:1fr;
+    }
+
+    .detail-card.full{
+        grid-column:auto;
+    }
+}
+
+@media(max-width:450px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .tabs{
+        overflow-x:auto;
+    }
+
+    .tab{
+        white-space:nowrap;
+    }
+
+}
+
+</style>
 </head>
-
 
 <body>
 
-
 <!-- =========================================================
      HEADER
-========================================================== -->
+========================================================= -->
 
 <header class="header">
 
@@ -965,7 +850,7 @@
             </h1>
 
             <p>
-                Administrator Dashboard
+                Administrator Panel
             </p>
 
         </div>
@@ -994,279 +879,422 @@
 </header>
 
 
-
-<!-- =========================================================
-     MAIN
-========================================================== -->
-
 <main class="container">
 
 
-    <!-- WELCOME -->
+<!-- =========================================================
+     WELCOME
+========================================================= -->
 
-    <section class="welcome">
+<section class="welcome">
 
-        <h2>
-            Welcome, Administrator 👋
-        </h2>
+    <h2>
+        Admin Dashboard 👋
+    </h2>
 
-        <p>
-            Manage your Digital Service website
-            advertisements from this dashboard.
-        </p>
+    <p>
+        Manage customer applications, documents and homepage advertisements from one place.
+    </p>
 
-    </section>
-
-
-
-    <!-- STATS -->
-
-    <section class="stats">
-
-        <div class="stat-card">
-
-            <div class="stat-title">
-                Total Advertisements
-            </div>
-
-            <div
-                class="stat-number"
-                id="totalAds"
-            >
-                0
-            </div>
-
-        </div>
+</section>
 
 
-        <div class="stat-card">
+<!-- =========================================================
+     STATISTICS
+========================================================= -->
 
-            <div class="stat-title">
-                Storage Bucket
-            </div>
+<section class="stats">
 
-            <div
-                class="stat-number"
-                style="font-size:20px;"
-            >
-                advertisements
-            </div>
+    <div class="stat-card">
 
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-title">
-                Auto Slider
-            </div>
-
-            <div
-                class="stat-number"
-                style="font-size:20px;"
-            >
-                3 Seconds
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         AD MANAGEMENT
-    ====================================================== -->
-
-    <section>
-
-
-        <div class="section-header">
-
-            <div>
-
-                <h2>
-                    📢 Advertisement Management
-                </h2>
-
-                <p>
-                    Upload and manage advertisements
-                    displayed on the homepage.
-                </p>
-
-            </div>
-
-
-            <div class="header-buttons">
-
-                <button
-                    class="btn btn-secondary"
-                    id="refreshBtn"
-                >
-                    🔄 Refresh
-                </button>
-
-                <button
-                    class="btn btn-primary"
-                    id="uploadToggle"
-                >
-                    ➕ Add Advertisement
-                </button>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             UPLOAD
-        ================================================== -->
+        <h3>
+            Total Applications
+        </h3>
 
         <div
-            class="upload-box"
-            id="uploadBox"
+            class="number"
+            id="totalCount"
         >
+            0
+        </div>
 
-            <div class="upload-area">
-
-                <div class="upload-icon">
-                    🖼️
-                </div>
-
-                <h3>
-                    Upload Advertisement
-                </h3>
-
-                <p>
-                    Recommended image ratio:
-                    <strong>16:9</strong>
-                    for best display.
-                </p>
+    </div>
 
 
-                <label
-                    for="fileInput"
-                    class="choose-file"
+    <div class="stat-card">
+
+        <h3>
+            Pending
+        </h3>
+
+        <div
+            class="number pending"
+            id="pendingCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h3>
+            Processing
+        </h3>
+
+        <div
+            class="number processing"
+            id="processingCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h3>
+            Completed
+        </h3>
+
+        <div
+            class="number completed"
+            id="completedCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h3>
+            Advertisements
+        </h3>
+
+        <div
+            class="number ads-number"
+            id="totalAds"
+        >
+            0
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     TABS
+========================================================= -->
+
+<div class="tabs">
+
+    <button
+        class="tab active"
+        data-panel="applicationsPanel"
+    >
+        📋 Customer Applications
+    </button>
+
+
+    <button
+        class="tab"
+        data-panel="adsPanel"
+    >
+        📢 Advertisement Management
+    </button>
+
+</div>
+
+
+<!-- =========================================================
+     APPLICATION PANEL
+========================================================= -->
+
+<section
+    class="panel active"
+    id="applicationsPanel"
+>
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h2>
+                Customer Applications
+            </h2>
+
+            <p>
+                Review applications, update status, add notes and upload certificates.
+            </p>
+
+        </div>
+
+
+        <button
+            class="refresh-btn"
+            id="refreshApplications"
+        >
+            🔄 Refresh
+        </button>
+
+    </div>
+
+
+    <div
+        id="applicationsContent"
+    >
+
+        <div class="loading">
+            Loading applications...
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     ADVERTISEMENT PANEL
+========================================================= -->
+
+<section
+    class="panel"
+    id="adsPanel"
+>
+
+<div class="box">
+
+    <div class="box-header">
+
+        <div>
+
+            <h2>
+                📢 Advertisement Management
+            </h2>
+
+            <p>
+                Manage advertisements displayed on the homepage.
+                Slider interval: <strong>3 seconds</strong>.
+            </p>
+
+        </div>
+
+
+        <div class="ad-toolbar">
+
+            <button
+                class="secondary-btn"
+                id="refreshAds"
+            >
+                🔄 Refresh
+            </button>
+
+            <button
+                class="primary-btn"
+                id="toggleAdUpload"
+            >
+                ➕ Add Advertisement
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- UPLOAD -->
+
+    <div
+        class="upload-box"
+        id="adUploadBox"
+    >
+
+        <div class="upload-area">
+
+            <h3>
+                Upload Advertisement
+            </h3>
+
+            <p>
+                Recommended ratio:
+                <strong>16:9</strong>
+                <br>
+                JPG / PNG / WEBP • Maximum 10 MB
+            </p>
+
+
+            <label
+                class="choose-file"
+                for="adFile"
+            >
+                Choose Image
+            </label>
+
+
+            <input
+                type="file"
+                id="adFile"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+
+            <div
+                class="selected-file"
+                id="adSelectedFile"
+            >
+            </div>
+
+
+            <div
+                class="ad-upload-action"
+                id="adUploadAction"
+            >
+
+                <button
+                    class="primary-btn"
+                    id="uploadAdBtn"
                 >
-                    Choose Image
-                </label>
-
-
-                <input
-                    type="file"
-                    id="fileInput"
-                    accept="image/jpeg,image/png,image/webp"
-                >
-
-
-                <div
-                    class="selected-file"
-                    id="selectedFile"
-                >
-                </div>
-
-
-                <div
-                    class="upload-action"
-                    id="uploadAction"
-                >
-
-                    <button
-                        class="btn btn-primary"
-                        id="uploadBtn"
-                    >
-                        ⬆️ Upload Advertisement
-                    </button>
-
-                </div>
+                    ⬆️ Upload Advertisement
+                </button>
 
             </div>
 
         </div>
 
+    </div>
 
 
-        <!-- MESSAGE -->
-
-        <div id="message"></div>
-
-
-
-        <!-- =================================================
-             ADS
-        ================================================== -->
-
-        <div class="ads-container">
+    <div
+        class="message"
+        id="adMessage"
+    >
+    </div>
 
 
-            <div
-                class="loading"
-                id="loading"
-            >
-
-                <div class="spinner"></div>
-
-                Loading advertisements...
-
-            </div>
+    <div
+        class="loading"
+        id="adsLoading"
+    >
+        Loading advertisements...
+    </div>
 
 
-            <div
-                class="ads-grid"
-                id="adsGrid"
-            >
-            </div>
+    <div
+        class="ads-grid"
+        id="adsGrid"
+    >
+    </div>
 
 
-            <div
-                class="empty"
-                id="empty"
-            >
+    <div
+        class="empty"
+        id="adsEmpty"
+        style="display:none"
+    >
 
-                <div class="empty-icon">
-                    📢
-                </div>
-
-                <h3>
-                    No Advertisements
-                </h3>
-
-                <p>
-                    Upload your first advertisement
-                    to display it on the homepage.
-                </p>
-
-            </div>
-
-
+        <div style="font-size:45px">
+            📢
         </div>
 
+        <h3>
+            No Advertisements
+        </h3>
 
-    </section>
+        <p>
+            Upload your first advertisement.
+        </p>
 
+    </div>
+
+</div>
+
+</section>
 
 </main>
 
 
-
 <!-- =========================================================
-     IMAGE MODAL
-========================================================== -->
+     APPLICATION DETAILS MODAL
+========================================================= -->
 
 <div
-    class="modal"
+    class="modal-overlay"
+    id="detailsModal"
+>
+
+    <div
+        class="modal"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="modal-header">
+
+            <h2>
+                Application Details
+            </h2>
+
+            <button
+                class="modal-close"
+                id="closeDetails"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="modal-body"
+            id="modalBody"
+        >
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                class="close-btn"
+                id="closeDetails2"
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ADVERTISEMENT PREVIEW
+========================================================= -->
+
+<div
+    class="modal-overlay image-modal"
     id="imageModal"
 >
 
-    <div class="modal-content">
+    <div
+        class="modal"
+        onclick="event.stopPropagation()"
+    >
 
         <button
-            class="close-modal"
-            id="closeModal"
+            class="image-close"
+            id="closeImage"
         >
             ×
         </button>
+
 
         <img
             id="modalImage"
@@ -1279,20 +1307,34 @@
 </div>
 
 
+<div
+    class="toast"
+    id="toast"
+>
+</div>
+
 
 <script>
 
-
 /* =========================================================
-   SUPABASE CONFIG
-========================================================== */
+   SUPABASE
+========================================================= */
 
 const SUPABASE_URL =
     "https://nlzrdjvlkdqungmhnsrl.supabase.co";
 
-
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+
+const ADMIN_UID =
+    "e3c0a5b6-7bb7-4efa-b7c4-64b37cc84b08";
+
+
+const AD_BUCKET =
+    "advertisements";
+
+const DOC_BUCKET =
+    "documents";
 
 
 const supabaseClient =
@@ -1302,169 +1344,106 @@ const supabaseClient =
     );
 
 
-
-/* =========================================================
-   ADMIN UID
-========================================================== */
-
-const ADMIN_UID =
-    "e3c0a5b6-7bb7-4efa-b7c4-64b37cc84b08";
-
+let applicationsCache = [];
 
 
 /* =========================================================
-   BUCKET
-========================================================== */
+   SHORTCUT
+========================================================= */
 
-const BUCKET_NAME =
-    "advertisements";
+function $(id){
 
+    return document.getElementById(id);
 
-
-/* =========================================================
-   ELEMENTS
-========================================================== */
-
-const adminEmail =
-    document.getElementById(
-        "adminEmail"
-    );
-
-
-const logoutBtn =
-    document.getElementById(
-        "logoutBtn"
-    );
-
-
-const refreshBtn =
-    document.getElementById(
-        "refreshBtn"
-    );
-
-
-const uploadToggle =
-    document.getElementById(
-        "uploadToggle"
-    );
-
-
-const uploadBox =
-    document.getElementById(
-        "uploadBox"
-    );
-
-
-const fileInput =
-    document.getElementById(
-        "fileInput"
-    );
-
-
-const selectedFile =
-    document.getElementById(
-        "selectedFile"
-    );
-
-
-const uploadAction =
-    document.getElementById(
-        "uploadAction"
-    );
-
-
-const uploadBtn =
-    document.getElementById(
-        "uploadBtn"
-    );
-
-
-const adsGrid =
-    document.getElementById(
-        "adsGrid"
-    );
-
-
-const loading =
-    document.getElementById(
-        "loading"
-    );
-
-
-const empty =
-    document.getElementById(
-        "empty"
-    );
-
-
-const totalAds =
-    document.getElementById(
-        "totalAds"
-    );
-
-
-const message =
-    document.getElementById(
-        "message"
-    );
-
-
-const imageModal =
-    document.getElementById(
-        "imageModal"
-    );
-
-
-const modalImage =
-    document.getElementById(
-        "modalImage"
-    );
-
-
-const closeModal =
-    document.getElementById(
-        "closeModal"
-    );
-
+}
 
 
 /* =========================================================
-   SHOW MESSAGE
-========================================================== */
+   SECURITY
+========================================================= */
 
-function showMessage(
-    text,
-    type
-) {
+function escapeHtml(value){
 
-    message.textContent =
-        text;
+    if(
+        value === null ||
+        value === undefined
+    ){
 
-    message.className =
-        type;
+        return "";
+
+    }
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeJs(value){
+
+    return String(value)
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'")
+        .replace(/\r?\n/g,"\\n");
+
+}
+
+
+function capitalize(value){
+
+    if(!value){
+        return "";
+    }
+
+    return value.charAt(0).toUpperCase()
+        + value.slice(1);
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function toast(
+    message,
+    type="success"
+){
+
+    const el =
+        $("toast");
+
+    el.textContent =
+        message;
+
+    el.className =
+        "toast " + type;
+
 
     setTimeout(
-        function() {
+        function(){
 
-            message.className = "";
-
-            message.textContent = "";
+            el.className =
+                "toast";
 
         },
-        4000
+        3500
     );
 
 }
 
 
-
 /* =========================================================
-   CHECK ADMIN
-========================================================== */
+   ADMIN CHECK
+========================================================= */
 
-async function checkAdmin() {
+async function checkAdmin(){
 
-    try {
+    try{
 
         const {
             data,
@@ -1475,7 +1454,7 @@ async function checkAdmin() {
                 .getSession();
 
 
-        if (error) {
+        if(error){
 
             throw error;
 
@@ -1486,9 +1465,12 @@ async function checkAdmin() {
             data.session;
 
 
-        if (!session) {
+        if(
+            !session ||
+            !session.user
+        ){
 
-            window.location.href =
+            location.href =
                 "admin-login.html";
 
             return false;
@@ -1496,24 +1478,10 @@ async function checkAdmin() {
         }
 
 
-        const user =
-            session.user;
-
-
-        if (!user) {
-
-            window.location.href =
-                "admin-login.html";
-
-            return false;
-
-        }
-
-
-        if (
-            user.id !==
+        if(
+            session.user.id !==
             ADMIN_UID
-        ) {
+        ){
 
             await supabaseClient
                 .auth
@@ -1525,34 +1493,28 @@ async function checkAdmin() {
             );
 
 
-            window.location.href =
+            location.href =
                 "admin-login.html";
-
 
             return false;
 
         }
 
 
-        adminEmail.textContent =
-            user.email || "Administrator";
+        $("adminEmail").textContent =
+            session.user.email ||
+            "Administrator";
 
 
         return true;
 
     }
+    catch(error){
 
-    catch (error) {
+        console.error(error);
 
-        console.error(
-            "Admin verification error:",
-            error
-        );
-
-
-        window.location.href =
+        location.href =
             "admin-login.html";
-
 
         return false;
 
@@ -1561,23 +1523,1370 @@ async function checkAdmin() {
 }
 
 
+/* =========================================================
+   TABS
+========================================================= */
+
+document
+    .querySelectorAll(".tab")
+    .forEach(
+        function(button){
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    document
+                        .querySelectorAll(".tab")
+                        .forEach(
+                            function(tab){
+
+                                tab.classList
+                                    .remove("active");
+
+                            }
+                        );
+
+
+                    document
+                        .querySelectorAll(".panel")
+                        .forEach(
+                            function(panel){
+
+                                panel.classList
+                                    .remove("active");
+
+                            }
+                        );
+
+
+                    button.classList
+                        .add("active");
+
+
+                    $(
+                        button.dataset.panel
+                    )
+                        .classList
+                        .add("active");
+
+                }
+            );
+
+        }
+    );
+
 
 /* =========================================================
-   LOAD ADVERTISEMENTS
-========================================================== */
+   LOAD APPLICATIONS
+========================================================= */
 
-async function loadAdvertisements() {
+async function loadApplications(){
 
-    loading.style.display =
-        "block";
+    $("applicationsContent")
+        .innerHTML =
+        `
+        <div class="loading">
+            Loading applications...
+        </div>
+        `;
 
-    adsGrid.innerHTML = "";
 
-    empty.style.display =
-        "none";
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending:false
+                    }
+                );
 
 
-    try {
+        if(error){
+
+            throw error;
+
+        }
+
+
+        applicationsCache =
+            data || [];
+
+
+        updateStats(
+            applicationsCache
+        );
+
+
+        renderApplications(
+            applicationsCache
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+
+        $("applicationsContent")
+            .innerHTML =
+            `
+            <div class="error">
+
+                <strong>
+                    Unable to load applications.
+                </strong>
+
+                <br><br>
+
+                ${escapeHtml(error.message)}
+
+            </div>
+            `;
+
+    }
+
+}
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+function updateStats(apps){
+
+    $("totalCount")
+        .textContent =
+        apps.length;
+
+
+    $("pendingCount")
+        .textContent =
+        apps.filter(
+            function(app){
+
+                return String(
+                    app.status || ""
+                ).toLowerCase()
+                === "pending";
+
+            }
+        ).length;
+
+
+    $("processingCount")
+        .textContent =
+        apps.filter(
+            function(app){
+
+                return String(
+                    app.status || ""
+                ).toLowerCase()
+                === "processing";
+
+            }
+        ).length;
+
+
+    $("completedCount")
+        .textContent =
+        apps.filter(
+            function(app){
+
+                return String(
+                    app.status || ""
+                ).toLowerCase()
+                === "completed";
+
+            }
+        ).length;
+
+}
+
+
+/* =========================================================
+   DOCUMENTS
+========================================================= */
+
+function getDocuments(app){
+
+    if(
+        Array.isArray(
+            app.document_urls
+        )
+    ){
+
+        return app.document_urls;
+
+    }
+
+    return [];
+
+}
+
+
+function renderDocuments(app){
+
+    const documents =
+        getDocuments(app);
+
+
+    if(
+        !documents.length
+    ){
+
+        return `
+        <div class="no-document">
+            No document uploaded.
+        </div>
+        `;
+
+    }
+
+
+    const path =
+        documents[0];
+
+
+    return `
+    <div class="document-item">
+
+        <a
+            href="#"
+            class="document-link"
+            onclick="
+                openDocument(
+                    '${escapeJs(String(path))}'
+                );
+                return false;
+            "
+        >
+            📄 View / Open
+        </a>
+
+
+        <button
+            class="delete-document"
+            onclick="
+                deleteDocument(
+                    '${escapeJs(String(app.id))}',
+                    '${escapeJs(String(path))}'
+                )
+            "
+        >
+            Delete
+        </button>
+
+    </div>
+    `;
+
+}
+
+
+/* =========================================================
+   RENDER APPLICATIONS
+========================================================= */
+
+function renderApplications(apps){
+
+    if(
+        !apps.length
+    ){
+
+        $("applicationsContent")
+            .innerHTML =
+            `
+            <div class="empty">
+
+                <h3>
+                    No Applications Found
+                </h3>
+
+                <p>
+                    There are currently no customer applications.
+                </p>
+
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+    let rows = "";
+
+
+    apps.forEach(
+        function(app){
+
+            const rawStatus =
+                String(
+                    app.status ||
+                    "pending"
+                ).toLowerCase();
+
+
+            const status =
+                [
+                    "pending",
+                    "processing",
+                    "completed"
+                ].includes(
+                    rawStatus
+                )
+                    ? rawStatus
+                    : "pending";
+
+
+            const created =
+                app.created_at
+                    ? new Date(
+                        app.created_at
+                    ).toLocaleString(
+                        "en-IN"
+                    )
+                    : "N/A";
+
+
+            const hasDocument =
+                getDocuments(app)
+                    .length > 0;
+
+
+            rows += `
+
+            <tr>
+
+                <td>
+
+                    <div class="app-id">
+                        ${escapeHtml(
+                            app.application_id ||
+                            "N/A"
+                        )}
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <div class="customer">
+                        ${escapeHtml(
+                            app.customer_name ||
+                            "N/A"
+                        )}
+                    </div>
+
+                    <div class="mobile">
+                        ${escapeHtml(
+                            app.mobile ||
+                            ""
+                        )}
+                    </div>
+
+                </td>
+
+
+                <td>
+                    ${escapeHtml(
+                        app.email ||
+                        "N/A"
+                    )}
+                </td>
+
+
+                <td>
+
+                    <div class="service">
+                        ${escapeHtml(
+                            app.service ||
+                            "N/A"
+                        )}
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <div class="date">
+                        ${escapeHtml(
+                            created
+                        )}
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="view-btn"
+                        onclick="
+                            viewApplication(
+                                '${escapeJs(
+                                    String(app.id)
+                                )}'
+                            )
+                        "
+                    >
+                        👁 View
+                    </button>
+
+                </td>
+
+
+                <td>
+
+                    <select
+                        class="status-select ${status}"
+                        id="status-${escapeHtml(app.id)}"
+                        onchange="
+                            statusChanged(
+                                '${escapeJs(
+                                    String(app.id)
+                                )}',
+                                this
+                            )
+                        "
+                    >
+
+                        <option
+                            value="pending"
+                            ${status === "pending"
+                                ? "selected"
+                                : ""}
+                        >
+                            Pending
+                        </option>
+
+
+                        <option
+                            value="processing"
+                            ${status === "processing"
+                                ? "selected"
+                                : ""}
+                        >
+                            Processing
+                        </option>
+
+
+                        <option
+                            value="completed"
+                            ${status === "completed"
+                                ? "selected"
+                                : ""}
+                        >
+                            Completed
+                        </option>
+
+                    </select>
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="save-btn"
+                        id="save-${escapeHtml(app.id)}"
+                        onclick="
+                            updateStatus(
+                                '${escapeJs(
+                                    String(app.id)
+                                )}'
+                            )
+                        "
+                    >
+                        Save
+                    </button>
+
+                </td>
+
+
+                <td>
+
+                    <textarea
+                        class="note-input"
+                        id="note-${escapeHtml(app.id)}"
+                        placeholder="Admin note..."
+                    >${escapeHtml(
+                        app.admin_note ||
+                        ""
+                    )}</textarea>
+
+
+                    <button
+                        class="note-save"
+                        onclick="
+                            updateNote(
+                                '${escapeJs(
+                                    String(app.id)
+                                )}'
+                            )
+                        "
+                    >
+                        Save Note
+                    </button>
+
+                </td>
+
+
+                <td>
+
+                    <input
+                        type="file"
+                        class="file-input"
+                        id="file-${escapeHtml(app.id)}"
+                        accept=".pdf,.jpg,.jpeg,.png,.webp"
+                    >
+
+
+                    <button
+                        class="upload-doc"
+                        id="upload-${escapeHtml(app.id)}"
+                        onclick="
+                            uploadDocument(
+                                '${escapeJs(
+                                    String(app.id)
+                                )}'
+                            )
+                        "
+                    >
+                        📤
+                        ${
+                            hasDocument
+                                ? "Replace"
+                                : "Upload"
+                        }
+                        Document
+                    </button>
+
+
+                    <div class="replace-info">
+                        PDF / JPG / PNG / WEBP • Max 10 MB
+                    </div>
+
+
+                    <div
+                        id="documents-${escapeHtml(app.id)}"
+                    >
+                        ${renderDocuments(app)}
+                    </div>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        }
+    );
+
+
+    $("applicationsContent")
+        .innerHTML =
+        `
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Application ID
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Service
+                        </th>
+
+                        <th>
+                            Submitted
+                        </th>
+
+                        <th>
+                            View
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                        <th>
+                            Admin Note
+                        </th>
+
+                        <th>
+                            Document / Certificate
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                    ${rows}
+                </tbody>
+
+            </table>
+
+        </div>
+
+        `;
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function statusChanged(
+    id,
+    select
+){
+
+    select.className =
+        "status-select " +
+        select.value;
+
+
+    const button =
+        $("save-" + id);
+
+
+    if(button){
+
+        button.classList
+            .add("show");
+
+    }
+
+}
+
+
+async function updateStatus(id){
+
+    const select =
+        $("status-" + id);
+
+    const button =
+        $("save-" + id);
+
+
+    if(!select){
+
+        return;
+
+    }
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Saving...";
+
+
+    try{
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("applications")
+                .update({
+                    status:
+                        select.value
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        toast(
+            "Status updated to " +
+            capitalize(
+                select.value
+            )
+        );
+
+
+        await loadApplications();
+
+    }
+    catch(error){
+
+        toast(
+            "Failed to update status: " +
+            error.message,
+            "error"
+        );
+
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Save";
+
+    }
+
+}
+
+
+/* =========================================================
+   ADMIN NOTE
+========================================================= */
+
+async function updateNote(id){
+
+    const input =
+        $("note-" + id);
+
+
+    if(!input){
+
+        return;
+
+    }
+
+
+    try{
+
+        const note =
+            input.value.trim();
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("applications")
+                .update({
+                    admin_note:
+                        note
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        const cached =
+            applicationsCache.find(
+                function(app){
+
+                    return String(
+                        app.id
+                    ) === String(id);
+
+                }
+            );
+
+
+        if(cached){
+
+            cached.admin_note =
+                note;
+
+        }
+
+
+        toast(
+            "Admin note saved successfully."
+        );
+
+    }
+    catch(error){
+
+        toast(
+            "Failed to save note: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   VIEW APPLICATION
+========================================================= */
+
+function viewApplication(id){
+
+    const app =
+        applicationsCache.find(
+            function(item){
+
+                return String(
+                    item.id
+                ) === String(id);
+
+            }
+        );
+
+
+    if(!app){
+
+        toast(
+            "Application not found.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const created =
+        app.created_at
+            ? new Date(
+                app.created_at
+            ).toLocaleString(
+                "en-IN"
+            )
+            : "N/A";
+
+
+    $("modalBody")
+        .innerHTML =
+        `
+
+        <div class="details-grid">
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Application ID
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        app.application_id ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Current Status
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        capitalize(
+                            app.status ||
+                            "pending"
+                        )
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Customer Name
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        app.customer_name ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Mobile
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        app.mobile ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Email
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        app.email ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    WhatsApp
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        app.whatsapp ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Service
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        app.service ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Submitted
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        created
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card full">
+
+                <div class="detail-label">
+                    Requirement
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        app.requirement ||
+                        "No requirement provided."
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card full">
+
+                <div class="detail-label">
+                    Address
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        app.address ||
+                        "No address provided."
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card full">
+
+                <div class="detail-label">
+                    Admin Note
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        app.admin_note ||
+                        "No admin note."
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card full">
+
+                <div class="detail-label">
+                    Documents / Certificates
+                </div>
+
+                <div class="detail-value">
+                    ${renderDocuments(app)}
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+
+    $("detailsModal")
+        .classList
+        .add("show");
+
+}
+
+
+/* =========================================================
+   UPLOAD DOCUMENT
+========================================================= */
+
+async function uploadDocument(id){
+
+    const input =
+        $("file-" + id);
+
+    const button =
+        $("upload-" + id);
+
+
+    if(
+        !input ||
+        !input.files.length
+    ){
+
+        toast(
+            "Please select a document first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const file =
+        input.files[0];
+
+
+    const allowedTypes = [
+
+        "application/pdf",
+
+        "image/jpeg",
+
+        "image/png",
+
+        "image/webp"
+
+    ];
+
+
+    if(
+        !allowedTypes.includes(
+            file.type
+        )
+    ){
+
+        toast(
+            "Only PDF, JPG, PNG or WEBP files are allowed.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        file.size >
+        10 * 1024 * 1024
+    ){
+
+        toast(
+            "Maximum file size is 10 MB.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const app =
+        applicationsCache.find(
+            function(item){
+
+                return String(
+                    item.id
+                ) === String(id);
+
+            }
+        );
+
+
+    if(!app){
+
+        toast(
+            "Application not found.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Uploading...";
+
+
+    let newPath =
+        null;
+
+
+    try{
+
+        const applicationId =
+            app.application_id ||
+            String(id);
+
+
+        const safeName =
+            file.name.replace(
+                /[^a-zA-Z0-9._-]/g,
+                "_"
+            );
+
+
+        newPath =
+            `applications/${applicationId}/${Date.now()}_${safeName}`;
+
+
+        const {
+            error:uploadError
+        } =
+            await supabaseClient
+                .storage
+                .from(DOC_BUCKET)
+                .upload(
+                    newPath,
+                    file,
+                    {
+                        cacheControl:
+                            "3600",
+
+                        upsert:
+                            false,
+
+                        contentType:
+                            file.type
+                    }
+                );
+
+
+        if(uploadError){
+
+            throw uploadError;
+
+        }
+
+
+        const oldDocuments =
+            getDocuments(app);
+
+
+        const {
+            error:updateError
+        } =
+            await supabaseClient
+                .from("applications")
+                .update({
+                    document_urls:
+                        [newPath]
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+
+        if(updateError){
+
+            await supabaseClient
+                .storage
+                .from(DOC_BUCKET)
+                .remove([
+                    newPath
+                ]);
+
+            throw updateError;
+
+        }
+
+
+        for(
+            const oldPath
+            of oldDocuments
+        ){
+
+            if(
+                String(oldPath) !==
+                String(newPath)
+            ){
+
+                if(
+                    !String(oldPath)
+                        .startsWith("http")
+                ){
+
+                    await supabaseClient
+                        .storage
+                        .from(DOC_BUCKET)
+                        .remove([
+                            oldPath
+                        ]);
+
+                }
+
+            }
+
+        }
+
+
+        app.document_urls =
+            [newPath];
+
+
+        renderApplications(
+            applicationsCache
+        );
+
+
+        toast(
+            oldDocuments.length
+                ? "Document replaced successfully."
+                : "Document uploaded successfully."
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+
+        toast(
+            "Upload failed: " +
+            error.message,
+            "error"
+        );
+
+    }
+    finally{
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            getDocuments(app).length
+                ? "📤 Replace Document"
+                : "📤 Upload Document";
+
+        input.value =
+            "";
+
+    }
+
+}
+
+
+/* =========================================================
+   OPEN DOCUMENT
+========================================================= */
+
+async function openDocument(path){
+
+    try{
+
+        if(
+            String(path)
+                .startsWith("http")
+        ){
+
+            window.open(
+                path,
+                "_blank"
+            );
+
+            return;
+
+        }
+
 
         const {
             data,
@@ -1585,51 +2894,242 @@ async function loadAdvertisements() {
         } =
             await supabaseClient
                 .storage
-                .from(BUCKET_NAME)
-                .list(
-                    "",
-                    {
-                        limit: 100,
-                        sortBy: {
-                            column: "name",
-                            order: "asc"
-                        }
-                    }
+                .from(DOC_BUCKET)
+                .createSignedUrl(
+                    path,
+                    3600
                 );
 
 
-        if (error) {
+        if(error){
 
             throw error;
 
         }
 
 
-        loading.style.display =
-            "none";
+        if(
+            !data ||
+            !data.signedUrl
+        ){
+
+            throw new Error(
+                "Unable to create document URL."
+            );
+
+        }
+
+
+        window.open(
+            data.signedUrl,
+            "_blank"
+        );
+
+    }
+    catch(error){
+
+        toast(
+            "Unable to open document: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DELETE DOCUMENT
+========================================================= */
+
+async function deleteDocument(
+    id,
+    path
+){
+
+    if(
+        !confirm(
+            "Delete this document?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        if(
+            !String(path)
+                .startsWith("http")
+        ){
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .storage
+                    .from(DOC_BUCKET)
+                    .remove([
+                        path
+                    ]);
+
+
+            if(error){
+
+                throw error;
+
+            }
+
+        }
+
+
+        const {
+            error:updateError
+        } =
+            await supabaseClient
+                .from("applications")
+                .update({
+                    document_urls:[]
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+
+        if(updateError){
+
+            throw updateError;
+
+        }
+
+
+        const app =
+            applicationsCache.find(
+                function(item){
+
+                    return String(
+                        item.id
+                    ) === String(id);
+
+                }
+            );
+
+
+        if(app){
+
+            app.document_urls =
+                [];
+
+        }
+
+
+        renderApplications(
+            applicationsCache
+        );
+
+
+        toast(
+            "Document deleted successfully."
+        );
+
+    }
+    catch(error){
+
+        toast(
+            "Delete failed: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD ADS
+========================================================= */
+
+async function loadAds(){
+
+    $("adsLoading")
+        .style.display =
+        "block";
+
+
+    $("adsGrid")
+        .innerHTML =
+        "";
+
+
+    $("adsEmpty")
+        .style.display =
+        "none";
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from(AD_BUCKET)
+                .list(
+                    "",
+                    {
+                        limit:100,
+
+                        sortBy:{
+                            column:"name",
+                            order:"asc"
+                        }
+                    }
+                );
+
+
+        if(error){
+
+            throw error;
+
+        }
 
 
         const files =
             (data || [])
                 .filter(
-                    file =>
-                        file.name
-                            .toLowerCase()
-                            .match(
-                                /\.(jpg|jpeg|png|webp)$/i
-                            )
+                    function(file){
+
+                        return /\.(jpg|jpeg|png|webp)$/i
+                            .test(
+                                file.name
+                            );
+
+                    }
                 );
 
 
-        totalAds.textContent =
+        $("totalAds")
+            .textContent =
             files.length;
 
 
-        if (
-            files.length === 0
-        ) {
+        $("adsLoading")
+            .style.display =
+            "none";
 
-            empty.style.display =
+
+        if(
+            files.length === 0
+        ){
+
+            $("adsEmpty")
+                .style.display =
                 "block";
 
             return;
@@ -1638,7 +3138,7 @@ async function loadAdvertisements() {
 
 
         files.forEach(
-            function(file) {
+            function(file){
 
                 createAdCard(
                     file
@@ -1648,29 +3148,25 @@ async function loadAdvertisements() {
         );
 
     }
+    catch(error){
 
-    catch (error) {
-
-        console.error(
-            "Advertisement loading error:",
-            error
-        );
+        console.error(error);
 
 
-        loading.style.display =
+        $("adsLoading")
+            .style.display =
             "none";
 
 
-        adsGrid.innerHTML = "";
-
-
-        empty.style.display =
+        $("adsEmpty")
+            .style.display =
             "block";
 
 
-        empty.innerHTML = `
-
-            <div class="empty-icon">
+        $("adsEmpty")
+            .innerHTML =
+            `
+            <div style="font-size:45px">
                 ⚠️
             </div>
 
@@ -1679,37 +3175,40 @@ async function loadAdvertisements() {
             </h3>
 
             <p>
-                ${escapeHtml(error.message)}
+                ${escapeHtml(
+                    error.message
+                )}
             </p>
+            `;
 
-        `;
+
+        $("totalAds")
+            .textContent =
+            "0";
 
     }
 
 }
 
 
-
 /* =========================================================
    CREATE AD CARD
-========================================================== */
+========================================================= */
 
-function createAdCard(
-    file
-) {
+function createAdCard(file){
 
     const {
         data
     } =
         supabaseClient
             .storage
-            .from(BUCKET_NAME)
+            .from(AD_BUCKET)
             .getPublicUrl(
                 file.name
             );
 
 
-    const publicUrl =
+    const url =
         data.publicUrl;
 
 
@@ -1723,16 +3222,14 @@ function createAdCard(
         "ad-card";
 
 
-    card.innerHTML = `
+    card.innerHTML =
+        `
 
-        <div
-            class="ad-image"
-            title="Click to preview"
-        >
+        <div class="ad-image">
 
             <img
-                src="${escapeAttribute(publicUrl)}"
-                alt="${escapeAttribute(file.name)}"
+                src="${escapeHtml(url)}"
+                alt="${escapeHtml(file.name)}"
                 loading="lazy"
             >
 
@@ -1742,23 +3239,28 @@ function createAdCard(
         <div class="ad-info">
 
             <div class="ad-name">
-                ${escapeHtml(file.name)}
+                ${escapeHtml(
+                    file.name
+                )}
             </div>
+
 
             <div class="ad-status">
                 ● Active
             </div>
 
+
             <div class="ad-actions">
 
                 <button
-                    class="view-btn"
+                    class="ad-view"
                 >
                     👁 View
                 </button>
 
+
                 <button
-                    class="delete-btn"
+                    class="ad-delete"
                 >
                     🗑 Delete
                 </button>
@@ -1767,84 +3269,73 @@ function createAdCard(
 
         </div>
 
-    `;
+        `;
 
 
-    const image =
-        card.querySelector(
+    card
+        .querySelector(
             ".ad-image"
-        );
+        )
+        .onclick =
+        function(){
 
-
-    const viewBtn =
-        card.querySelector(
-            ".view-btn"
-        );
-
-
-    const deleteBtn =
-        card.querySelector(
-            ".delete-btn"
-        );
-
-
-    image.addEventListener(
-        "click",
-        function() {
-
-            openPreview(
-                publicUrl
+            openAdPreview(
+                url
             );
 
-        }
-    );
+        };
 
 
-    viewBtn.addEventListener(
-        "click",
-        function() {
+    card
+        .querySelector(
+            ".ad-view"
+        )
+        .onclick =
+        function(){
 
-            openPreview(
-                publicUrl
+            openAdPreview(
+                url
             );
 
-        }
-    );
+        };
 
 
-    deleteBtn.addEventListener(
-        "click",
-        function() {
+    card
+        .querySelector(
+            ".ad-delete"
+        )
+        .onclick =
+        function(){
 
-            deleteAdvertisement(
+            deleteAd(
                 file.name
             );
 
-        }
-    );
+        };
 
 
-    adsGrid.appendChild(
-        card
-    );
+    $("adsGrid")
+        .appendChild(
+            card
+        );
 
 }
 
 
-
 /* =========================================================
-   UPLOAD FILE
-========================================================== */
+   UPLOAD AD
+========================================================= */
 
-async function uploadAdvertisement() {
+async function uploadAd(){
 
     const file =
-        fileInput.files[0];
+        $("adFile")
+            .files[0];
 
 
-    if (!file) {
+    if(!file){
 
-        showMessage(
+        showAdMessage(
             "Please select an image first.",
             "error"
         );
@@ -1854,13 +3345,14 @@ async function uploadAdvertisement() {
     }
 
 
-    if (
-        !file.type.startsWith(
-            "image/"
-        )
-    ) {
+    if(
+        !file.type
+            .startsWith(
+                "image/"
+            )
+    ){
 
-        showMessage(
+        showAdMessage(
             "Only image files are allowed.",
             "error"
         );
@@ -1870,16 +3362,12 @@ async function uploadAdvertisement() {
     }
 
 
-    const maxSize =
-        10 * 1024 * 1024;
-
-
-    if (
+    if(
         file.size >
-        maxSize
-    ) {
+        10 * 1024 * 1024
+    ){
 
-        showMessage(
+        showAdMessage(
             "Maximum file size is 10 MB.",
             "error"
         );
@@ -1889,26 +3377,18 @@ async function uploadAdvertisement() {
     }
 
 
-    uploadBtn.disabled =
+    const button =
+        $("uploadAdBtn");
+
+
+    button.disabled =
         true;
 
-
-    uploadBtn.textContent =
+    button.textContent =
         "Uploading...";
 
 
-    try {
-
-        const extension =
-            file.name
-                .split(".")
-                .pop()
-                .toLowerCase();
-
-
-        const timestamp =
-            Date.now();
-
+    try{
 
         const safeName =
             file.name
@@ -1923,16 +3403,15 @@ async function uploadAdvertisement() {
 
 
         const fileName =
-            `advertisement_${timestamp}_${safeName}`;
+            `advertisement_${Date.now()}_${safeName}`;
 
 
         const {
-            data,
             error
         } =
             await supabaseClient
                 .storage
-                .from(BUCKET_NAME)
+                .from(AD_BUCKET)
                 .upload(
                     fileName,
                     file,
@@ -1949,124 +3428,112 @@ async function uploadAdvertisement() {
                 );
 
 
-        if (error) {
+        if(error){
 
             throw error;
 
         }
 
 
-        showMessage(
+        showAdMessage(
             "Advertisement uploaded successfully.",
             "success"
         );
 
 
-        fileInput.value =
+        $("adFile")
+            .value =
             "";
 
-        selectedFile.textContent =
+
+        $("adSelectedFile")
+            .textContent =
             "";
 
-        uploadAction.classList.remove(
-            "show"
-        );
+
+        $("adUploadAction")
+            .classList
+            .remove(
+                "show"
+            );
 
 
-        await loadAdvertisements();
+        await loadAds();
 
     }
+    catch(error){
 
-    catch (error) {
-
-        console.error(
-            "Upload error:",
-            error
-        );
-
-
-        showMessage(
+        showAdMessage(
             error.message ||
             "Advertisement upload failed.",
             "error"
         );
 
     }
+    finally{
 
+        button.disabled =
+            false;
 
-    uploadBtn.disabled =
-        false;
+        button.textContent =
+            "⬆️ Upload Advertisement";
 
-
-    uploadBtn.textContent =
-        "⬆️ Upload Advertisement";
+    }
 
 }
 
 
-
 /* =========================================================
-   DELETE ADVERTISEMENT
-========================================================== */
+   DELETE AD
+========================================================= */
 
-async function deleteAdvertisement(
+async function deleteAd(
     fileName
-) {
+){
 
-    const confirmed =
-        confirm(
+    if(
+        !confirm(
             `Are you sure you want to delete "${fileName}"?`
-        );
-
-
-    if (!confirmed) {
+        )
+    ){
 
         return;
 
     }
 
 
-    try {
+    try{
 
         const {
             error
         } =
             await supabaseClient
                 .storage
-                .from(BUCKET_NAME)
-                .remove(
-                    [
-                        fileName
-                    ]
-                );
+                .from(AD_BUCKET)
+                .remove([
+                    fileName
+                ]);
 
 
-        if (error) {
+        if(error){
 
             throw error;
 
         }
 
 
-        showMessage(
+        showAdMessage(
             "Advertisement deleted successfully.",
             "success"
         );
 
 
-        await loadAdvertisements();
+        await loadAds();
 
     }
+    catch(error){
 
-    catch (error) {
-
-        console.error(
-            "Delete error:",
-            error
-        );
-
-
-        showMessage(
+        showAdMessage(
             error.message ||
             "Unable to delete advertisement.",
             "error"
@@ -2077,168 +3544,242 @@ async function deleteAdvertisement(
 }
 
 
-
 /* =========================================================
-   PREVIEW
-========================================================== */
+   AD MESSAGE
+========================================================= */
 
-function openPreview(
-    url
-) {
+function showAdMessage(
+    text,
+    type
+){
 
-    modalImage.src =
-        url;
+    const el =
+        $("adMessage");
 
-    imageModal.classList.add(
-        "show"
+
+    el.textContent =
+        text;
+
+
+    el.className =
+        "message " + type;
+
+
+    setTimeout(
+        function(){
+
+            el.textContent =
+                "";
+
+            el.className =
+                "message";
+
+        },
+        4000
     );
 
 }
 
 
-function closePreview() {
+/* =========================================================
+   AD PREVIEW
+========================================================= */
 
-    imageModal.classList.remove(
-        "show"
-    );
+function openAdPreview(url){
 
-    modalImage.src =
+    $("modalImage")
+        .src =
+        url;
+
+
+    $("imageModal")
+        .classList
+        .add(
+            "show"
+        );
+
+}
+
+
+function closeAdPreview(){
+
+    $("imageModal")
+        .classList
+        .remove(
+            "show"
+        );
+
+
+    $("modalImage")
+        .src =
         "";
 
 }
 
 
-
 /* =========================================================
-   FILE SELECTION
-========================================================== */
+   EVENTS
+========================================================= */
 
-fileInput.addEventListener(
-    "change",
-    function() {
-
-        const file =
-            this.files[0];
+$("refreshApplications")
+    .onclick =
+    loadApplications;
 
 
-        if (!file) {
+$("refreshAds")
+    .onclick =
+    loadAds;
 
-            selectedFile.textContent =
-                "";
 
-            uploadAction.classList.remove(
+$("toggleAdUpload")
+    .onclick =
+    function(){
+
+        const box =
+            $("adUploadBox");
+
+
+        box.classList
+            .toggle(
                 "show"
             );
 
-            return;
+
+        $("toggleAdUpload")
+            .textContent =
+            box.classList
+                .contains(
+                    "show"
+                )
+                ? "✕ Close Upload"
+                : "➕ Add Advertisement";
+
+    };
+
+
+$("adFile")
+    .addEventListener(
+        "change",
+        function(){
+
+            const file =
+                this.files[0];
+
+
+            if(!file){
+
+                $("adSelectedFile")
+                    .textContent =
+                    "";
+
+                $("adUploadAction")
+                    .classList
+                    .remove(
+                        "show"
+                    );
+
+                return;
+
+            }
+
+
+            $("adSelectedFile")
+                .textContent =
+                "Selected: " +
+                file.name;
+
+
+            $("adUploadAction")
+                .classList
+                .add(
+                    "show"
+                );
 
         }
+    );
 
 
-        selectedFile.textContent =
-            `Selected: ${file.name}`;
+$("uploadAdBtn")
+    .onclick =
+    uploadAd;
 
 
-        uploadAction.classList.add(
-            "show"
-        );
+$("closeDetails")
+    .onclick =
+    function(){
 
-    }
-);
-
-
-
-/* =========================================================
-   TOGGLE UPLOAD BOX
-========================================================== */
-
-uploadToggle.addEventListener(
-    "click",
-    function() {
-
-        uploadBox.classList.toggle(
-            "show"
-        );
-
-
-        if (
-            uploadBox.classList.contains(
+        $("detailsModal")
+            .classList
+            .remove(
                 "show"
-            )
-        ) {
+            );
 
-            uploadToggle.textContent =
-                "✕ Close Upload";
+    };
+
+
+$("closeDetails2")
+    .onclick =
+    function(){
+
+        $("detailsModal")
+            .classList
+            .remove(
+                "show"
+            );
+
+    };
+
+
+$("detailsModal")
+    .onclick =
+    function(event){
+
+        if(
+            event.target ===
+            $("detailsModal")
+        ){
+
+            $("detailsModal")
+                .classList
+                .remove(
+                    "show"
+                );
 
         }
 
-        else {
+    };
 
-            uploadToggle.textContent =
-                "➕ Add Advertisement";
+
+$("closeImage")
+    .onclick =
+    closeAdPreview;
+
+
+$("imageModal")
+    .onclick =
+    function(event){
+
+        if(
+            event.target ===
+            $("imageModal")
+        ){
+
+            closeAdPreview();
 
         }
 
-    }
-);
+    };
 
 
+$("logoutBtn")
+    .onclick =
+    async function(){
 
-/* =========================================================
-   UPLOAD BUTTON
-========================================================== */
-
-uploadBtn.addEventListener(
-    "click",
-    uploadAdvertisement
-);
-
-
-
-/* =========================================================
-   REFRESH
-========================================================== */
-
-refreshBtn.addEventListener(
-    "click",
-    async function() {
-
-        refreshBtn.disabled =
-            true;
-
-        refreshBtn.textContent =
-            "⟳ Loading...";
-
-
-        await loadAdvertisements();
-
-
-        refreshBtn.disabled =
-            false;
-
-        refreshBtn.textContent =
-            "🔄 Refresh";
-
-    }
-);
-
-
-
-/* =========================================================
-   LOGOUT
-========================================================== */
-
-logoutBtn.addEventListener(
-    "click",
-    async function() {
-
-        const confirmed =
-            confirm(
+        if(
+            !confirm(
                 "Do you want to logout?"
-            );
-
-
-        if (!confirmed) {
+            )
+        ){
 
             return;
 
@@ -2250,50 +3791,29 @@ logoutBtn.addEventListener(
             .signOut();
 
 
-        window.location.href =
+        location.href =
             "admin-login.html";
 
-    }
-);
-
-
-
-/* =========================================================
-   MODAL EVENTS
-========================================================== */
-
-closeModal.addEventListener(
-    "click",
-    closePreview
-);
-
-
-imageModal.addEventListener(
-    "click",
-    function(event) {
-
-        if (
-            event.target ===
-            imageModal
-        ) {
-
-            closePreview();
-
-        }
-
-    }
-);
+    };
 
 
 document.addEventListener(
     "keydown",
-    function(event) {
+    function(event){
 
-        if (
-            event.key === "Escape"
-        ) {
+        if(
+            event.key ===
+            "Escape"
+        ){
 
-            closePreview();
+            $("detailsModal")
+                .classList
+                .remove(
+                    "show"
+                );
+
+
+            closeAdPreview();
 
         }
 
@@ -2301,76 +3821,34 @@ document.addEventListener(
 );
 
 
-
-/* =========================================================
-   SECURITY HELPERS
-========================================================== */
-
-function escapeHtml(
-    value
-) {
-
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-function escapeAttribute(
-    value
-) {
-
-    return escapeHtml(
-        value
-    );
-
-}
-
-
-
 /* =========================================================
    INITIALIZE
-========================================================== */
+========================================================= */
 
-(async function() {
+(async function(){
 
     const isAdmin =
         await checkAdmin();
 
 
-    if (!isAdmin) {
+    if(!isAdmin){
 
         return;
 
     }
 
 
-    await loadAdvertisements();
+    await Promise.all([
+
+        loadApplications(),
+
+        loadAds()
+
+    ]);
 
 })();
 
 </script>
 
-
 </body>
-
 </html>
