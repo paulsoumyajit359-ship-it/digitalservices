@@ -1,65 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Admin Login | Digital Service</title>
 
-    <title>Digital Service | Digital • Tax • Business Services</title>
-
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Arial, sans-serif;
             background: #f4f7fb;
-            color: #172033;
-            line-height: 1.6;
-        }
-
-
-        /* =====================================================
-           HEADER
-        ====================================================== */
-
-        header {
-            background: linear-gradient(135deg, #063b8f, #1769d1);
-            color: white;
-            padding: 18px 6%;
+            min-height: 100vh;
 
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
 
-            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+            padding: 20px;
         }
 
+        .login-box {
+            width: 100%;
+            max-width: 420px;
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            background: #ffffff;
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, 0.12);
         }
-
 
         .logo {
-            width: 48px;
-            height: 48px;
+            width: 60px;
+            height: 60px;
 
-            background: white;
-            color: #0755b8;
+            background: #172033;
+            color: #ffffff;
 
             border-radius: 12px;
 
@@ -67,1123 +55,444 @@
             align-items: center;
             justify-content: center;
 
+            margin: 0 auto 15px;
+
+            font-size: 24px;
             font-weight: bold;
-            font-size: 20px;
         }
 
-
-        .brand h1 {
-            font-size: 23px;
-        }
-
-
-        .brand p {
-            font-size: 13px;
-            opacity: 0.9;
-        }
-
-
-        nav {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 22px;
-            font-weight: 600;
-        }
-
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-
-        /* =====================================================
-           HERO
-        ====================================================== */
-
-        .hero {
-            padding: 75px 6%;
+        h1 {
             text-align: center;
-            background: white;
+
+            color: #172033;
+
+            margin-bottom: 8px;
         }
 
+        .subtitle {
+            text-align: center;
 
-        .hero h2 {
-            font-size: 42px;
-            color: #063b8f;
+            color: #666666;
+
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: bold;
+
+            color: #333333;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 13px;
+
             margin-bottom: 15px;
-        }
 
-
-        .hero p {
-            max-width: 700px;
-            margin: auto;
-            color: #596579;
-            font-size: 18px;
-        }
-
-
-        .hero-buttons {
-            margin-top: 30px;
-        }
-
-
-        .btn {
-            display: inline-block;
-
-            padding: 13px 25px;
+            border: 1px solid #cccccc;
 
             border-radius: 8px;
 
-            text-decoration: none;
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #1769d1;
+
+            box-shadow:
+                0 0 0 3px rgba(23, 105, 209, 0.10);
+        }
+
+        button {
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #172033;
+
+            color: #ffffff;
+
+            font-size: 16px;
 
             font-weight: bold;
 
-            margin: 6px;
-        }
+            cursor: pointer;
 
-
-        .primary {
-            background: #0866d8;
-            color: white;
-        }
-
-
-        .primary:hover {
-            background: #064fa8;
-        }
-
-
-        .secondary {
-            border: 2px solid #0866d8;
-            color: #0866d8;
-            background: white;
-        }
-
-
-        .secondary:hover {
-            background: #eef5ff;
-        }
-
-
-        /* =====================================================
-           SERVICES
-        ====================================================== */
-
-        .services {
-            padding: 65px 6%;
-        }
-
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-
-        .section-title h2 {
-            color: #063b8f;
-            font-size: 32px;
-        }
-
-
-        .section-title p {
-            color: #687386;
             margin-top: 8px;
         }
 
-
-        .service-grid {
-
-            max-width: 1150px;
-
-            margin: auto;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(220px, 1fr)
-                );
-
-            gap: 22px;
+        button:hover {
+            background: #0d1422;
         }
 
+        button:disabled {
+            opacity: 0.6;
 
-        .service-card {
+            cursor: not-allowed;
+        }
 
-            background: white;
-
-            padding: 28px 22px;
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(20,40,80,0.08);
+        #message {
+            margin-top: 18px;
 
             text-align: center;
 
-            border: 1px solid #e7edf5;
+            font-weight: bold;
 
-            transition: 0.25s;
+            line-height: 1.5;
+
+            min-height: 22px;
         }
 
+        .back {
+            display: block;
 
-        .service-card:hover {
+            text-align: center;
 
-            transform: translateY(-5px);
+            margin-top: 20px;
 
-            box-shadow:
-                0 10px 28px
-                rgba(20,40,80,0.14);
-        }
-
-
-        .service-icon {
-
-            font-size: 38px;
-
-            margin-bottom: 12px;
-        }
-
-
-        .service-card h3 {
-
-            color: #173f7a;
-
-            margin-bottom: 8px;
-        }
-
-
-        .service-card p {
-
-            color: #6c7687;
-
-            font-size: 14px;
-
-            min-height: 45px;
-        }
-
-
-        .apply-btn {
-
-            display: inline-block;
-
-            margin-top: 18px;
-
-            padding: 9px 18px;
-
-            background: #0866d8;
-
-            color: white;
+            color: #1769d1;
 
             text-decoration: none;
 
-            border-radius: 7px;
-
-            font-size: 14px;
-
-            font-weight: bold;
+            font-size: 15px;
         }
 
-
-        .apply-btn:hover {
-
-            background: #064fa8;
+        .back:hover {
+            text-decoration: underline;
         }
-
-
-        /* =====================================================
-           HOW IT WORKS
-        ====================================================== */
-
-        .how {
-
-            background: white;
-
-            padding: 65px 6%;
-        }
-
-
-        .steps {
-
-            max-width: 1000px;
-
-            margin: 35px auto 0;
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(200px, 1fr)
-                );
-
-            gap: 25px;
-
-            text-align: center;
-        }
-
-
-        .step {
-
-            padding: 20px;
-        }
-
-
-        .step-number {
-
-            width: 45px;
-
-            height: 45px;
-
-            margin:
-                auto
-                auto
-                15px;
-
-            border-radius: 50%;
-
-            background: #0866d8;
-
-            color: white;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-weight: bold;
-
-            font-size: 18px;
-        }
-
-
-        .step h3 {
-
-            margin-bottom: 8px;
-
-            color: #173f7a;
-        }
-
-
-        .step p {
-
-            color: #687386;
-
-            font-size: 14px;
-        }
-
-
-        /* =====================================================
-           CTA
-        ====================================================== */
-
-        .cta {
-
-            margin: 55px 6%;
-
-            padding: 50px 20px;
-
-            text-align: center;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #063b8f,
-                    #1769d1
-                );
-
-            color: white;
-
-            border-radius: 18px;
-        }
-
-
-        .cta h2 {
-
-            font-size: 30px;
-
-            margin-bottom: 10px;
-        }
-
-
-        .cta p {
-
-            opacity: 0.9;
-
-            margin-bottom: 20px;
-        }
-
-
-        .cta .btn {
-
-            background: white;
-
-            color: #0755b8;
-        }
-
-
-        /* =====================================================
-           FOOTER
-        ====================================================== */
-
-        footer {
-
-            background: #111827;
-
-            color: #d6dbe5;
-
-            text-align: center;
-
-            padding: 28px 20px;
-
-            font-size: 14px;
-        }
-
-
-        footer strong {
-
-            color: white;
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
-
-        @media (max-width: 700px) {
-
-
-            header {
-
-                flex-direction: column;
-
-                gap: 15px;
-
-                text-align: center;
-            }
-
-
-            nav {
-
-                justify-content: center;
-
-                gap: 5px;
-            }
-
-
-            nav a {
-
-                margin: 0 6px;
-
-                font-size: 14px;
-            }
-
-
-            .hero {
-
-                padding: 55px 20px;
-            }
-
-
-            .hero h2 {
-
-                font-size: 31px;
-            }
-
-
-            .hero p {
-
-                font-size: 16px;
-            }
-
-
-            .services {
-
-                padding: 50px 20px;
-            }
-
-
-            .cta {
-
-                margin: 35px 20px;
-            }
-
-        }
-
     </style>
-
 </head>
 
 
 <body>
 
+<div class="login-box">
 
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
+    <!-- Logo -->
+    <div class="logo">
+        DS
+    </div>
 
-    <header>
 
+    <!-- Heading -->
+    <h1>
+        Admin Login
+    </h1>
 
-        <div class="brand">
 
+    <p class="subtitle">
+        Digital Service Administrator Panel
+    </p>
 
-            <div class="logo">
-                DS
-            </div>
 
+    <!-- Login Form -->
+    <form id="adminLoginForm">
 
-            <div>
+        <label for="email">
+            Admin Email
+        </label>
 
-                <h1>
-                    Digital Service
-                </h1>
-
-
-                <p>
-                    Digital • Tax • Business Services
-                </p>
-
-            </div>
-
-
-        </div>
-
-
-
-        <nav>
-
-
-            <a href="index.html">
-                Home
-            </a>
-
-
-            <a href="#services">
-                Services
-            </a>
-
-
-            <a href="apply.html">
-                Apply
-            </a>
-
-
-            <a href="login.html">
-                Customer Login
-            </a>
-
-
-            <a href="signup.html">
-                Sign Up
-            </a>
-
-
-            <!-- =================================================
-                 ADMIN LOGIN
-                 ONLY HERE
-            ================================================== -->
-
-            <a href="admin-login.html">
-                🔐 Admin Login
-            </a>
-
-
-        </nav>
-
-
-    </header>
-
-
-
-    <!-- =====================================================
-         HERO SECTION
-    ====================================================== -->
-
-    <section class="hero">
-
-
-        <h2>
-            Your Digital Service Partner
-        </h2>
-
-
-        <p>
-
-            Get Digital, Tax and Business related services
-            easily from one place. Submit your application
-            online and manage your service request.
-
-        </p>
-
-
-        <div class="hero-buttons">
-
-
-            <a
-                href="#services"
-                class="btn primary"
-            >
-                Explore Services
-            </a>
-
-
-            <a
-                href="apply.html"
-                class="btn secondary"
-            >
-                Apply for a Service
-            </a>
-
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =====================================================
-         SERVICES
-    ====================================================== -->
-
-    <section
-        class="services"
-        id="services"
-    >
-
-
-        <div class="section-title">
-
-
-            <h2>
-                Our Services
-            </h2>
-
-
-            <p>
-                Select the service you require and apply online.
-            </p>
-
-
-        </div>
-
-
-
-        <div class="service-grid">
-
-
-            <!-- PAN CARD -->
-
-            <div class="service-card">
-
-
-                <div class="service-icon">
-                    🪪
-                </div>
-
-
-                <h3>
-                    PAN Card
-                </h3>
-
-
-                <p>
-                    New PAN card application and related services.
-                </p>
-
-
-                <a
-                    href="apply.html?service=PAN%20Card"
-                    class="apply-btn"
-                >
-                    Apply Now
-                </a>
-
-
-            </div>
-
-
-
-            <!-- AADHAAR -->
-
-            <div class="service-card">
-
-
-                <div class="service-icon">
-                    🆔
-                </div>
-
-
-                <h3>
-                    Aadhaar Card
-                </h3>
-
-
-                <p>
-                    Aadhaar related application and assistance.
-                </p>
-
-
-                <a
-                    href="apply.html?service=Aadhaar"
-                    class="apply-btn"
-                >
-                    Apply Now
-                </a>
-
-
-            </div>
-
-
-
-            <!-- RATION CARD -->
-
-            <div class="service-card">
-
-
-                <div class="service-icon">
-                    🍚
-                </div>
-
-
-                <h3>
-                    Ration Card
-                </h3>
-
-
-                <p>
-                    Ration card application and related services.
-                </p>
-
-
-                <a
-                    href="apply.html?service=Ration%20Card"
-                    class="apply-btn"
-                >
-                    Apply Now
-                </a>
-
-
-            </div>
-
-
-
-            <!-- TRADE LICENSE -->
-
-            <div class="service-card">
-
-
-                <div class="service-icon">
-                    🏪
-                </div>
-
-
-                <h3>
-                    Trade License
-                </h3>
-
-
-                <p>
-                    Assistance for trade license applications.
-                </p>
-
-
-                <a
-                    href="apply.html?service=Trade%20License"
-                    class="apply-btn"
-                >
-                    Apply Now
-                </a>
-
-
-            </div>
-
-
-
-            <!-- SHOP ESTABLISHMENT -->
-
-            <div class="service-card">
-
-
-                <div class="service-icon">
-                    🏢
-                </div>
-
-
-                <h3>
-                    Shop & Establishment
-                </h3>
-
-
-                <p>
-                    Shop and establishment registration services.
-                </p>
-
-
-                <a
-                    href="apply.html?service=Shop%20Establishment"
-                    class="apply-btn"
-                >
-                    Apply Now
-                </a>
-
-
-            </div>
-
-
-
-            <!-- FSSAI -->
-
-            <div class="service-card">
-
-
-                <div class="service-icon">
-                    🍴
-                </div>
-
-
-                <h3>
-                    FSSAI License
-                </h3>
-
-
-                <p>
-                    FSSAI registration and license assistance.
-                </p>
-
-
-                <a
-                    href="apply.html?service=FSSAI%20License"
-                    class="apply-btn"
-                >
-                    Apply Now
-                </a>
-
-
-            </div>
-
-
-
-            <!-- GST -->
-
-            <div class="service-card">
-
-
-                <div class="service-icon">
-                    📊
-                </div>
-
-
-                <h3>
-                    GST
-                </h3>
-
-
-                <p>
-                    GST registration and compliance services.
-                </p>
-
-
-                <a
-                    href="apply.html?service=GST"
-                    class="apply-btn"
-                >
-                    Apply Now
-                </a>
-
-
-            </div>
-
-
-
-            <!-- TDS -->
-
-            <div class="service-card">
-
-
-                <div class="service-icon">
-                    💰
-                </div>
-
-
-                <h3>
-                    TDS
-                </h3>
-
-
-                <p>
-                    TDS related registration and compliance support.
-                </p>
-
-
-                <a
-                    href="apply.html?service=TDS"
-                    class="apply-btn"
-                >
-                    Apply Now
-                </a>
-
-
-            </div>
-
-
-
-            <!-- INCOME TAX -->
-
-            <div class="service-card">
-
-
-                <div class="service-icon">
-                    📑
-                </div>
-
-
-                <h3>
-                    Income Tax
-                </h3>
-
-
-                <p>
-                    Income tax return and related services.
-                </p>
-
-
-                <a
-                    href="apply.html?service=Income%20Tax"
-                    class="apply-btn"
-                >
-                    Apply Now
-                </a>
-
-
-            </div>
-
-
-
-            <!-- OTHER SERVICES -->
-
-            <div class="service-card">
-
-
-                <div class="service-icon">
-                    ➕
-                </div>
-
-
-                <h3>
-                    Other Services
-                </h3>
-
-
-                <p>
-                    Need another digital or business service?
-                </p>
-
-
-                <a
-                    href="apply.html"
-                    class="apply-btn"
-                >
-                    Apply Now
-                </a>
-
-
-            </div>
-
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =====================================================
-         HOW IT WORKS
-    ====================================================== -->
-
-    <section class="how">
-
-
-        <div class="section-title">
-
-
-            <h2>
-                How It Works
-            </h2>
-
-
-            <p>
-                Simple and convenient online service process.
-            </p>
-
-
-        </div>
-
-
-
-        <div class="steps">
-
-
-            <div class="step">
-
-
-                <div class="step-number">
-                    1
-                </div>
-
-
-                <h3>
-                    Select Service
-                </h3>
-
-
-                <p>
-                    Choose the service you need from our service list.
-                </p>
-
-
-            </div>
-
-
-
-            <div class="step">
-
-
-                <div class="step-number">
-                    2
-                </div>
-
-
-                <h3>
-                    Submit Details
-                </h3>
-
-
-                <p>
-                    Fill in your details and upload required documents.
-                </p>
-
-
-            </div>
-
-
-
-            <div class="step">
-
-
-                <div class="step-number">
-                    3
-                </div>
-
-
-                <h3>
-                    Application Processing
-                </h3>
-
-
-                <p>
-                    We review and process your application.
-                </p>
-
-
-            </div>
-
-
-
-            <div class="step">
-
-
-                <div class="step-number">
-                    4
-                </div>
-
-
-                <h3>
-                    Track Status
-                </h3>
-
-
-                <p>
-                    Check the progress of your application online.
-                </p>
-
-
-            </div>
-
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =====================================================
-         CTA
-    ====================================================== -->
-
-    <section class="cta">
-
-
-        <h2>
-            Need a Digital Service?
-        </h2>
-
-
-        <p>
-            Submit your application online today.
-        </p>
-
-
-        <a
-            href="apply.html"
-            class="btn"
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter admin email"
+            autocomplete="username"
+            required
         >
-            Start Your Application
-        </a>
 
 
-    </section>
+        <label for="password">
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            autocomplete="current-password"
+            required
+        >
 
 
+        <button
+            type="submit"
+            id="loginButton"
+        >
+            Admin Login
+        </button>
 
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
-
-    <footer>
-
-
-        <p>
-
-            © 2026
-            <strong>Digital Service</strong>.
-            All Rights Reserved.
-
-        </p>
+    </form>
 
 
-        <p>
-            Digital • Tax • Business Services
-        </p>
+    <!-- Message -->
+    <div id="message"></div>
 
 
-    </footer>
+    <!-- Back to Customer Login -->
+    <a
+        href="login.html"
+        class="back"
+    >
+        ← Customer Login
+    </a>
 
+</div>
+
+
+<script>
+
+    // =========================================================
+    // SUPABASE CONFIGURATION
+    // =========================================================
+
+    const SUPABASE_URL =
+        "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+
+
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+
+
+    // =========================================================
+    // ADMIN UID
+    // =========================================================
+
+    const ADMIN_UID =
+        "e3c0a5b6-7bb7-4efa-b7c4-64b37cc84b08";
+
+
+    // =========================================================
+    // GET HTML ELEMENTS
+    // =========================================================
+
+    const form =
+        document.getElementById("adminLoginForm");
+
+
+    const emailInput =
+        document.getElementById("email");
+
+
+    const passwordInput =
+        document.getElementById("password");
+
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+
+    const message =
+        document.getElementById("message");
+
+
+    // =========================================================
+    // SHOW MESSAGE
+    // =========================================================
+
+    function showMessage(text, type) {
+
+        message.textContent = text;
+
+
+        if (type === "success") {
+
+            message.style.color = "#0a9f4b";
+
+        } else {
+
+            message.style.color = "#ff0000";
+
+        }
+
+    }
+
+
+    // =========================================================
+    // ADMIN LOGIN
+    // =========================================================
+
+    form.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            // -------------------------------------------------
+            // GET INPUT VALUES
+            // -------------------------------------------------
+
+            const email =
+                emailInput.value.trim();
+
+
+            const password =
+                passwordInput.value;
+
+
+            // -------------------------------------------------
+            // RESET MESSAGE
+            // -------------------------------------------------
+
+            message.textContent = "";
+
+
+            // -------------------------------------------------
+            // DISABLE BUTTON
+            // -------------------------------------------------
+
+            loginButton.disabled = true;
+
+            loginButton.textContent =
+                "Checking...";
+
+
+            try {
+
+                // =================================================
+                // SIGN IN WITH SUPABASE
+                // =================================================
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth.signInWithPassword({
+
+                        email: email,
+
+                        password: password
+
+                    });
+
+
+                // -------------------------------------------------
+                // CHECK LOGIN ERROR
+                // -------------------------------------------------
+
+                if (error) {
+
+                    throw new Error(
+                        "Invalid login credentials."
+                    );
+
+                }
+
+
+                // =================================================
+                // GET LOGGED-IN USER
+                // =================================================
+
+                const user =
+                    data.user;
+
+
+                if (!user) {
+
+                    throw new Error(
+                        "Unable to verify account."
+                    );
+
+                }
+
+
+                // =================================================
+                // CHECK ADMIN UID
+                // =================================================
+
+                if (user.id !== ADMIN_UID) {
+
+                    // Logout non-admin user immediately
+
+                    await supabaseClient.auth.signOut();
+
+
+                    throw new Error(
+                        "Access denied. This account is not an administrator."
+                    );
+
+                }
+
+
+                // =================================================
+                // ADMIN VERIFIED
+                // =================================================
+
+                showMessage(
+                    "Admin login successful. Opening dashboard...",
+                    "success"
+                );
+
+
+                // -------------------------------------------------
+                // OPEN ADMIN DASHBOARD
+                // -------------------------------------------------
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "admin-dashboard.html";
+
+                    },
+                    700
+                );
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Admin login error:",
+                    error
+                );
+
+
+                showMessage(
+                    error.message ||
+                    "Admin login failed.",
+                    "error"
+                );
+
+            }
+
+
+            finally {
+
+                // -------------------------------------------------
+                // ENABLE BUTTON AGAIN
+                // -------------------------------------------------
+
+                loginButton.disabled = false;
+
+                loginButton.textContent =
+                    "Admin Login";
+
+            }
+
+        }
+    );
+
+</script>
 
 </body>
-
 </html>
