@@ -1,1896 +1,938 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Customer Dashboard | Digital Service
-    </title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        body {
-
-            font-family: Arial, sans-serif;
-
-            background: #f4f7fb;
-
-            color: #172033;
-
-            min-height: 100vh;
-        }
-
-
-        .header {
-
-            background: white;
-
-            padding: 18px 30px;
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            box-shadow:
-                0 2px 10px rgba(0,0,0,0.08);
-
-            position: sticky;
-
-            top: 0;
-
-            z-index: 100;
-        }
-
-
-        .logo-area {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-        }
-
-
-        .logo-box {
-
-            width: 48px;
-
-            height: 48px;
-
-            background: #1769d1;
-
-            color: white;
-
-            border-radius: 10px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 20px;
-
-            font-weight: bold;
-        }
-
-
-        .logo-area h1 {
-            font-size: 21px;
-        }
-
-
-        .logo-area p {
-
-            color: #666;
-
-            font-size: 13px;
-
-            margin-top: 3px;
-        }
-
-
-        .header-right {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-        }
-
-
-        .user-email {
-
-            color: #555;
-
-            font-size: 14px;
-        }
-
-
-        .logout-btn {
-
-            border: none;
-
-            background: #dc3545;
-
-            color: white;
-
-            padding: 10px 16px;
-
-            border-radius: 7px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-
-        .container {
-
-            max-width: 1100px;
-
-            margin: 35px auto;
-
-            padding: 0 20px;
-        }
-
-
-        .welcome {
-
-            background: white;
-
-            padding: 25px;
-
-            border-radius: 14px;
-
-            box-shadow:
-                0 5px 20px rgba(0,0,0,0.07);
-
-            margin-bottom: 25px;
-        }
-
-
-        .welcome h2 {
-            margin-bottom: 8px;
-        }
-
-
-        .welcome p {
-            color: #666;
-        }
-
-
-        .error {
-
-            background: #f8d7da;
-
-            color: #842029;
-
-            padding: 15px;
-
-            border-radius: 8px;
-
-            margin-bottom: 20px;
-
-            display: none;
-        }
-
-
-        .stats {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 18px;
-
-            margin-bottom: 30px;
-        }
-
-
-        .stat-card {
-
-            background: white;
-
-            padding: 22px;
-
-            border-radius: 13px;
-
-            box-shadow:
-                0 5px 20px rgba(0,0,0,0.07);
-        }
-
-
-        .stat-card h3 {
-
-            font-size: 14px;
-
-            color: #666;
-
-            margin-bottom: 10px;
-        }
-
-
-        .stat-number {
-
-            font-size: 30px;
-
-            font-weight: bold;
-        }
-
-
-        .stat-total {
-            color: #172033;
-        }
-
-
-        .stat-pending {
-            color: #d99a00;
-        }
-
-
-        .stat-processing {
-            color: #1769d1;
-        }
-
-
-        .stat-completed {
-            color: #0a9f4f;
-        }
-
-
-        .applications-card {
-
-            background: white;
-
-            border-radius: 14px;
-
-            padding: 25px;
-
-            box-shadow:
-                0 5px 20px rgba(0,0,0,0.07);
-        }
-
-
-        .applications-header {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-bottom: 20px;
-        }
-
-
-        .refresh-btn {
-
-            border: none;
-
-            background: #1769d1;
-
-            color: white;
-
-            padding: 10px 18px;
-
-            border-radius: 7px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-
-        .loading {
-
-            text-align: center;
-
-            padding: 30px;
-
-            color: #666;
-        }
-
-
-        .application-item {
-
-            border: 1px solid #e3e6eb;
-
-            border-radius: 10px;
-
-            padding: 20px;
-
-            margin-bottom: 15px;
-
-            background: #fff;
-        }
-
-
-        .application-top {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 15px;
-
-            margin-bottom: 12px;
-        }
-
-
-        .application-id {
-
-            font-weight: bold;
-
-            color: #1769d1;
-
-            font-size: 15px;
-        }
-
-
-        .application-date {
-
-            color: #777;
-
-            font-size: 13px;
-
-            margin-top: 5px;
-        }
-
-
-        .service-name {
-
-            font-size: 18px;
-
-            font-weight: bold;
-
-            margin-bottom: 8px;
-        }
-
-
-        .status {
-
-            display: inline-block;
-
-            padding: 7px 12px;
-
-            border-radius: 20px;
-
-            font-size: 13px;
-
-            font-weight: bold;
-
-            white-space: nowrap;
-        }
-
-
-        .status-pending {
-
-            background: #fff3cd;
-
-            color: #856404;
-        }
-
-
-        .status-processing {
-
-            background: #cfe2ff;
-
-            color: #084298;
-        }
-
-
-        .status-completed {
-
-            background: #d1e7dd;
-
-            color: #0f5132;
-        }
-
-
-        .status-approved {
-
-            background: #d1e7dd;
-
-            color: #0f5132;
-        }
-
-
-        .status-rejected {
-
-            background: #f8d7da;
-
-            color: #842029;
-        }
-
-
-        .status-default {
-
-            background: #e2e3e5;
-
-            color: #41464b;
-        }
-
-
-        .details {
-
-            margin-top: 15px;
-
-            border-top: 1px solid #eee;
-
-            padding-top: 15px;
-        }
-
-
-        .details p {
-
-            margin-bottom: 8px;
-
-            font-size: 14px;
-
-            line-height: 1.5;
-        }
-
-
-        .admin-note {
-
-            margin-top: 15px;
-
-            background: #f4f7fb;
-
-            border-left: 4px solid #1769d1;
-
-            padding: 13px;
-
-            border-radius: 8px;
-
-            font-size: 14px;
-
-            line-height: 1.6;
-        }
-
-
-        .admin-note-title {
-
-            font-weight: bold;
-
-            margin-bottom: 5px;
-
-            color: #172033;
-        }
-
-
-        /* DOCUMENT DOWNLOAD */
-
-        .document-box {
-
-            margin-top: 18px;
-
-            padding: 15px;
-
-            background: #f0f7ff;
-
-            border: 1px solid #cfe2ff;
-
-            border-radius: 9px;
-        }
-
-
-        .document-title {
-
-            font-weight: bold;
-
-            margin-bottom: 10px;
-
-            color: #172033;
-        }
-
-
-        .download-btn {
-
-            display: inline-block;
-
-            background: #1769d1;
-
-            color: white;
-
-            text-decoration: none;
-
-            padding: 9px 13px;
-
-            border-radius: 7px;
-
-            font-size: 13px;
-
-            font-weight: bold;
-
-            margin: 4px 5px 4px 0;
-
-            cursor: pointer;
-
-            border: none;
-        }
-
-
-        .download-btn:hover {
-
-            background: #0d55b3;
-        }
-
-
-        .download-disabled {
-
-            color: #777;
-
-            font-size: 13px;
-        }
-
-
-        .no-applications {
-
-            text-align: center;
-
-            padding: 50px 20px;
-
-            color: #777;
-        }
-
-
-        footer {
-
-            text-align: center;
-
-            padding: 30px;
-
-            color: #777;
-
-            font-size: 13px;
-        }
-
-
-        @media (max-width: 800px) {
-
-            .stats {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .header {
-
-                padding: 15px;
-            }
-
-            .user-email {
-
-                display: none;
-            }
-
-            .applications-header {
-
-                align-items: flex-start;
-
-                flex-direction: column;
-            }
-
-        }
-
-
-        @media (max-width: 500px) {
-
-            .container {
-
-                margin: 20px auto;
-
-                padding: 0 12px;
-            }
-
-            .stats {
-
-                grid-template-columns:
-                    1fr 1fr;
-
-                gap: 10px;
-            }
-
-            .stat-card {
-
-                padding: 15px;
-            }
-
-            .application-top {
-
-                align-items: flex-start;
-
-                flex-direction: column;
-            }
-
-            .application-item {
-
-                padding: 15px;
-            }
-
-            .applications-card {
-
-                padding: 15px;
-            }
-
-            .welcome {
-
-                padding: 20px;
-            }
-
-            .logo-area h1 {
-
-                font-size: 18px;
-            }
-
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Dashboard | Digital Service</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+    --blue:#1769d1;
+    --blue-dark:#0d55b3;
+    --navy:#172033;
+    --bg:#f4f7fb;
+    --muted:#64748b;
+    --green:#0a9f4f;
+    --yellow:#d99a00;
+    --red:#dc3545;
+    --border:#e5eaf1;
+}
+body{
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--navy);
+    min-height:100vh;
+}
+button,a{font:inherit}
+button{cursor:pointer}
+.header{
+    position:sticky;top:0;z-index:100;
+    background:#fff;
+    padding:15px 32px;
+    display:flex;justify-content:space-between;align-items:center;
+    box-shadow:0 2px 14px rgba(23,32,51,.09);
+}
+.logo-area{display:flex;align-items:center;gap:12px}
+.logo-box{
+    width:50px;height:50px;border-radius:13px;
+    background:linear-gradient(135deg,#1769d1,#0b5bbd);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:20px;font-weight:800;
+    box-shadow:0 7px 18px rgba(23,105,209,.25);
+}
+.logo-area h1{font-size:21px}
+.logo-area p{font-size:12px;color:#64748b;margin-top:3px}
+.header-right{display:flex;align-items:center;gap:12px}
+.user-pill{
+    display:flex;align-items:center;gap:9px;
+    background:#f5f8fd;border:1px solid #e6ebf3;
+    padding:9px 13px;border-radius:999px;
+    color:#475569;font-size:13px;
+}
+.avatar{
+    width:28px;height:28px;border-radius:50%;
+    background:#dbeafe;color:#1769d1;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:12px;
+}
+.logout-btn{
+    border:0;background:#ef4444;color:#fff;
+    padding:10px 17px;border-radius:9px;font-weight:700;
+    transition:.2s;
+}
+.logout-btn:hover{background:#dc2626;transform:translateY(-1px)}
+
+.container{max-width:1160px;margin:30px auto;padding:0 20px}
+.welcome{
+    position:relative;overflow:hidden;
+    background:linear-gradient(135deg,#0f4fa8 0%,#1769d1 55%,#3184e8 100%);
+    color:#fff;padding:30px;border-radius:20px;
+    box-shadow:0 12px 35px rgba(23,105,209,.18);
+    margin-bottom:24px;
+}
+.welcome:after{
+    content:"";
+    position:absolute;width:260px;height:260px;border-radius:50%;
+    right:-90px;top:-110px;
+    background:rgba(255,255,255,.10);
+}
+.welcome:before{
+    content:"";
+    position:absolute;width:150px;height:150px;border-radius:50%;
+    right:130px;bottom:-100px;
+    background:rgba(255,255,255,.07);
+}
+.welcome-content{position:relative;z-index:2;max-width:760px}
+.welcome h2{font-size:28px;margin-bottom:8px}
+.welcome p{color:#e5efff;line-height:1.6}
+.welcome-actions{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.primary-btn,.secondary-btn{
+    border:0;border-radius:10px;padding:11px 17px;font-weight:700;
+    text-decoration:none;display:inline-flex;align-items:center;gap:7px;
+    transition:.2s;
+}
+.primary-btn{background:#fff;color:#1257b5}
+.primary-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.14)}
+.secondary-btn{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.secondary-btn:hover{background:rgba(255,255,255,.22)}
+
+.error{
+    background:#fee2e2;color:#991b1b;border:1px solid #fecaca;
+    padding:14px 16px;border-radius:12px;margin-bottom:20px;display:none
+}
+
+.stats{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:16px;margin-bottom:24px
+}
+.stat-card{
+    position:relative;background:#fff;border:1px solid #edf0f5;
+    border-radius:16px;padding:20px;
+    box-shadow:0 6px 22px rgba(23,32,51,.06);
+    transition:.2s;overflow:hidden
+}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(23,32,51,.10)}
+.stat-icon{
+    width:42px;height:42px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;margin-bottom:13px
+}
+.icon-total{background:#e8f1ff;color:#1769d1}
+.icon-pending{background:#fff5d8;color:#c78a00}
+.icon-processing{background:#e7f0ff;color:#1769d1}
+.icon-completed{background:#e5f8ee;color:#0a9f4f}
+.stat-label{font-size:13px;color:#64748b;font-weight:700}
+.stat-number{font-size:31px;font-weight:800;margin-top:5px}
+.stat-sub{font-size:11px;color:#94a3b8;margin-top:4px}
+
+.section-card{
+    background:#fff;border:1px solid #edf0f5;border-radius:18px;
+    box-shadow:0 6px 22px rgba(23,32,51,.06);margin-bottom:24px;
+}
+.section-header{
+    padding:21px 24px;border-bottom:1px solid #edf0f5;
+    display:flex;justify-content:space-between;align-items:center;gap:15px
+}
+.section-title h2{font-size:20px}
+.section-title p{font-size:12px;color:#94a3b8;margin-top:4px}
+.refresh-btn{
+    border:0;background:#1769d1;color:#fff;padding:10px 15px;
+    border-radius:9px;font-weight:700
+}
+.refresh-btn:hover{background:#0d55b3}
+.refresh-btn:disabled{opacity:.6;cursor:not-allowed}
+
+.update-list{padding:18px 24px}
+.update{
+    display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #f0f2f6
+}
+.update:last-child{border-bottom:0}
+.update-dot{
+    width:34px;height:34px;border-radius:50%;flex:0 0 34px;
+    display:flex;align-items:center;justify-content:center;background:#e8f1ff
+}
+.update h4{font-size:14px;margin-bottom:3px}
+.update p{font-size:12px;color:#64748b;line-height:1.5}
+.empty-update{padding:8px 0;color:#94a3b8;font-size:13px}
+
+.application-list{padding:20px 24px}
+.application-item{
+    border:1px solid #e4e9f0;border-radius:15px;padding:20px;
+    margin-bottom:15px;background:#fff;transition:.2s
+}
+.application-item:hover{
+    border-color:#cbdcf6;box-shadow:0 8px 24px rgba(23,105,209,.07)
+}
+.application-item:last-child{margin-bottom:0}
+.app-top{display:flex;justify-content:space-between;align-items:flex-start;gap:15px}
+.app-id{font-size:13px;font-weight:800;color:#1769d1}
+.app-date{font-size:11px;color:#94a3b8;margin-top:5px}
+.service-row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:10px}
+.service-name{font-size:19px;font-weight:800}
+.status{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800;
+    white-space:nowrap
+}
+.status-pending{background:#fff5d8;color:#8a6500}
+.status-processing{background:#e4efff;color:#1455a0}
+.status-completed,.status-approved{background:#def5e9;color:#086b36}
+.status-rejected{background:#fee2e2;color:#991b1b}
+.status-default{background:#edf0f4;color:#475569}
+
+.progress-wrap{margin:22px 0 8px}
+.progress-line{position:relative;height:5px;background:#e8edf3;border-radius:10px;margin:0 12px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#1769d1,#16a05b);border-radius:10px;transition:.35s}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);margin-top:-16px}
+.step{text-align:center;position:relative}
+.step-circle{
+    width:30px;height:30px;margin:auto;border-radius:50%;
+    background:#edf1f6;color:#94a3b8;border:4px solid #fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:800;position:relative;z-index:2
+}
+.step.done .step-circle{background:#0a9f4f;color:#fff}
+.step.current .step-circle{background:#1769d1;color:#fff;box-shadow:0 0 0 5px #dbeafe}
+.step-label{font-size:10px;color:#94a3b8;margin-top:7px;font-weight:700}
+.step.done .step-label,.step.current .step-label{color:#334155}
+
+.app-footer{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;margin-top:17px;padding-top:15px;border-top:1px solid #eef1f5
+}
+.app-meta{font-size:12px;color:#64748b}
+.app-actions{display:flex;gap:8px;flex-wrap:wrap}
+.action-btn{
+    border:1px solid #d9e1ec;background:#fff;color:#334155;
+    padding:9px 12px;border-radius:8px;font-size:12px;font-weight:700
+}
+.action-btn:hover{background:#f5f8fd;border-color:#bfd0e8}
+.action-btn.blue{background:#1769d1;border-color:#1769d1;color:#fff}
+.action-btn.blue:hover{background:#0d55b3}
+.action-btn.green{background:#e8f8ef;border-color:#c8ead7;color:#08783d}
+.admin-note{
+    margin-top:15px;background:#f5f8fd;border-left:4px solid #1769d1;
+    padding:13px 14px;border-radius:10px;font-size:13px;line-height:1.6
+}
+.admin-note-title{font-weight:800;color:#172033;margin-bottom:4px}
+.document-ready{
+    margin-top:13px;padding:13px;border-radius:11px;
+    background:linear-gradient(90deg,#ecfdf3,#f6fffa);
+    border:1px solid #cceedd;display:flex;justify-content:space-between;
+    align-items:center;gap:10px
+}
+.document-ready strong{font-size:13px;color:#08783d}
+.document-ready span{font-size:11px;color:#4b7b61;display:block;margin-top:3px}
+
+.services-grid{
+    padding:20px 24px 24px;
+    display:grid;grid-template-columns:repeat(6,1fr);gap:12px
+}
+.service-shortcut{
+    text-decoration:none;color:#172033;background:#f8fafc;
+    border:1px solid #e7ebf1;border-radius:13px;padding:15px 8px;
+    text-align:center;transition:.2s
+}
+.service-shortcut:hover{
+    transform:translateY(-3px);background:#eef5ff;
+    border-color:#c7dcfb;color:#1769d1
+}
+.service-shortcut .emoji{font-size:25px;display:block;margin-bottom:8px}
+.service-shortcut span{font-size:11px;font-weight:800}
+
+.help-card{
+    padding:24px;display:flex;justify-content:space-between;align-items:center;
+    gap:20px;background:linear-gradient(135deg,#fff,#f5f9ff)
+}
+.help-card h3{font-size:18px;margin-bottom:5px}
+.help-card p{font-size:12px;color:#64748b}
+.help-actions{display:flex;gap:9px;flex-wrap:wrap}
+.help-btn{
+    text-decoration:none;padding:10px 14px;border-radius:9px;font-weight:800;font-size:12px
+}
+.whatsapp{background:#16a34a;color:#fff}
+.email-btn{background:#1769d1;color:#fff}
+
+.loading{text-align:center;padding:38px;color:#64748b}
+.spinner{
+    width:28px;height:28px;border:3px solid #dbeafe;border-top-color:#1769d1;
+    border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.no-applications{text-align:center;padding:45px 20px;color:#64748b}
+.no-applications .big-icon{font-size:42px;margin-bottom:10px}
+.no-applications h3{color:#334155;margin-bottom:6px}
+
+footer{text-align:center;padding:10px 20px 35px;color:#94a3b8;font-size:11px}
+
+/* MODAL */
+.modal{
+    position:fixed;inset:0;background:rgba(15,23,42,.55);
+    display:none;align-items:center;justify-content:center;
+    padding:20px;z-index:500
+}
+.modal.show{display:flex}
+.modal-box{
+    background:#fff;width:100%;max-width:620px;max-height:90vh;
+    overflow:auto;border-radius:18px;box-shadow:0 25px 60px rgba(0,0,0,.25)
+}
+.modal-head{
+    padding:18px 20px;border-bottom:1px solid #edf0f5;
+    display:flex;justify-content:space-between;align-items:center
+}
+.close-btn{border:0;background:#f1f5f9;border-radius:8px;width:34px;height:34px;font-size:20px}
+.modal-body{padding:20px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.detail-box{background:#f8fafc;border:1px solid #edf0f5;border-radius:11px;padding:13px}
+.detail-box.full{grid-column:1/-1}
+.detail-label{font-size:10px;text-transform:uppercase;color:#94a3b8;font-weight:800;margin-bottom:5px}
+.detail-value{font-size:13px;color:#334155;line-height:1.5;word-break:break-word}
+
+@media(max-width:900px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .services-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:650px){
+    .header{padding:12px 15px}
+    .user-pill{display:none}
+    .container{margin:20px auto;padding:0 12px}
+    .welcome{padding:23px;border-radius:16px}
+    .welcome h2{font-size:23px}
+    .section-header{padding:18px;align-items:flex-start;flex-direction:column}
+    .application-list,.update-list{padding:16px}
+    .app-top,.service-row,.app-footer,.help-card{flex-direction:column;align-items:flex-start}
+    .app-actions{width:100%}
+    .action-btn{flex:1}
+    .document-ready{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:450px){
+    .stats{grid-template-columns:1fr 1fr;gap:10px}
+    .stat-card{padding:15px}
+    .stat-number{font-size:25px}
+    .services-grid{grid-template-columns:repeat(2,1fr);padding:15px}
+    .detail-grid{grid-template-columns:1fr}
+    .detail-box.full{grid-column:auto}
+}
+</style>
 </head>
-
 
 <body>
 
-
 <header class="header">
-
     <div class="logo-area">
-
-        <div class="logo-box">
-            DS
-        </div>
-
+        <div class="logo-box">DS</div>
         <div>
-
-            <h1>
-                Digital Service
-            </h1>
-
-            <p>
-                Customer Dashboard
-            </p>
-
+            <h1>Digital Service</h1>
+            <p>Customer Portal</p>
         </div>
-
     </div>
-
 
     <div class="header-right">
-
-        <span
-            id="userEmail"
-            class="user-email"
-        >
-            Loading...
-        </span>
-
-
-        <button
-            id="logoutButton"
-            class="logout-btn"
-        >
-            Logout
-        </button>
-
+        <div class="user-pill">
+            <div class="avatar" id="avatar">C</div>
+            <span id="userEmail">Loading...</span>
+        </div>
+        <button id="logoutButton" class="logout-btn">Logout</button>
     </div>
-
 </header>
-
 
 <main class="container">
 
-
     <section class="welcome">
-
-        <h2>
-
-            Welcome,
-
-            <span id="customerName">
-                Customer
-            </span>
-
-            👋
-
-        </h2>
-
-
-        <p>
-            Track your applications and download completed documents here.
-        </p>
-
+        <div class="welcome-content">
+            <h2>Welcome back, <span id="customerName">Customer</span>! 👋</h2>
+            <p>Manage your applications, track progress and access completed documents — all from one place.</p>
+            <div class="welcome-actions">
+                <a class="primary-btn" href="apply.html">➕ Apply for a New Service</a>
+                <button class="secondary-btn" id="scrollApplications">📋 My Applications</button>
+            </div>
+        </div>
     </section>
 
-
-    <div
-        id="errorBox"
-        class="error"
-    ></div>
-
+    <div id="errorBox" class="error"></div>
 
     <section class="stats">
-
-
         <div class="stat-card">
-
-            <h3>
-                Total Applications
-            </h3>
-
-            <div
-                id="totalApplications"
-                class="stat-number stat-total"
-            >
-                0
-            </div>
-
+            <div class="stat-icon icon-total">📋</div>
+            <div class="stat-label">Total Applications</div>
+            <div id="totalApplications" class="stat-number">0</div>
+            <div class="stat-sub">All your requests</div>
         </div>
-
-
         <div class="stat-card">
-
-            <h3>
-                Pending
-            </h3>
-
-            <div
-                id="pendingApplications"
-                class="stat-number stat-pending"
-            >
-                0
-            </div>
-
+            <div class="stat-icon icon-pending">⏳</div>
+            <div class="stat-label">Pending</div>
+            <div id="pendingApplications" class="stat-number">0</div>
+            <div class="stat-sub">Awaiting review</div>
         </div>
-
-
         <div class="stat-card">
-
-            <h3>
-                Processing
-            </h3>
-
-            <div
-                id="processingApplications"
-                class="stat-number stat-processing"
-            >
-                0
-            </div>
-
+            <div class="stat-icon icon-processing">🔄</div>
+            <div class="stat-label">Processing</div>
+            <div id="processingApplications" class="stat-number">0</div>
+            <div class="stat-sub">Currently in progress</div>
         </div>
-
-
         <div class="stat-card">
-
-            <h3>
-                Completed
-            </h3>
-
-            <div
-                id="completedApplications"
-                class="stat-number stat-completed"
-            >
-                0
-            </div>
-
+            <div class="stat-icon icon-completed">✅</div>
+            <div class="stat-label">Completed</div>
+            <div id="completedApplications" class="stat-number">0</div>
+            <div class="stat-sub">Successfully completed</div>
         </div>
-
-
     </section>
 
-
-    <section class="applications-card">
-
-
-        <div class="applications-header">
-
-            <h2>
-                My Applications
-            </h2>
-
-
-            <button
-                id="refreshButton"
-                class="refresh-btn"
-            >
-                🔄 Refresh Applications
-            </button>
-
+    <section class="section-card">
+        <div class="section-header">
+            <div class="section-title">
+                <h2>🔔 Recent Updates</h2>
+                <p>Your latest application activity</p>
+            </div>
         </div>
-
-
-        <div
-            id="loading"
-            class="loading"
-        >
-            Loading applications...
+        <div id="updatesList" class="update-list">
+            <div class="empty-update">Loading updates...</div>
         </div>
-
-
-        <div
-            id="applicationsList"
-        ></div>
-
-
     </section>
 
+    <section id="applicationsSection" class="section-card">
+        <div class="section-header">
+            <div class="section-title">
+                <h2>📋 My Applications</h2>
+                <p>Track every service request from submission to completion</p>
+            </div>
+            <button id="refreshButton" class="refresh-btn">🔄 Refresh</button>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            Loading your applications...
+        </div>
+
+        <div id="applicationsList" class="application-list"></div>
+    </section>
+
+    <section class="section-card">
+        <div class="section-header">
+            <div class="section-title">
+                <h2>⭐ Popular Services</h2>
+                <p>Start a new application in just a few clicks</p>
+            </div>
+        </div>
+
+        <div class="services-grid">
+            <a class="service-shortcut" href="apply.html?service=PAN%20Card"><span class="emoji">🪪</span><span>PAN Card</span></a>
+            <a class="service-shortcut" href="apply.html?service=Aadhaar%20Card"><span class="emoji">🆔</span><span>Aadhaar</span></a>
+            <a class="service-shortcut" href="apply.html?service=GST"><span class="emoji">📊</span><span>GST</span></a>
+            <a class="service-shortcut" href="apply.html?service=Income%20Tax"><span class="emoji">💰</span><span>Income Tax</span></a>
+            <a class="service-shortcut" href="apply.html?service=TDS"><span class="emoji">📄</span><span>TDS</span></a>
+            <a class="service-shortcut" href="apply.html?service=Trade%20License"><span class="emoji">🏪</span><span>Trade License</span></a>
+        </div>
+    </section>
+
+    <section class="section-card">
+        <div class="help-card">
+            <div>
+                <h3>💬 Need Help With Your Application?</h3>
+                <p>Our team is ready to help you with your service request.</p>
+            </div>
+            <div class="help-actions">
+                <a id="whatsappSupport" class="help-btn whatsapp" href="#" target="_blank" rel="noopener">💬 WhatsApp Support</a>
+                <a id="emailSupport" class="help-btn email-btn" href="mailto:support@example.com">✉️ Email Support</a>
+            </div>
+        </div>
+    </section>
 
 </main>
 
+<footer>© 2026 Digital Service. All Rights Reserved.</footer>
 
-<footer>
-
-    © 2026 Digital Service.
-    All Rights Reserved.
-
-</footer>
-
+<div id="detailsModal" class="modal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <strong>Application Details</strong>
+            <button class="close-btn" id="closeModal">×</button>
+        </div>
+        <div id="modalBody" class="modal-body"></div>
+    </div>
+</div>
 
 <script>
+const SUPABASE_URL = "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+const DOC_BUCKET = "documents";
 
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
 
-/* =========================================================
-   SUPABASE
-========================================================= */
+const userEmailElement = document.getElementById("userEmail");
+const avatarElement = document.getElementById("avatar");
+const customerNameElement = document.getElementById("customerName");
+const applicationsList = document.getElementById("applicationsList");
+const loadingElement = document.getElementById("loading");
+const errorBox = document.getElementById("errorBox");
+const refreshButton = document.getElementById("refreshButton");
+const logoutButton = document.getElementById("logoutButton");
+const updatesList = document.getElementById("updatesList");
+const detailsModal = document.getElementById("detailsModal");
+const modalBody = document.getElementById("modalBody");
 
-const SUPABASE_URL =
-    "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+let applicationsCache = [];
+let currentUser = null;
 
-
-const SUPABASE_ANON_KEY =
-    "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
-
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-    );
-
-
-/* =========================================================
-   SINGLE STORAGE BUCKET
-========================================================= */
-
-const STORAGE_BUCKET =
-    "documents";
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const userEmailElement =
-    document.getElementById(
-        "userEmail"
-    );
-
-
-const customerNameElement =
-    document.getElementById(
-        "customerName"
-    );
-
-
-const applicationsList =
-    document.getElementById(
-        "applicationsList"
-    );
-
-
-const loadingElement =
-    document.getElementById(
-        "loading"
-    );
-
-
-const errorBox =
-    document.getElementById(
-        "errorBox"
-    );
-
-
-const refreshButton =
-    document.getElementById(
-        "refreshButton"
-    );
-
-
-const logoutButton =
-    document.getElementById(
-        "logoutButton"
-    );
-
-
-/* =========================================================
-   ERROR
-========================================================= */
-
-function showError(message) {
-
-    errorBox.textContent =
-        message ||
-        "Something went wrong.";
-
-    errorBox.style.display =
-        "block";
+function escapeHtml(value){
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 }
 
+function escapeJs(value){
+    return String(value ?? "")
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'")
+        .replace(/"/g,'\\"')
+        .replace(/\n/g,"\\n")
+        .replace(/\r/g,"\\r");
+}
 
-function hideError() {
-
+function showError(message){
+    errorBox.textContent = message || "Something went wrong.";
+    errorBox.style.display = "block";
+}
+function hideError(){
     errorBox.textContent = "";
-
-    errorBox.style.display =
-        "none";
+    errorBox.style.display = "none";
 }
 
+function normalizedStatus(status){
+    const value = String(status || "pending").toLowerCase().trim();
+    if(value === "approved") return "completed";
+    return value;
+}
 
-/* =========================================================
-   STATUS
-========================================================= */
+function formatStatus(status){
+    const value = String(status || "Pending").trim();
+    return value ? value.charAt(0).toUpperCase()+value.slice(1) : "Pending";
+}
 
-function getStatusClass(status) {
-
-    const value =
-        String(status || "")
-            .toLowerCase()
-            .trim();
-
-
-    if (value === "pending") {
-
-        return "status status-pending";
-    }
-
-
-    if (value === "processing") {
-
-        return "status status-processing";
-    }
-
-
-    if (value === "completed") {
-
-        return "status status-completed";
-    }
-
-
-    if (value === "approved") {
-
-        return "status status-approved";
-    }
-
-
-    if (value === "rejected") {
-
-        return "status status-rejected";
-    }
-
-
+function getStatusClass(status){
+    const value = normalizedStatus(status);
+    if(value === "pending") return "status status-pending";
+    if(value === "processing") return "status status-processing";
+    if(value === "completed") return "status status-completed";
+    if(value === "rejected") return "status status-rejected";
     return "status status-default";
 }
 
+function updateCounters(applications){
+    let pending=0, processing=0, completed=0;
 
-function formatStatus(status) {
+    applications.forEach(app=>{
+        const status = normalizedStatus(app.status);
+        if(status === "pending") pending++;
+        else if(status === "processing") processing++;
+        else if(status === "completed") completed++;
+    });
 
-    const value =
-        String(
-            status || "Pending"
-        ).trim();
-
-
-    if (!value) {
-        return "Pending";
-    }
-
-
-    return (
-        value.charAt(0).toUpperCase() +
-        value.slice(1)
-    );
+    document.getElementById("totalApplications").textContent = applications.length;
+    document.getElementById("pendingApplications").textContent = pending;
+    document.getElementById("processingApplications").textContent = processing;
+    document.getElementById("completedApplications").textContent = completed;
 }
 
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value) {
-
-    return String(
-        value ?? ""
-    )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+function getDocuments(app){
+    return Array.isArray(app.document_urls) ? app.document_urls : [];
 }
 
+function progressState(status){
+    const s = normalizedStatus(status);
 
-/* =========================================================
-   RESET COUNTERS
-========================================================= */
-
-function resetCounters() {
-
-    document.getElementById(
-        "totalApplications"
-    ).textContent = "0";
-
-
-    document.getElementById(
-        "pendingApplications"
-    ).textContent = "0";
-
-
-    document.getElementById(
-        "processingApplications"
-    ).textContent = "0";
-
-
-    document.getElementById(
-        "completedApplications"
-    ).textContent = "0";
+    if(s === "rejected") return {index:0, rejected:true};
+    if(s === "completed") return {index:4, rejected:false};
+    if(s === "processing") return {index:3, rejected:false};
+    return {index:1, rejected:false};
 }
 
-
-/* =========================================================
-   UPDATE COUNTERS
-========================================================= */
-
-function updateCounters(
-    applications
-) {
-
-    let pending = 0;
-
-    let processing = 0;
-
-    let completed = 0;
-
-
-    applications.forEach(
-        application => {
-
-            const status =
-                String(
-                    application.status || ""
-                )
-                    .toLowerCase()
-                    .trim();
-
-
-            if (
-                status === "pending"
-            ) {
-
-                pending++;
-            }
-
-            else if (
-                status === "processing"
-            ) {
-
-                processing++;
-            }
-
-            else if (
-                status === "completed" ||
-                status === "approved"
-            ) {
-
-                completed++;
-            }
-
-        }
-    );
-
-
-    document.getElementById(
-        "totalApplications"
-    ).textContent =
-        applications.length;
-
-
-    document.getElementById(
-        "pendingApplications"
-    ).textContent =
-        pending;
-
-
-    document.getElementById(
-        "processingApplications"
-    ).textContent =
-        processing;
-
-
-    document.getElementById(
-        "completedApplications"
-    ).textContent =
-        completed;
-}
-
-
-/* =========================================================
-   GET DOCUMENTS
-========================================================= */
-
-function getDocuments(application) {
-
-    if (
-        Array.isArray(
-            application.document_urls
-        )
-    ) {
-
-        return application.document_urls;
-    }
-
-
-    return [];
-}
-
-
-/* =========================================================
-   DOCUMENT DOWNLOAD
-========================================================= */
-
-async function downloadDocument(
-    path,
-    fileNumber
-) {
-
-    try {
-
-        /*
-         * Old records may contain
-         * a complete URL.
-         */
-
-        if (
-            String(path).startsWith(
-                "http://"
-            ) ||
-            String(path).startsWith(
-                "https://"
-            )
-        ) {
-
-            window.open(
-                path,
-                "_blank"
-            );
-
-            return;
-        }
-
-
-        /*
-         * New records use
-         * Storage path.
-         */
-
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .storage
-            .from(STORAGE_BUCKET)
-            .createSignedUrl(
-                path,
-                3600
-            );
-
-
-        if (error) {
-            throw error;
-        }
-
-
-        if (
-            !data ||
-            !data.signedUrl
-        ) {
-
-            throw new Error(
-                "Unable to create download link."
-            );
-        }
-
-
-        /*
-         * Download/open document
-         */
-
-        const link =
-            document.createElement("a");
-
-
-        link.href =
-            data.signedUrl;
-
-
-        link.target =
-            "_blank";
-
-
-        link.rel =
-            "noopener noreferrer";
-
-
-        link.click();
-
-
-    } catch (error) {
-
-        console.error(
-            "Document download error:",
-            error
-        );
-
-
-        showError(
-            "Unable to download document: " +
-            error.message
-        );
-    }
-}
-
-
-/* =========================================================
-   RENDER APPLICATION
-========================================================= */
-
-function renderApplication(
-    application
-) {
-
-    const createdDate =
-        application.created_at
-            ? new Date(
-                application.created_at
-            ).toLocaleString()
-            : "N/A";
-
-
-    const status =
-        application.status ||
-        "Pending";
-
-
-    const formattedStatus =
-        formatStatus(status);
-
-
-    const note =
-        application.admin_note ||
-        "";
-
-
-    const documents =
-        getDocuments(
-            application
-        );
-
-
-    const item =
-        document.createElement(
-            "div"
-        );
-
-
-    item.className =
-        "application-item";
-
-
-    let documentHtml = "";
-
-
-    /*
-     * IMPORTANT:
-     * Download button appears
-     * ONLY when application is completed
-     * AND document exists.
-     */
-
-    const isCompleted =
-        String(status)
-            .toLowerCase()
-            .trim() === "completed";
-
-
-    if (
-        isCompleted &&
-        documents.length > 0
-    ) {
-
-        let buttons = "";
-
-
-        documents.forEach(
-            (path, index) => {
-
-                buttons += `
-
-                    <button
-                        class="download-btn"
-                        onclick="
-                            downloadDocument(
-                                '${escapeJs(String(path))}',
-                                ${index + 1}
-                            )
-                        "
-                    >
-                        📥 Download Document ${index + 1}
-                    </button>
-
-                `;
-            }
-        );
-
-
-        documentHtml = `
-
-            <div class="document-box">
-
-                <div class="document-title">
-                    📄 Completed Document / Certificate
-                </div>
-
-                ${buttons}
-
+function renderProgress(status){
+    const state = progressState(status);
+    const labels = ["Submitted","Under Review","Processing","Completed"];
+
+    let fill = 0;
+    if(state.index === 1) fill = 0;
+    if(state.index === 3) fill = 66.66;
+    if(state.index === 4) fill = 100;
+
+    return `
+        <div class="progress-wrap">
+            <div class="progress-line">
+                <div class="progress-fill" style="width:${fill}%"></div>
             </div>
-
-        `;
-
-    }
-
-    else if (isCompleted) {
-
-        documentHtml = `
-
-            <div class="document-box">
-
-                <div class="document-title">
-                    📄 Document / Certificate
-                </div>
-
-                <div class="download-disabled">
-                    Your application is completed,
-                    but the document has not been uploaded yet.
-                </div>
-
+            <div class="steps">
+                ${labels.map((label,i)=>{
+                    const done = state.index > i;
+                    const current = state.index === i+1 && !state.rejected;
+                    const cls = done ? "done" : (current ? "current" : "");
+                    const icon = done ? "✓" : (current ? "•" : (i+1));
+                    return `
+                        <div class="step ${cls}">
+                            <div class="step-circle">${icon}</div>
+                            <div class="step-label">${label}</div>
+                        </div>`;
+                }).join("")}
             </div>
+        </div>
+        ${state.rejected ? `<div style="margin-top:10px;color:#991b1b;font-size:12px;font-weight:700">⚠️ This application has been rejected. Please contact support.</div>` : ""}
+    `;
+}
 
-        `;
-
+function renderUpdates(applications){
+    if(!applications.length){
+        updatesList.innerHTML = `<div class="empty-update">No application updates yet.</div>`;
+        return;
     }
 
+    const recent = applications.slice(0,4);
+
+    updatesList.innerHTML = recent.map(app=>{
+        const status = normalizedStatus(app.status);
+        const service = escapeHtml(app.service || "Service");
+        const id = escapeHtml(app.application_id || "N/A");
+        let title = "";
+        let text = "";
+        let icon = "🔵";
+
+        if(status === "completed"){
+            title = `${service} completed`;
+            text = `Application ${id} has been completed.`;
+            icon = "🎉";
+        }else if(status === "processing"){
+            title = `${service} is processing`;
+            text = `Application ${id} is currently being processed.`;
+            icon = "🔄";
+        }else if(status === "rejected"){
+            title = `${service} needs attention`;
+            text = `Please check your application details or contact support.`;
+            icon = "⚠️";
+        }else{
+            title = `${service} application received`;
+            text = `Application ${id} has been submitted successfully.`;
+            icon = "📩";
+        }
+
+        return `
+            <div class="update">
+                <div class="update-dot">${icon}</div>
+                <div>
+                    <h4>${title}</h4>
+                    <p>${text}</p>
+                </div>
+            </div>`;
+    }).join("");
+}
+
+function renderNoApplications(){
+    applicationsList.innerHTML = `
+        <div class="no-applications">
+            <div class="big-icon">📋</div>
+            <h3>No Applications Yet</h3>
+            <p>You haven't submitted any service application yet.</p>
+            <div style="margin-top:16px">
+                <a class="primary-btn" style="background:#1769d1;color:#fff" href="apply.html">➕ Apply for a Service</a>
+            </div>
+        </div>`;
+}
+
+function renderApplication(app){
+    const applicationId = app.application_id || "N/A";
+    const service = app.service || "Service";
+    const status = app.status || "Pending";
+    const note = app.admin_note || "";
+    const docs = getDocuments(app);
+    const createdDate = app.created_at
+        ? new Date(app.created_at).toLocaleString("en-IN")
+        : "N/A";
+
+    const item = document.createElement("div");
+    item.className = "application-item";
 
     item.innerHTML = `
-
-        <div class="application-top">
-
+        <div class="app-top">
             <div>
-
-                <div class="application-id">
-
-                    Application ID:
-                    ${escapeHtml(
-                        application.application_id ||
-                        "N/A"
-                    )}
-
-                </div>
-
-
-                <div class="application-date">
-
-                    Submitted:
-                    ${escapeHtml(
-                        createdDate
-                    )}
-
-                </div>
-
+                <div class="app-id">Application ID: ${escapeHtml(applicationId)}</div>
+                <div class="app-date">Submitted: ${escapeHtml(createdDate)}</div>
             </div>
-
-
-            <span
-                class="${getStatusClass(status)}"
-            >
-
-                ${escapeHtml(
-                    formattedStatus
-                )}
-
+            <span class="${getStatusClass(status)}">
+                ${escapeHtml(formatStatus(status))}
             </span>
-
         </div>
 
-
-        <div class="service-name">
-
-            ${escapeHtml(
-                application.service ||
-                "Service"
-            )}
-
+        <div class="service-row">
+            <div class="service-name">${escapeHtml(service)}</div>
         </div>
 
+        ${renderProgress(status)}
 
-        <div class="details">
+        ${note ? `
+            <div class="admin-note">
+                <div class="admin-note-title">📝 Update from Digital Service</div>
+                ${escapeHtml(note)}
+            </div>` : ""}
 
+        ${docs.length && normalizedStatus(status) === "completed" ? `
+            <div class="document-ready">
+                <div>
+                    <strong>🎉 Your document is ready</strong>
+                    <span>Your completed document is available to view/download.</span>
+                </div>
+                <button class="action-btn green" onclick="openDocument('${escapeJs(String(docs[0]))}')">📥 Download / View</button>
+            </div>` : ""}
 
-            <p>
-
-                <strong>
-                    Customer Name:
-                </strong>
-
-                ${escapeHtml(
-                    application.customer_name ||
-                    ""
-                )}
-
-            </p>
-
-
-            <p>
-
-                <strong>
-                    Mobile:
-                </strong>
-
-                ${escapeHtml(
-                    application.mobile ||
-                    ""
-                )}
-
-            </p>
-
-
-            <p>
-
-                <strong>
-                    Email:
-                </strong>
-
-                ${escapeHtml(
-                    application.email ||
-                    ""
-                )}
-
-            </p>
-
-
-            <p>
-
-                <strong>
-                    Requirement:
-                </strong>
-
-                ${escapeHtml(
-                    application.requirement ||
-                    "N/A"
-                )}
-
-            </p>
-
-
-            ${
-                note
-                    ? `
-
-                        <div
-                            class="admin-note"
-                        >
-
-                            <div
-                                class="admin-note-title"
-                            >
-                                📝 Admin Note
-                            </div>
-
-                            ${escapeHtml(note)}
-
-                        </div>
-
-                    `
-                    : ""
-            }
-
-
-            ${documentHtml}
-
-
+        <div class="app-footer">
+            <div class="app-meta">
+                ${docs.length ? "📄 Document available" : "📄 Document will appear here when ready"}
+            </div>
+            <div class="app-actions">
+                <button class="action-btn" onclick="viewApplication('${escapeJs(String(app.id))}')">👁 View Details</button>
+                ${docs.length ? `<button class="action-btn blue" onclick="openDocument('${escapeJs(String(docs[0]))}')">📄 Open Document</button>` : ""}
+            </div>
         </div>
-
     `;
 
-
-    applicationsList.appendChild(
-        item
-    );
+    applicationsList.appendChild(item);
 }
 
-
-/* =========================================================
-   NO APPLICATIONS
-========================================================= */
-
-function renderNoApplications() {
-
-    applicationsList.innerHTML = `
-
-        <div class="no-applications">
-
-            <h3>
-                No Applications Yet
-            </h3>
-
-            <p>
-                You have not submitted
-                any application yet.
-            </p>
-
-        </div>
-
-    `;
+function findApplication(id){
+    return applicationsCache.find(app => String(app.id) === String(id));
 }
 
+function viewApplication(id){
+    const app = findApplication(id);
+    if(!app) return;
 
-/* =========================================================
-   LOAD DASHBOARD
-========================================================= */
+    const docs = getDocuments(app);
+    const createdDate = app.created_at
+        ? new Date(app.created_at).toLocaleString("en-IN")
+        : "N/A";
 
-async function loadDashboard() {
+    modalBody.innerHTML = `
+        <div class="detail-grid">
+            <div class="detail-box">
+                <div class="detail-label">Application ID</div>
+                <div class="detail-value">${escapeHtml(app.application_id || "N/A")}</div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-label">Service</div>
+                <div class="detail-value">${escapeHtml(app.service || "N/A")}</div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-label">Status</div>
+                <div class="detail-value"><span class="${getStatusClass(app.status)}">${escapeHtml(formatStatus(app.status))}</span></div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-label">Submitted</div>
+                <div class="detail-value">${escapeHtml(createdDate)}</div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-label">Customer Name</div>
+                <div class="detail-value">${escapeHtml(app.customer_name || "N/A")}</div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-label">Mobile</div>
+                <div class="detail-value">${escapeHtml(app.mobile || "N/A")}</div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-label">Email</div>
+                <div class="detail-value">${escapeHtml(app.email || "N/A")}</div>
+            </div>
+            <div class="detail-box">
+                <div class="detail-label">WhatsApp</div>
+                <div class="detail-value">${escapeHtml(app.whatsapp || "N/A")}</div>
+            </div>
+            <div class="detail-box full">
+                <div class="detail-label">Requirement</div>
+                <div class="detail-value">${escapeHtml(app.requirement || "N/A")}</div>
+            </div>
+            <div class="detail-box full">
+                <div class="detail-label">Address</div>
+                <div class="detail-value">${escapeHtml(app.address || "N/A")}</div>
+            </div>
+            ${app.admin_note ? `
+            <div class="detail-box full">
+                <div class="detail-label">Update from Digital Service</div>
+                <div class="detail-value">${escapeHtml(app.admin_note)}</div>
+            </div>` : ""}
+            <div class="detail-box full">
+                <div class="detail-label">Document</div>
+                <div class="detail-value">
+                    ${docs.length
+                        ? `<button class="action-btn blue" onclick="openDocument('${escapeJs(String(docs[0]))}')">📄 Open / Download Document</button>`
+                        : "No document uploaded yet."}
+                </div>
+            </div>
+        </div>`;
 
+    detailsModal.classList.add("show");
+}
+
+async function openDocument(path){
+    try{
+        if(String(path).startsWith("http")){
+            window.open(path,"_blank");
+            return;
+        }
+
+        const {data,error} = await supabaseClient
+            .storage
+            .from(DOC_BUCKET)
+            .createSignedUrl(path,3600);
+
+        if(error) throw error;
+
+        if(!data || !data.signedUrl){
+            throw new Error("Unable to create document URL.");
+        }
+
+        window.open(data.signedUrl,"_blank");
+    }catch(error){
+        console.error(error);
+        alert("Unable to open document: " + (error.message || "Unknown error"));
+    }
+}
+
+async function loadDashboard(){
     hideError();
+    loadingElement.style.display = "block";
+    applicationsList.innerHTML = "";
+    refreshButton.disabled = true;
 
+    try{
+        const {data:{user},error:userError} = await supabaseClient.auth.getUser();
 
-    loadingElement.style.display =
-        "block";
+        if(userError) throw userError;
 
-
-    applicationsList.innerHTML =
-        "";
-
-
-    refreshButton.disabled =
-        true;
-
-
-    try {
-
-        /*
-         * Current logged-in user
-         */
-
-        const {
-            data: {
-                user
-            },
-            error: userError
-        } =
-            await supabaseClient
-                .auth
-                .getUser();
-
-
-        if (userError) {
-            throw userError;
-        }
-
-
-        if (!user) {
-
-            window.location.href =
-                "login.html";
-
+        if(!user){
+            window.location.href = "login.html";
             return;
         }
 
+        currentUser = user;
+        userEmailElement.textContent = user.email || "";
+        avatarElement.textContent = (user.email || "C").charAt(0).toUpperCase();
 
-        userEmailElement.textContent =
-            user.email || "";
+        const {data:applications,error:applicationError} = await supabaseClient
+            .from("applications")
+            .select(`
+                id,
+                application_id,
+                customer_name,
+                mobile,
+                email,
+                whatsapp,
+                service,
+                requirement,
+                address,
+                status,
+                admin_note,
+                document_urls,
+                created_at
+            `)
+            .eq("user_id",user.id)
+            .order("created_at",{ascending:false});
 
+        if(applicationError) throw applicationError;
 
-        /*
-         * ONLY CURRENT USER'S APPLICATIONS
-         */
+        applicationsCache = applications || [];
 
-        const {
-            data: applications,
-            error: applicationError
-        } =
-            await supabaseClient
-                .from("applications")
-                .select(`
-                    id,
-                    application_id,
-                    customer_name,
-                    mobile,
-                    email,
-                    whatsapp,
-                    service,
-                    requirement,
-                    address,
-                    status,
-                    admin_note,
-                    document_urls,
-                    created_at
-                `)
-                .eq(
-                    "user_id",
-                    user.id
-                )
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
-
-
-        if (applicationError) {
-            throw applicationError;
+        if(applicationsCache.length){
+            customerNameElement.textContent =
+                applicationsCache[0].customer_name || "Customer";
+        }else{
+            customerNameElement.textContent = "Customer";
         }
 
+        updateCounters(applicationsCache);
+        renderUpdates(applicationsCache);
 
-        const applicationData =
-            applications || [];
-
-
-        /*
-         * Customer name
-         */
-
-        if (
-            applicationData.length > 0
-        ) {
-
-            customerNameElement.textContent =
-                applicationData[0]
-                    .customer_name ||
-                "Customer";
-
-        } else {
-
-            customerNameElement.textContent =
-                "Customer";
-        }
-
-
-        /*
-         * Counters
-         */
-
-        updateCounters(
-            applicationData
-        );
-
-
-        /*
-         * No applications
-         */
-
-        if (
-            applicationData.length === 0
-        ) {
-
+        if(!applicationsCache.length){
             renderNoApplications();
-
-            return;
+        }else{
+            applicationsCache.forEach(renderApplication);
         }
 
-
-        /*
-         * Render
-         */
-
-        applicationData.forEach(
-            application => {
-
-                renderApplication(
-                    application
-                );
-
-            }
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Customer dashboard error:",
-            error
-        );
-
-
-        resetCounters();
-
-
-        showError(
-            error.message ||
-            "Unable to load your applications."
-        );
-
-
-    } finally {
-
-        loadingElement.style.display =
-            "none";
-
-
-        refreshButton.disabled =
-            false;
+    }catch(error){
+        console.error("Customer dashboard error:",error);
+        document.getElementById("totalApplications").textContent = "0";
+        document.getElementById("pendingApplications").textContent = "0";
+        document.getElementById("processingApplications").textContent = "0";
+        document.getElementById("completedApplications").textContent = "0";
+        updatesList.innerHTML = `<div class="empty-update">Unable to load updates.</div>`;
+        showError(error.message || "Unable to load your applications.");
+    }finally{
+        loadingElement.style.display = "none";
+        refreshButton.disabled = false;
     }
 }
 
+logoutButton.addEventListener("click",async()=>{
+    logoutButton.disabled = true;
+    logoutButton.textContent = "Logging out...";
 
-/* =========================================================
-   LOGOUT
-========================================================= */
+    const {error} = await supabaseClient.auth.signOut();
 
-logoutButton.addEventListener(
-    "click",
-    async function() {
-
-        logoutButton.disabled =
-            true;
-
-
-        logoutButton.textContent =
-            "Logging out...";
-
-
-        const {
-            error
-        } =
-            await supabaseClient
-                .auth
-                .signOut();
-
-
-        if (error) {
-
-            alert(
-                "Logout failed: " +
-                error.message
-            );
-
-
-            logoutButton.disabled =
-                false;
-
-
-            logoutButton.textContent =
-                "Logout";
-
-
-            return;
-        }
-
-
-        window.location.href =
-            "login.html";
+    if(error){
+        alert("Logout failed: " + error.message);
+        logoutButton.disabled = false;
+        logoutButton.textContent = "Logout";
+        return;
     }
-);
 
+    window.location.href = "login.html";
+});
 
-/* =========================================================
-   REFRESH
-========================================================= */
+refreshButton.addEventListener("click",loadDashboard);
 
-refreshButton.addEventListener(
-    "click",
-    function() {
+document.getElementById("scrollApplications").addEventListener("click",()=>{
+    document.getElementById("applicationsSection").scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
+});
 
-        loadDashboard();
+document.getElementById("closeModal").addEventListener("click",()=>{
+    detailsModal.classList.remove("show");
+});
 
+detailsModal.addEventListener("click",(event)=>{
+    if(event.target === detailsModal){
+        detailsModal.classList.remove("show");
     }
-);
+});
 
+document.addEventListener("keydown",(event)=>{
+    if(event.key === "Escape"){
+        detailsModal.classList.remove("show");
+    }
+});
 
-/* =========================================================
-   AUTH STATE
-========================================================= */
+supabaseClient.auth.onAuthStateChange((event)=>{
+    if(event === "SIGNED_OUT"){
+        window.location.href = "login.html";
+    }
+});
 
-supabaseClient
-    .auth
-    .onAuthStateChange(
-        function(
-            event,
-            session
-        ) {
+/* Change these two support links to your real business contact details. */
+const SUPPORT_WHATSAPP = "6289227238";
+const SUPPORT_EMAIL = "paulsoumyajit359@gmail.com";
 
-            if (
-                event ===
-                "SIGNED_OUT"
-            ) {
+document.getElementById("whatsappSupport").href =
+    "https://wa.me/91" + SUPPORT_WHATSAPP.replace(/\D/g,"");
 
-                window.location.href =
-                    "login.html";
-            }
-
-        }
-    );
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function escapeJs(value) {
-
-    return String(value)
-        .replace(
-            /\\/g,
-            "\\\\"
-        )
-        .replace(
-            /'/g,
-            "\\'"
-        )
-        .replace(
-            /\r?\n/g,
-            "\\n"
-        );
-}
-
-
-/* =========================================================
-   START
-========================================================= */
+document.getElementById("emailSupport").href =
+    "mailto:" + SUPPORT_EMAIL;
 
 loadDashboard();
-
 </script>
 
 </body>
