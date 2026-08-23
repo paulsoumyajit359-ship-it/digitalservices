@@ -2,569 +2,953 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Admin Dashboard | Digital Service</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
     <style>
+
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
+
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
             background: #f4f7fb;
+
             color: #172033;
+
+            min-height: 100vh;
         }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
 
         .header {
-            background: white;
-            padding: 18px 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #063b8f,
+                    #1769d1
+                );
+
+            color: white;
+
+            padding:
+                16px 30px;
+
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            box-shadow:
+                0 3px 15px
+                rgba(0,0,0,0.15);
         }
 
+
         .brand {
+
             display: flex;
+
             align-items: center;
+
             gap: 12px;
         }
 
+
         .logo {
-            width: 46px;
-            height: 46px;
-            background: #1769e0;
-            color: white;
-            border-radius: 11px;
+
+            width: 50px;
+
+            height: 50px;
+
+            border-radius: 12px;
+
+            background: white;
+
+            color: #1769d1;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             font-weight: bold;
+
             font-size: 20px;
         }
 
+
         .brand h1 {
-            margin: 0;
+
             font-size: 21px;
+
+            margin-bottom: 3px;
         }
+
 
         .brand p {
-            margin: 3px 0 0;
-            color: #777;
+
             font-size: 13px;
+
+            opacity: 0.9;
         }
 
-        .logout-btn {
-            border: none;
-            background: #ef4444;
-            color: white;
-            padding: 11px 20px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
-        }
 
-        .logout-btn:hover {
-            background: #dc2626;
-        }
+        .header-right {
 
-        .container {
-            max-width: 1500px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .welcome {
-            margin-bottom: 25px;
-        }
-
-        .welcome h2 {
-            margin: 0 0 7px;
-            font-size: 30px;
-        }
-
-        .welcome p {
-            margin: 0;
-            color: #6b7280;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-            margin-bottom: 28px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 23px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-        }
-
-        .stat-card h3 {
-            margin: 0 0 10px;
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .number {
-            font-size: 34px;
-            font-weight: bold;
-        }
-
-        .pending-number {
-            color: #d99a00;
-        }
-
-        .processing-number {
-            color: #1769e0;
-        }
-
-        .completed-number {
-            color: #16a34a;
-        }
-
-        .applications-box {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-            overflow: hidden;
-        }
-
-        .box-header {
-            padding: 22px 25px;
-            border-bottom: 1px solid #e5e7eb;
             display: flex;
+
             align-items: center;
-            justify-content: space-between;
+
             gap: 15px;
         }
 
-        .box-header h2 {
-            margin: 0;
+
+        .admin-email {
+
+            font-size: 14px;
+
+            opacity: 0.9;
+        }
+
+
+        .logout-btn {
+
+            border: none;
+
+            background: #dc3545;
+
+            color: white;
+
+            padding:
+                10px 16px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .logout-btn:hover {
+
+            background: #bb2d3b;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ====================================================== */
+
+        .container {
+
+            max-width: 1250px;
+
+            margin:
+                30px auto;
+
+            padding:
+                0 20px;
+        }
+
+
+        /* =====================================================
+           WELCOME
+        ====================================================== */
+
+        .welcome {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.07);
+
+            margin-bottom: 25px;
+        }
+
+
+        .welcome h2 {
+
+            color: #173f7a;
+
+            margin-bottom: 8px;
+        }
+
+
+        .welcome p {
+
+            color: #687386;
+        }
+
+
+        /* =====================================================
+           STATS
+        ====================================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.07);
+        }
+
+
+        .stat-title {
+
+            color: #687386;
+
+            font-size: 14px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .stat-number {
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+            color: #1769d1;
+        }
+
+
+        /* =====================================================
+           AD MANAGEMENT HEADER
+        ====================================================== */
+
+        .section-header {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 15px 15px 0 0;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.05);
+        }
+
+
+        .section-header h2 {
+
+            color: #173f7a;
+
             font-size: 21px;
         }
 
-        .refresh-btn {
-            background: #1769e0;
-            color: white;
-            border: none;
-            padding: 11px 18px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
-        }
 
-        .refresh-btn:hover {
-            background: #1257bd;
-        }
+        .section-header p {
 
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-        }
+            color: #687386;
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 1550px;
-        }
-
-        th {
-            text-align: left;
-            background: #f8fafc;
-            padding: 15px;
             font-size: 13px;
-            color: #475569;
-            border-bottom: 1px solid #e5e7eb;
-            white-space: nowrap;
-        }
 
-        td {
-            padding: 16px 15px;
-            border-bottom: 1px solid #eef0f3;
-            vertical-align: middle;
-            font-size: 14px;
-        }
-
-        tbody tr:hover {
-            background: #fafcff;
-        }
-
-        .application-id {
-            font-weight: bold;
-            color: #1769e0;
-        }
-
-        .customer-name {
-            font-weight: bold;
-        }
-
-        .mobile {
-            color: #6b7280;
-            margin-top: 4px;
-            font-size: 13px;
-        }
-
-        .service {
-            font-weight: bold;
-        }
-
-        .date {
-            color: #6b7280;
-            white-space: nowrap;
-            font-size: 13px;
-        }
-
-        .view-btn {
-            border: none;
-            background: #172033;
-            color: white;
-            padding: 9px 14px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .view-btn:hover {
-            background: #000;
-        }
-
-        .status-select {
-            padding: 9px 12px;
-            border-radius: 7px;
-            border: 1px solid #d1d5db;
-            background: white;
-            font-weight: bold;
-            cursor: pointer;
-            min-width: 130px;
-        }
-
-        .status-select.pending {
-            color: #b77900;
-            background: #fff8df;
-            border-color: #f4d47c;
-        }
-
-        .status-select.processing {
-            color: #1769e0;
-            background: #eaf2ff;
-            border-color: #a9c8ff;
-        }
-
-        .status-select.completed {
-            color: #15803d;
-            background: #ecfdf3;
-            border-color: #9ae6b4;
-        }
-
-        .save-btn {
-            padding: 8px 13px;
-            border: none;
-            border-radius: 6px;
-            background: #16a34a;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            display: none;
-        }
-
-        .save-btn.show {
-            display: inline-block;
-        }
-
-        .note-input {
-            width: 200px;
-            min-height: 55px;
-            padding: 9px;
-            border: 1px solid #d1d5db;
-            border-radius: 7px;
-            resize: vertical;
-            font-family: Arial, sans-serif;
-        }
-
-        .note-save-btn {
-            margin-top: 6px;
-            padding: 7px 12px;
-            border: none;
-            background: #475569;
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        /* DOCUMENT */
-
-        .upload-box {
-            min-width: 280px;
-        }
-
-        .file-input {
-            width: 100%;
-            font-size: 12px;
-            margin-bottom: 7px;
-        }
-
-        .upload-btn {
-            border: none;
-            background: #1769e0;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .upload-btn:hover {
-            background: #1257bd;
-        }
-
-        .upload-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .documents {
-            margin-top: 10px;
-        }
-
-        .document-item {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            margin-top: 6px;
-            flex-wrap: wrap;
-        }
-
-        .document-link {
-            color: #1769e0;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .document-link:hover {
-            text-decoration: underline;
-        }
-
-        .delete-document-btn {
-            border: none;
-            background: #fee2e2;
-            color: #b91c1c;
-            padding: 3px 6px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-        }
-
-        .no-document {
-            color: #888;
-            font-size: 12px;
-        }
-
-        .replace-info {
-            color: #64748b;
-            font-size: 11px;
             margin-top: 5px;
         }
 
-        /* MODAL */
 
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(15,23,42,0.65);
-            z-index: 1000;
-            padding: 20px;
-            overflow-y: auto;
-        }
+        .header-buttons {
 
-        .modal-overlay.show {
             display: flex;
-            align-items: center;
-            justify-content: center;
+
+            gap: 10px;
         }
 
-        .modal {
-            width: 100%;
-            max-width: 850px;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-        }
 
-        .modal-header {
-            background: #172033;
-            color: white;
-            padding: 20px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+        .btn {
 
-        .modal-header h2 {
-            margin: 0;
-        }
-
-        .modal-close {
             border: none;
-            background: transparent;
+
+            padding:
+                11px 16px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+
+        .btn-primary {
+
+            background: #1769d1;
+
             color: white;
-            font-size: 28px;
+        }
+
+
+        .btn-primary:hover {
+
+            background: #0755b8;
+        }
+
+
+        .btn-secondary {
+
+            background: #eef3f9;
+
+            color: #173f7a;
+        }
+
+
+        .btn-secondary:hover {
+
+            background: #dfe8f4;
+        }
+
+
+        /* =====================================================
+           UPLOAD BOX
+        ====================================================== */
+
+        .upload-box {
+
+            background: white;
+
+            padding: 20px;
+
+            border-top:
+                1px solid #edf0f5;
+
+            display: none;
+        }
+
+
+        .upload-box.show {
+
+            display: block;
+        }
+
+
+        .upload-area {
+
+            border:
+                2px dashed #b8c7dc;
+
+            border-radius: 12px;
+
+            padding: 30px;
+
+            text-align: center;
+
+            background: #f8faff;
+        }
+
+
+        .upload-icon {
+
+            font-size: 40px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .upload-area h3 {
+
+            margin-bottom: 7px;
+
+            color: #173f7a;
+        }
+
+
+        .upload-area p {
+
+            color: #687386;
+
+            font-size: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        #fileInput {
+
+            display: none;
+        }
+
+
+        .choose-file {
+
+            display: inline-block;
+
+            background: #1769d1;
+
+            color: white;
+
+            padding:
+                11px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .selected-file {
+
+            margin-top: 15px;
+
+            color: #1769d1;
+
+            font-weight: bold;
+        }
+
+
+        .upload-action {
+
+            margin-top: 15px;
+
+            display: none;
+        }
+
+
+        .upload-action.show {
+
+            display: block;
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ====================================================== */
+
+        #message {
+
+            padding:
+                13px 18px;
+
+            margin:
+                15px 20px;
+
+            border-radius: 8px;
+
+            display: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        #message.success {
+
+            display: block;
+
+            background: #e8f7ee;
+
+            color: #187a3d;
+        }
+
+
+        #message.error {
+
+            display: block;
+
+            background: #fdecec;
+
+            color: #b42318;
+        }
+
+
+        /* =====================================================
+           AD GRID
+        ====================================================== */
+
+        .ads-container {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius:
+                0 0 15px 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,0.05);
+        }
+
+
+        .ads-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+
+        .ad-card {
+
+            border:
+                1px solid #e3e8f0;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            background: white;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+        }
+
+
+        .ad-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 8px 25px
+                rgba(0,0,0,0.10);
+        }
+
+
+        .ad-image {
+
+            width: 100%;
+
+            aspect-ratio:
+                16 / 9;
+
+            background: #eef3f9;
+
+            overflow: hidden;
+
             cursor: pointer;
         }
 
-        .modal-body {
-            padding: 25px;
-            max-height: 75vh;
-            overflow-y: auto;
+
+        .ad-image img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: contain;
+
+            display: block;
+
+            background: #f5f7fa;
         }
 
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
 
-        .detail-card {
-            background: #f8fafc;
-            border: 1px solid #e5e7eb;
-            border-radius: 9px;
+        .ad-info {
+
             padding: 14px;
         }
 
-        .detail-card.full {
-            grid-column: 1 / -1;
+
+        .ad-name {
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            color: #173f7a;
+
+            word-break:
+                break-word;
+
+            margin-bottom: 6px;
         }
 
-        .detail-label {
+
+        .ad-status {
+
             font-size: 12px;
-            color: #64748b;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 5px;
+
+            color: #198754;
+
+            margin-bottom: 12px;
         }
 
-        .detail-value {
-            color: #172033;
-            font-size: 15px;
-            word-break: break-word;
-            white-space: pre-wrap;
+
+        .ad-actions {
+
+            display: flex;
+
+            gap: 8px;
         }
 
-        .modal-footer {
-            padding: 16px 25px;
-            border-top: 1px solid #e5e7eb;
-            text-align: right;
-        }
 
-        .close-btn {
+        .view-btn {
+
+            flex: 1;
+
             border: none;
-            background: #475569;
-            color: white;
-            padding: 10px 18px;
+
+            background: #eef4ff;
+
+            color: #1769d1;
+
+            padding: 9px;
+
             border-radius: 7px;
+
             cursor: pointer;
+
             font-weight: bold;
         }
 
-        .loading,
+
+        .delete-btn {
+
+            flex: 1;
+
+            border: none;
+
+            background: #fff0f0;
+
+            color: #dc3545;
+
+            padding: 9px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+
+        .view-btn:hover {
+
+            background: #dceaff;
+        }
+
+
+        .delete-btn:hover {
+
+            background: #ffe0e0;
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ====================================================== */
+
         .empty {
-            padding: 60px 20px;
+
             text-align: center;
-            color: #777;
-        }
 
-        .error {
-            margin: 20px;
-            padding: 16px;
-            background: #fee2e2;
-            color: #991b1b;
-            border-radius: 8px;
-        }
+            padding: 60px 20px;
 
-        .toast {
-            position: fixed;
-            right: 25px;
-            bottom: 25px;
-            padding: 14px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
+            color: #687386;
+
             display: none;
+        }
+
+
+        .empty-icon {
+
+            font-size: 50px;
+
+            margin-bottom: 12px;
+        }
+
+
+        /* =====================================================
+           LOADING
+        ====================================================== */
+
+        .loading {
+
+            text-align: center;
+
+            padding: 50px;
+
+            color: #687386;
+        }
+
+
+        .spinner {
+
+            width: 35px;
+
+            height: 35px;
+
+            border:
+                4px solid #e1e8f2;
+
+            border-top-color:
+                #1769d1;
+
+            border-radius: 50%;
+
+            animation:
+                spin 0.8s linear infinite;
+
+            margin:
+                0 auto 15px;
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        /* =====================================================
+           MODAL
+        ====================================================== */
+
+        .modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(0,0,0,0.75);
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
             z-index: 9999;
-            max-width: 450px;
         }
 
-        .toast.success {
+
+        .modal.show {
+
+            display: flex;
+        }
+
+
+        .modal-content {
+
+            max-width: 1000px;
+
+            max-height: 90vh;
+
+            position: relative;
+
+            background: white;
+
+            padding: 10px;
+
+            border-radius: 12px;
+        }
+
+
+        .modal-content img {
+
+            max-width: 100%;
+
+            max-height: 82vh;
+
             display: block;
-            background: #16a34a;
+
+            object-fit: contain;
         }
 
-        .toast.error-toast {
-            display: block;
-            background: #dc2626;
+
+        .close-modal {
+
+            position: absolute;
+
+            right: -12px;
+
+            top: -12px;
+
+            width: 36px;
+
+            height: 36px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: #dc3545;
+
+            color: white;
+
+            font-size: 20px;
+
+            cursor: pointer;
+
+            font-weight: bold;
         }
 
-        @media (max-width: 900px) {
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media(max-width: 900px) {
+
+            .ads-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
 
             .stats {
-                grid-template-columns: repeat(2, 1fr);
+
+                grid-template-columns:
+                    repeat(3, 1fr);
             }
 
-            .details-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .detail-card.full {
-                grid-column: auto;
-            }
         }
 
-        @media (max-width: 550px) {
 
-            .stats {
-                grid-template-columns: 1fr;
-            }
+        @media(max-width: 650px) {
 
             .header {
+
                 padding: 15px;
+
+                flex-direction: column;
+
+                gap: 12px;
+
+                text-align: center;
             }
 
+
+            .header-right {
+
+                flex-direction: column;
+
+                gap: 8px;
+            }
+
+
             .container {
+
+                margin-top: 20px;
+
                 padding: 0 12px;
             }
 
-            .box-header {
-                align-items: flex-start;
-                flex-direction: column;
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
             }
 
-            .toast {
-                left: 15px;
-                right: 15px;
-                bottom: 15px;
+
+            .ads-grid {
+
+                grid-template-columns:
+                    1fr;
             }
+
+
+            .section-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .header-buttons {
+
+                width: 100%;
+            }
+
+
+            .header-buttons .btn {
+
+                flex: 1;
+            }
+
         }
+
     </style>
+
 </head>
 
+
 <body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================== -->
 
 <header class="header">
 
@@ -575,1173 +959,1025 @@
         </div>
 
         <div>
-            <h1>Digital Service</h1>
-            <p>Administrator Panel</p>
+
+            <h1>
+                Digital Service
+            </h1>
+
+            <p>
+                Administrator Dashboard
+            </p>
+
         </div>
 
     </div>
 
-    <button class="logout-btn" onclick="logout()">
-        Logout
-    </button>
+
+    <div class="header-right">
+
+        <span
+            class="admin-email"
+            id="adminEmail"
+        >
+            Checking...
+        </span>
+
+        <button
+            class="logout-btn"
+            id="logoutBtn"
+        >
+            Logout
+        </button>
+
+    </div>
 
 </header>
 
 
+
+<!-- =========================================================
+     MAIN
+========================================================== -->
+
 <main class="container">
 
-    <div class="welcome">
+
+    <!-- WELCOME -->
+
+    <section class="welcome">
 
         <h2>
-            Admin Dashboard 👋
+            Welcome, Administrator 👋
         </h2>
 
         <p>
-            Manage customer applications, documents and work progress.
+            Manage your Digital Service website
+            advertisements from this dashboard.
         </p>
-
-    </div>
-
-
-    <section class="stats">
-
-        <div class="stat-card">
-            <h3>Total Applications</h3>
-            <div class="number" id="totalCount">0</div>
-        </div>
-
-        <div class="stat-card">
-            <h3>Pending</h3>
-            <div class="number pending-number" id="pendingCount">0</div>
-        </div>
-
-        <div class="stat-card">
-            <h3>Processing</h3>
-            <div class="number processing-number" id="processingCount">0</div>
-        </div>
-
-        <div class="stat-card">
-            <h3>Completed</h3>
-            <div class="number completed-number" id="completedCount">0</div>
-        </div>
 
     </section>
 
 
-    <section class="applications-box">
 
-        <div class="box-header">
+    <!-- STATS -->
 
-            <h2>
-                Customer Applications
-            </h2>
+    <section class="stats">
 
-            <button
-                class="refresh-btn"
-                onclick="loadApplications()"
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Total Advertisements
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalAds"
             >
-                🔄 Refresh
-            </button>
+                0
+            </div>
 
         </div>
 
-        <div id="content">
 
-            <div class="loading">
-                Loading applications...
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Storage Bucket
+            </div>
+
+            <div
+                class="stat-number"
+                style="font-size:20px;"
+            >
+                advertisements
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Auto Slider
+            </div>
+
+            <div
+                class="stat-number"
+                style="font-size:20px;"
+            >
+                3 Seconds
             </div>
 
         </div>
 
     </section>
 
+
+
+    <!-- =====================================================
+         AD MANAGEMENT
+    ====================================================== -->
+
+    <section>
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    📢 Advertisement Management
+                </h2>
+
+                <p>
+                    Upload and manage advertisements
+                    displayed on the homepage.
+                </p>
+
+            </div>
+
+
+            <div class="header-buttons">
+
+                <button
+                    class="btn btn-secondary"
+                    id="refreshBtn"
+                >
+                    🔄 Refresh
+                </button>
+
+                <button
+                    class="btn btn-primary"
+                    id="uploadToggle"
+                >
+                    ➕ Add Advertisement
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             UPLOAD
+        ================================================== -->
+
+        <div
+            class="upload-box"
+            id="uploadBox"
+        >
+
+            <div class="upload-area">
+
+                <div class="upload-icon">
+                    🖼️
+                </div>
+
+                <h3>
+                    Upload Advertisement
+                </h3>
+
+                <p>
+                    Recommended image ratio:
+                    <strong>16:9</strong>
+                    for best display.
+                </p>
+
+
+                <label
+                    for="fileInput"
+                    class="choose-file"
+                >
+                    Choose Image
+                </label>
+
+
+                <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/jpeg,image/png,image/webp"
+                >
+
+
+                <div
+                    class="selected-file"
+                    id="selectedFile"
+                >
+                </div>
+
+
+                <div
+                    class="upload-action"
+                    id="uploadAction"
+                >
+
+                    <button
+                        class="btn btn-primary"
+                        id="uploadBtn"
+                    >
+                        ⬆️ Upload Advertisement
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- MESSAGE -->
+
+        <div id="message"></div>
+
+
+
+        <!-- =================================================
+             ADS
+        ================================================== -->
+
+        <div class="ads-container">
+
+
+            <div
+                class="loading"
+                id="loading"
+            >
+
+                <div class="spinner"></div>
+
+                Loading advertisements...
+
+            </div>
+
+
+            <div
+                class="ads-grid"
+                id="adsGrid"
+            >
+            </div>
+
+
+            <div
+                class="empty"
+                id="empty"
+            >
+
+                <div class="empty-icon">
+                    📢
+                </div>
+
+                <h3>
+                    No Advertisements
+                </h3>
+
+                <p>
+                    Upload your first advertisement
+                    to display it on the homepage.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
 </main>
 
 
-<!-- DETAILS MODAL -->
+
+<!-- =========================================================
+     IMAGE MODAL
+========================================================== -->
 
 <div
-    id="detailsModal"
-    class="modal-overlay"
-    onclick="closeModalOutside(event)"
+    class="modal"
+    id="imageModal"
 >
 
-    <div
-        class="modal"
-        onclick="event.stopPropagation()"
-    >
+    <div class="modal-content">
 
-        <div class="modal-header">
+        <button
+            class="close-modal"
+            id="closeModal"
+        >
+            ×
+        </button>
 
-            <h2>
-                Application Details
-            </h2>
-
-            <button
-                class="modal-close"
-                onclick="closeDetails()"
-            >
-                ×
-            </button>
-
-        </div>
-
-        <div
-            id="modalBody"
-            class="modal-body"
-        ></div>
-
-        <div class="modal-footer">
-
-            <button
-                class="close-btn"
-                onclick="closeDetails()"
-            >
-                Close
-            </button>
-
-        </div>
+        <img
+            id="modalImage"
+            src=""
+            alt="Advertisement Preview"
+        >
 
     </div>
 
 </div>
 
 
-<div id="toast" class="toast"></div>
-
 
 <script>
 
+
 /* =========================================================
-   SUPABASE
-========================================================= */
+   SUPABASE CONFIG
+========================================================== */
 
 const SUPABASE_URL =
     "https://nlzrdjvlkdqungmhnsrl.supabase.co";
 
-const SUPABASE_ANON_KEY =
+
+const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
 
 
 const supabaseClient =
-    supabase.createClient(
+    window.supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_ANON_KEY
+        SUPABASE_PUBLISHABLE_KEY
     );
 
 
-/* =========================================================
-   STORAGE BUCKET
-========================================================= */
-
-const STORAGE_BUCKET = "documents";
-
 
 /* =========================================================
-   CACHE
-========================================================= */
+   ADMIN UID
+========================================================== */
 
-let applicationsCache = [];
+const ADMIN_UID =
+    "e3c0a5b6-7bb7-4efa-b7c4-64b37cc84b08";
+
 
 
 /* =========================================================
-   LOAD APPLICATIONS
-========================================================= */
+   BUCKET
+========================================================== */
 
-async function loadApplications() {
+const BUCKET_NAME =
+    "advertisements";
 
-    const content =
-        document.getElementById("content");
 
-    content.innerHTML = `
-        <div class="loading">
-            Loading applications...
-        </div>
-    `;
+
+/* =========================================================
+   ELEMENTS
+========================================================== */
+
+const adminEmail =
+    document.getElementById(
+        "adminEmail"
+    );
+
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+
+const refreshBtn =
+    document.getElementById(
+        "refreshBtn"
+    );
+
+
+const uploadToggle =
+    document.getElementById(
+        "uploadToggle"
+    );
+
+
+const uploadBox =
+    document.getElementById(
+        "uploadBox"
+    );
+
+
+const fileInput =
+    document.getElementById(
+        "fileInput"
+    );
+
+
+const selectedFile =
+    document.getElementById(
+        "selectedFile"
+    );
+
+
+const uploadAction =
+    document.getElementById(
+        "uploadAction"
+    );
+
+
+const uploadBtn =
+    document.getElementById(
+        "uploadBtn"
+    );
+
+
+const adsGrid =
+    document.getElementById(
+        "adsGrid"
+    );
+
+
+const loading =
+    document.getElementById(
+        "loading"
+    );
+
+
+const empty =
+    document.getElementById(
+        "empty"
+    );
+
+
+const totalAds =
+    document.getElementById(
+        "totalAds"
+    );
+
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+const imageModal =
+    document.getElementById(
+        "imageModal"
+    );
+
+
+const modalImage =
+    document.getElementById(
+        "modalImage"
+    );
+
+
+const closeModal =
+    document.getElementById(
+        "closeModal"
+    );
+
+
+
+/* =========================================================
+   SHOW MESSAGE
+========================================================== */
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        type;
+
+    setTimeout(
+        function() {
+
+            message.className = "";
+
+            message.textContent = "";
+
+        },
+        4000
+    );
+
+}
+
+
+
+/* =========================================================
+   CHECK ADMIN
+========================================================== */
+
+async function checkAdmin() {
 
     try {
 
         const {
             data,
             error
-        } = await supabaseClient
-            .from("applications")
-            .select("*")
-            .order("created_at", {
-                ascending: false
-            });
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
+
 
         if (error) {
+
             throw error;
+
         }
 
-        applicationsCache = data || [];
 
-        updateStatistics(
-            applicationsCache
-        );
+        const session =
+            data.session;
 
-        renderApplications(
-            applicationsCache
-        );
 
-    } catch (error) {
+        if (!session) {
 
-        console.error(error);
+            window.location.href =
+                "admin-login.html";
 
-        content.innerHTML = `
-            <div class="error">
-                <strong>
-                    Unable to load applications.
-                </strong>
-                <br><br>
-                ${escapeHtml(error.message)}
-            </div>
-        `;
-    }
-}
+            return false;
 
-
-/* =========================================================
-   STATISTICS
-========================================================= */
-
-function updateStatistics(applications) {
-
-    const total =
-        applications.length;
-
-    const pending =
-        applications.filter(
-            app =>
-                String(app.status || "")
-                    .toLowerCase() === "pending"
-        ).length;
-
-    const processing =
-        applications.filter(
-            app =>
-                String(app.status || "")
-                    .toLowerCase() === "processing"
-        ).length;
-
-    const completed =
-        applications.filter(
-            app =>
-                String(app.status || "")
-                    .toLowerCase() === "completed"
-        ).length;
-
-
-    document.getElementById("totalCount")
-        .textContent = total;
-
-    document.getElementById("pendingCount")
-        .textContent = pending;
-
-    document.getElementById("processingCount")
-        .textContent = processing;
-
-    document.getElementById("completedCount")
-        .textContent = completed;
-}
-
-
-/* =========================================================
-   DOCUMENT ARRAY
-========================================================= */
-
-function getDocuments(app) {
-
-    if (
-        Array.isArray(app.document_urls)
-    ) {
-        return app.document_urls;
-    }
-
-    return [];
-}
-
-
-/* =========================================================
-   RENDER DOCUMENT
-   ONE DOCUMENT ONLY
-========================================================= */
-
-function renderDocuments(app) {
-
-    const documents =
-        getDocuments(app);
-
-    if (!documents.length) {
-
-        return `
-            <div class="no-document">
-                No document uploaded.
-            </div>
-        `;
-    }
-
-    const path =
-        documents[0];
-
-    return `
-        <div class="document-item">
-
-            <a
-                href="#"
-                class="document-link"
-                onclick="
-                    openDocument(
-                        '${escapeJs(String(path))}'
-                    );
-                    return false;
-                "
-            >
-                📄 View / Open Document
-            </a>
-
-            <button
-                class="delete-document-btn"
-                onclick="
-                    deleteDocument(
-                        '${escapeJs(String(app.id))}',
-                        '${escapeJs(String(path))}'
-                    )
-                "
-            >
-                Delete
-            </button>
-
-        </div>
-    `;
-}
-
-
-/* =========================================================
-   RENDER APPLICATIONS
-========================================================= */
-
-function renderApplications(applications) {
-
-    const content =
-        document.getElementById("content");
-
-
-    if (!applications.length) {
-
-        content.innerHTML = `
-            <div class="empty">
-
-                <h3>No Applications Found</h3>
-
-                <p>
-                    There are currently no customer applications.
-                </p>
-
-            </div>
-        `;
-
-        return;
-    }
-
-
-    let rows = "";
-
-
-    applications.forEach(
-        app => {
-
-            const status =
-                String(
-                    app.status || "pending"
-                ).toLowerCase();
-
-
-            const safeStatus =
-                [
-                    "pending",
-                    "processing",
-                    "completed"
-                ].includes(status)
-                    ? status
-                    : "pending";
-
-
-            const createdDate =
-                app.created_at
-                    ? new Date(
-                        app.created_at
-                    ).toLocaleString("en-IN")
-                    : "N/A";
-
-
-            const hasDocument =
-                getDocuments(app).length > 0;
-
-
-            rows += `
-
-                <tr>
-
-                    <td>
-
-                        <div class="application-id">
-
-                            ${escapeHtml(
-                                app.application_id || "N/A"
-                            )}
-
-                        </div>
-
-                    </td>
-
-
-                    <td>
-
-                        <div class="customer-name">
-
-                            ${escapeHtml(
-                                app.customer_name || "N/A"
-                            )}
-
-                        </div>
-
-                        <div class="mobile">
-
-                            ${escapeHtml(
-                                app.mobile || ""
-                            )}
-
-                        </div>
-
-                    </td>
-
-
-                    <td>
-
-                        ${escapeHtml(
-                            app.email || "N/A"
-                        )}
-
-                    </td>
-
-
-                    <td>
-
-                        <div class="service">
-
-                            ${escapeHtml(
-                                app.service || "N/A"
-                            )}
-
-                        </div>
-
-                    </td>
-
-
-                    <td>
-
-                        <div class="date">
-
-                            ${escapeHtml(
-                                createdDate
-                            )}
-
-                        </div>
-
-                    </td>
-
-
-                    <td>
-
-                        <button
-                            class="view-btn"
-                            onclick="
-                                viewApplication(
-                                    '${escapeJs(String(app.id))}'
-                                )
-                            "
-                        >
-                            👁 View
-                        </button>
-
-                    </td>
-
-
-                    <td>
-
-                        <select
-                            class="status-select ${safeStatus}"
-                            id="status-${escapeHtml(app.id)}"
-                            onchange="
-                                statusChanged(
-                                    '${escapeJs(String(app.id))}',
-                                    this
-                                )
-                            "
-                        >
-
-                            <option
-                                value="pending"
-                                ${safeStatus === "pending" ? "selected" : ""}
-                            >
-                                Pending
-                            </option>
-
-                            <option
-                                value="processing"
-                                ${safeStatus === "processing" ? "selected" : ""}
-                            >
-                                Processing
-                            </option>
-
-                            <option
-                                value="completed"
-                                ${safeStatus === "completed" ? "selected" : ""}
-                            >
-                                Completed
-                            </option>
-
-                        </select>
-
-                    </td>
-
-
-                    <td>
-
-                        <button
-                            class="save-btn"
-                            id="save-${escapeHtml(app.id)}"
-                            onclick="
-                                updateStatus(
-                                    '${escapeJs(String(app.id))}'
-                                )
-                            "
-                        >
-                            Save
-                        </button>
-
-                    </td>
-
-
-                    <td>
-
-                        <textarea
-                            class="note-input"
-                            id="note-${escapeHtml(app.id)}"
-                            placeholder="Admin note..."
-                        >${escapeHtml(app.admin_note || "")}</textarea>
-
-                        <br>
-
-                        <button
-                            class="note-save-btn"
-                            onclick="
-                                updateNote(
-                                    '${escapeJs(String(app.id))}'
-                                )
-                            "
-                        >
-                            Save Note
-                        </button>
-
-                    </td>
-
-
-                    <td>
-
-                        <div class="upload-box">
-
-                            <input
-                                type="file"
-                                class="file-input"
-                                id="file-${escapeHtml(app.id)}"
-                                accept=".pdf,.jpg,.jpeg,.png,.webp"
-                            >
-
-                            <button
-                                class="upload-btn"
-                                id="upload-${escapeHtml(app.id)}"
-                                onclick="
-                                    uploadDocument(
-                                        '${escapeJs(String(app.id))}'
-                                    )
-                                "
-                            >
-                                📤 ${hasDocument ? "Replace Document" : "Upload Document"}
-                            </button>
-
-                            <div class="replace-info">
-                                PDF / JPG / PNG / WEBP • Max 10 MB
-                            </div>
-
-                            <div
-                                class="documents"
-                                id="documents-${escapeHtml(app.id)}"
-                            >
-                                ${renderDocuments(app)}
-                            </div>
-
-                        </div>
-
-                    </td>
-
-                </tr>
-
-            `;
         }
-    );
 
 
-    content.innerHTML = `
-
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>Application ID</th>
-                        <th>Customer</th>
-                        <th>Email</th>
-                        <th>Service</th>
-                        <th>Submitted</th>
-                        <th>View</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                        <th>Admin Note</th>
-                        <th>Document / Certificate</th>
-
-                    </tr>
-
-                </thead>
+        const user =
+            session.user;
 
 
-                <tbody>
+        if (!user) {
 
-                    ${rows}
+            window.location.href =
+                "admin-login.html";
 
-                </tbody>
+            return false;
 
-            </table>
+        }
 
-        </div>
 
-    `;
+        if (
+            user.id !==
+            ADMIN_UID
+        ) {
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            alert(
+                "Access denied. Administrator only."
+            );
+
+
+            window.location.href =
+                "admin-login.html";
+
+
+            return false;
+
+        }
+
+
+        adminEmail.textContent =
+            user.email || "Administrator";
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Admin verification error:",
+            error
+        );
+
+
+        window.location.href =
+            "admin-login.html";
+
+
+        return false;
+
+    }
+
 }
 
 
-/* =========================================================
-   VIEW APPLICATION
-========================================================= */
-
-function viewApplication(id) {
-
-    const application =
-        applicationsCache.find(
-            app =>
-                String(app.id) ===
-                String(id)
-        );
-
-
-    if (!application) {
-
-        showToast(
-            "Application not found.",
-            "error-toast"
-        );
-
-        return;
-    }
-
-
-    const createdDate =
-        application.created_at
-            ? new Date(
-                application.created_at
-            ).toLocaleString("en-IN")
-            : "N/A";
-
-
-    const documentsHtml =
-        renderDocuments(application);
-
-
-    document.getElementById(
-        "modalBody"
-    ).innerHTML = `
-
-        <div class="details-grid">
-
-            <div class="detail-card">
-
-                <div class="detail-label">
-                    Application ID
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        application.application_id || "N/A"
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card">
-
-                <div class="detail-label">
-                    Current Status
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        capitalize(
-                            application.status || "pending"
-                        )
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card">
-
-                <div class="detail-label">
-                    Customer Name
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        application.customer_name || "N/A"
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card">
-
-                <div class="detail-label">
-                    Mobile
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        application.mobile || "N/A"
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card">
-
-                <div class="detail-label">
-                    Email
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        application.email || "N/A"
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card">
-
-                <div class="detail-label">
-                    WhatsApp
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        application.whatsapp || "N/A"
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card">
-
-                <div class="detail-label">
-                    Service
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        application.service || "N/A"
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card">
-
-                <div class="detail-label">
-                    Submitted
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        createdDate
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card full">
-
-                <div class="detail-label">
-                    Requirement
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        application.requirement ||
-                        "No requirement provided."
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card full">
-
-                <div class="detail-label">
-                    Address
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        application.address ||
-                        "No address provided."
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card full">
-
-                <div class="detail-label">
-                    Admin Note
-                </div>
-
-                <div class="detail-value">
-
-                    ${escapeHtml(
-                        application.admin_note ||
-                        "No admin note."
-                    )}
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-card full">
-
-                <div class="detail-label">
-                    Documents / Certificates
-                </div>
-
-                <div class="detail-value">
-
-                    ${documentsHtml}
-
-                </div>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    document.getElementById(
-        "detailsModal"
-    ).classList.add("show");
-}
-
 
 /* =========================================================
-   UPLOAD / REPLACE DOCUMENT
-========================================================= */
+   LOAD ADVERTISEMENTS
+========================================================== */
 
-async function uploadDocument(id) {
+async function loadAdvertisements() {
 
-    const input =
-        document.getElementById(
-            "file-" + id
-        );
+    loading.style.display =
+        "block";
 
-    const button =
-        document.getElementById(
-            "upload-" + id
-        );
+    adsGrid.innerHTML = "";
 
-
-    if (!input || !input.files.length) {
-
-        showToast(
-            "Please select a document first.",
-            "error-toast"
-        );
-
-        return;
-    }
-
-
-    const file =
-        input.files[0];
-
-
-    const allowedTypes = [
-        "application/pdf",
-        "image/jpeg",
-        "image/png",
-        "image/webp"
-    ];
-
-
-    if (
-        !allowedTypes.includes(
-            file.type
-        )
-    ) {
-
-        showToast(
-            "Only PDF, JPG, PNG or WEBP files are allowed.",
-            "error-toast"
-        );
-
-        return;
-    }
-
-
-    if (
-        file.size >
-        10 * 1024 * 1024
-    ) {
-
-        showToast(
-            "Maximum file size is 10 MB.",
-            "error-toast"
-        );
-
-        return;
-    }
-
-
-    const application =
-        applicationsCache.find(
-            app =>
-                String(app.id) ===
-                String(id)
-        );
-
-
-    if (!application) {
-
-        showToast(
-            "Application not found.",
-            "error-toast"
-        );
-
-        return;
-    }
-
-
-    button.disabled = true;
-    button.textContent = "Uploading...";
-
-
-    let newFilePath = null;
+    empty.style.display =
+        "none";
 
 
     try {
 
-        const applicationId =
-            application.application_id ||
-            String(id);
-
-
-        const safeName =
-            file.name.replace(
-                /[^a-zA-Z0-9._-]/g,
-                "_"
-            );
-
-
-        newFilePath =
-            `applications/${applicationId}/${Date.now()}_${safeName}`;
-
-
-        /*
-         * 1. Upload new document
-         */
-
         const {
-            error: uploadError
-        } = await supabaseClient
-            .storage
-            .from(STORAGE_BUCKET)
-            .upload(
-                newFilePath,
-                file,
-                {
-                    cacheControl: "3600",
-                    upsert: false,
-                    contentType: file.type
-                }
-            );
-
-
-        if (uploadError) {
-            throw uploadError;
-        }
-
-
-        /*
-         * 2. Existing document
-         */
-
-        const existingDocuments =
-            getDocuments(application);
-
-
-        /*
-         * 3. Keep only NEW document
-         */
-
-        const newDocuments = [
-            newFilePath
-        ];
-
-
-        /*
-         * 4. Save new path in database
-         */
-
-        const {
-            error: updateError
-        } = await supabaseClient
-            .from("applications")
-            .update({
-                document_urls:
-                    newDocuments
-            })
-            .eq(
-                "id",
-                id
-            );
-
-
-        if (updateError) {
-
-            /*
-             * Database update failed.
-             * Remove newly uploaded file.
-             */
-
+            data,
+            error
+        } =
             await supabaseClient
                 .storage
-                .from(STORAGE_BUCKET)
-                .remove([
-                    newFilePath
-                ]);
+                .from(BUCKET_NAME)
+                .list(
+                    "",
+                    {
+                        limit: 100,
+                        sortBy: {
+                            column: "name",
+                            order: "asc"
+                        }
+                    }
+                );
 
-            throw updateError;
+
+        if (error) {
+
+            throw error;
+
         }
 
 
-        /*
-         * 5. Delete old document from Storage
-         */
+        loading.style.display =
+            "none";
+
+
+        const files =
+            (data || [])
+                .filter(
+                    file =>
+                        file.name
+                            .toLowerCase()
+                            .match(
+                                /\.(jpg|jpeg|png|webp)$/i
+                            )
+                );
+
+
+        totalAds.textContent =
+            files.length;
+
 
         if (
-            existingDocuments.length > 0
+            files.length === 0
         ) {
 
-            for (
-                const oldPath
-                of existingDocuments
-            ) {
+            empty.style.display =
+                "block";
 
-                if (
-                    String(oldPath) !==
-                    String(newFilePath)
-                ) {
+            return;
 
-                    if (
-                        !String(oldPath)
-                            .startsWith("http")
-                    ) {
-
-                        await supabaseClient
-                            .storage
-                            .from(STORAGE_BUCKET)
-                            .remove([
-                                oldPath
-                            ]);
-                    }
-                }
-            }
         }
 
 
-        /*
-         * 6. Update local cache
-         */
+        files.forEach(
+            function(file) {
 
-        application.document_urls =
-            newDocuments;
+                createAdCard(
+                    file
+                );
 
+            }
+        );
 
-        renderApplications(
-            applicationsCache
+    }
+
+    catch (error) {
+
+        console.error(
+            "Advertisement loading error:",
+            error
         );
 
 
-        showToast(
-            existingDocuments.length > 0
-                ? "Document replaced successfully."
-                : "Document uploaded successfully.",
+        loading.style.display =
+            "none";
+
+
+        adsGrid.innerHTML = "";
+
+
+        empty.style.display =
+            "block";
+
+
+        empty.innerHTML = `
+
+            <div class="empty-icon">
+                ⚠️
+            </div>
+
+            <h3>
+                Unable to load advertisements
+            </h3>
+
+            <p>
+                ${escapeHtml(error.message)}
+            </p>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   CREATE AD CARD
+========================================================== */
+
+function createAdCard(
+    file
+) {
+
+    const {
+        data
+    } =
+        supabaseClient
+            .storage
+            .from(BUCKET_NAME)
+            .getPublicUrl(
+                file.name
+            );
+
+
+    const publicUrl =
+        data.publicUrl;
+
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "ad-card";
+
+
+    card.innerHTML = `
+
+        <div
+            class="ad-image"
+            title="Click to preview"
+        >
+
+            <img
+                src="${escapeAttribute(publicUrl)}"
+                alt="${escapeAttribute(file.name)}"
+                loading="lazy"
+            >
+
+        </div>
+
+
+        <div class="ad-info">
+
+            <div class="ad-name">
+                ${escapeHtml(file.name)}
+            </div>
+
+            <div class="ad-status">
+                ● Active
+            </div>
+
+            <div class="ad-actions">
+
+                <button
+                    class="view-btn"
+                >
+                    👁 View
+                </button>
+
+                <button
+                    class="delete-btn"
+                >
+                    🗑 Delete
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    const image =
+        card.querySelector(
+            ".ad-image"
+        );
+
+
+    const viewBtn =
+        card.querySelector(
+            ".view-btn"
+        );
+
+
+    const deleteBtn =
+        card.querySelector(
+            ".delete-btn"
+        );
+
+
+    image.addEventListener(
+        "click",
+        function() {
+
+            openPreview(
+                publicUrl
+            );
+
+        }
+    );
+
+
+    viewBtn.addEventListener(
+        "click",
+        function() {
+
+            openPreview(
+                publicUrl
+            );
+
+        }
+    );
+
+
+    deleteBtn.addEventListener(
+        "click",
+        function() {
+
+            deleteAdvertisement(
+                file.name
+            );
+
+        }
+    );
+
+
+    adsGrid.appendChild(
+        card
+    );
+
+}
+
+
+
+/* =========================================================
+   UPLOAD FILE
+========================================================== */
+
+async function uploadAdvertisement() {
+
+    const file =
+        fileInput.files[0];
+
+
+    if (!file) {
+
+        showMessage(
+            "Please select an image first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !file.type.startsWith(
+            "image/"
+        )
+    ) {
+
+        showMessage(
+            "Only image files are allowed.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const maxSize =
+        10 * 1024 * 1024;
+
+
+    if (
+        file.size >
+        maxSize
+    ) {
+
+        showMessage(
+            "Maximum file size is 10 MB.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    uploadBtn.disabled =
+        true;
+
+
+    uploadBtn.textContent =
+        "Uploading...";
+
+
+    try {
+
+        const extension =
+            file.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+
+
+        const timestamp =
+            Date.now();
+
+
+        const safeName =
+            file.name
+                .replace(
+                    /\s+/g,
+                    "_"
+                )
+                .replace(
+                    /[^a-zA-Z0-9._-]/g,
+                    ""
+                );
+
+
+        const fileName =
+            `advertisement_${timestamp}_${safeName}`;
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from(BUCKET_NAME)
+                .upload(
+                    fileName,
+                    file,
+                    {
+                        cacheControl:
+                            "3600",
+
+                        contentType:
+                            file.type,
+
+                        upsert:
+                            false
+                    }
+                );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        showMessage(
+            "Advertisement uploaded successfully.",
             "success"
         );
 
 
-    } catch (error) {
+        fileInput.value =
+            "";
+
+        selectedFile.textContent =
+            "";
+
+        uploadAction.classList.remove(
+            "show"
+        );
+
+
+        await loadAdvertisements();
+
+    }
+
+    catch (error) {
 
         console.error(
             "Upload error:",
@@ -1749,411 +1985,304 @@ async function uploadDocument(id) {
         );
 
 
-        showToast(
-            "Upload failed: " +
-            error.message,
-            "error-toast"
+        showMessage(
+            error.message ||
+            "Advertisement upload failed.",
+            "error"
         );
 
-
-    } finally {
-
-        button.disabled = false;
-
-        button.textContent =
-            getDocuments(application).length > 0
-                ? "📤 Replace Document"
-                : "📤 Upload Document";
-
-        input.value = "";
     }
+
+
+    uploadBtn.disabled =
+        false;
+
+
+    uploadBtn.textContent =
+        "⬆️ Upload Advertisement";
+
 }
 
 
-/* =========================================================
-   OPEN DOCUMENT
-========================================================= */
 
-async function openDocument(path) {
+/* =========================================================
+   DELETE ADVERTISEMENT
+========================================================== */
+
+async function deleteAdvertisement(
+    fileName
+) {
+
+    const confirmed =
+        confirm(
+            `Are you sure you want to delete "${fileName}"?`
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
 
     try {
 
-        if (
-            String(path).startsWith("http://") ||
-            String(path).startsWith("https://")
-        ) {
+        const {
+            error
+        } =
+            await supabaseClient
+                .storage
+                .from(BUCKET_NAME)
+                .remove(
+                    [
+                        fileName
+                    ]
+                );
 
-            window.open(
-                path,
-                "_blank"
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        showMessage(
+            "Advertisement deleted successfully.",
+            "success"
+        );
+
+
+        await loadAdvertisements();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Delete error:",
+            error
+        );
+
+
+        showMessage(
+            error.message ||
+            "Unable to delete advertisement.",
+            "error"
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   PREVIEW
+========================================================== */
+
+function openPreview(
+    url
+) {
+
+    modalImage.src =
+        url;
+
+    imageModal.classList.add(
+        "show"
+    );
+
+}
+
+
+function closePreview() {
+
+    imageModal.classList.remove(
+        "show"
+    );
+
+    modalImage.src =
+        "";
+
+}
+
+
+
+/* =========================================================
+   FILE SELECTION
+========================================================== */
+
+fileInput.addEventListener(
+    "change",
+    function() {
+
+        const file =
+            this.files[0];
+
+
+        if (!file) {
+
+            selectedFile.textContent =
+                "";
+
+            uploadAction.classList.remove(
+                "show"
             );
 
             return;
+
         }
 
 
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .storage
-            .from(STORAGE_BUCKET)
-            .createSignedUrl(
-                path,
-                3600
-            );
+        selectedFile.textContent =
+            `Selected: ${file.name}`;
 
 
-        if (error) {
-            throw error;
-        }
-
-
-        if (
-            !data ||
-            !data.signedUrl
-        ) {
-
-            throw new Error(
-                "Unable to create document URL."
-            );
-        }
-
-
-        window.open(
-            data.signedUrl,
-            "_blank"
+        uploadAction.classList.add(
+            "show"
         );
 
-
-    } catch (error) {
-
-        console.error(error);
-
-        showToast(
-            "Unable to open document: " +
-            error.message,
-            "error-toast"
-        );
     }
-}
+);
+
 
 
 /* =========================================================
-   DELETE DOCUMENT
-========================================================= */
+   TOGGLE UPLOAD BOX
+========================================================== */
 
-async function deleteDocument(
-    id,
-    path
-) {
+uploadToggle.addEventListener(
+    "click",
+    function() {
 
-    if (
-        !confirm(
-            "Delete this document?"
-        )
-    ) {
-        return;
-    }
-
-
-    try {
-
-        const application =
-            applicationsCache.find(
-                app =>
-                    String(app.id) ===
-                    String(id)
-            );
-
-
-        if (!application) {
-
-            throw new Error(
-                "Application not found."
-            );
-        }
-
-
-        /*
-         * Remove from Storage
-         */
-
-        if (
-            !String(path)
-                .startsWith("http")
-        ) {
-
-            const {
-                error: storageError
-            } = await supabaseClient
-                .storage
-                .from(STORAGE_BUCKET)
-                .remove([
-                    path
-                ]);
-
-
-            if (storageError) {
-                throw storageError;
-            }
-        }
-
-
-        /*
-         * Remove from database
-         */
-
-        const {
-            error: updateError
-        } = await supabaseClient
-            .from("applications")
-            .update({
-                document_urls: []
-            })
-            .eq(
-                "id",
-                id
-            );
-
-
-        if (updateError) {
-            throw updateError;
-        }
-
-
-        application.document_urls = [];
-
-
-        renderApplications(
-            applicationsCache
-        );
-
-
-        showToast(
-            "Document deleted successfully.",
-            "success"
-        );
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        showToast(
-            "Delete failed: " +
-            error.message,
-            "error-toast"
-        );
-    }
-}
-
-
-/* =========================================================
-   STATUS CHANGE
-========================================================= */
-
-function statusChanged(
-    id,
-    select
-) {
-
-    select.className =
-        "status-select " +
-        select.value;
-
-
-    const button =
-        document.getElementById(
-            "save-" + id
-        );
-
-
-    if (button) {
-        button.classList.add("show");
-    }
-}
-
-
-/* =========================================================
-   UPDATE STATUS
-========================================================= */
-
-async function updateStatus(id) {
-
-    const select =
-        document.getElementById(
-            "status-" + id
-        );
-
-    const button =
-        document.getElementById(
-            "save-" + id
-        );
-
-
-    if (!select) {
-        return;
-    }
-
-
-    const newStatus =
-        select.value;
-
-
-    button.disabled = true;
-    button.textContent = "Saving...";
-
-
-    try {
-
-        const {
-            error
-        } = await supabaseClient
-            .from("applications")
-            .update({
-                status:
-                    newStatus
-            })
-            .eq(
-                "id",
-                id
-            );
-
-
-        if (error) {
-            throw error;
-        }
-
-
-        showToast(
-            "Status updated to " +
-            capitalize(newStatus),
-            "success"
-        );
-
-
-        button.classList.remove(
+        uploadBox.classList.toggle(
             "show"
         );
 
 
-        await loadApplications();
+        if (
+            uploadBox.classList.contains(
+                "show"
+            )
+        ) {
 
+            uploadToggle.textContent =
+                "✕ Close Upload";
 
-    } catch (error) {
+        }
 
-        console.error(error);
+        else {
 
-        showToast(
-            "Failed to update status: " +
-            error.message,
-            "error-toast"
-        );
+            uploadToggle.textContent =
+                "➕ Add Advertisement";
 
+        }
 
-        button.disabled = false;
-        button.textContent = "Save";
     }
-}
+);
+
 
 
 /* =========================================================
-   UPDATE ADMIN NOTE
-========================================================= */
+   UPLOAD BUTTON
+========================================================== */
 
-async function updateNote(id) {
+uploadBtn.addEventListener(
+    "click",
+    uploadAdvertisement
+);
 
-    const input =
-        document.getElementById(
-            "note-" + id
-        );
-
-
-    if (!input) {
-        return;
-    }
-
-
-    const note =
-        input.value.trim();
-
-
-    try {
-
-        const {
-            error
-        } = await supabaseClient
-            .from("applications")
-            .update({
-                admin_note:
-                    note
-            })
-            .eq(
-                "id",
-                id
-            );
-
-
-        if (error) {
-            throw error;
-        }
-
-
-        const cached =
-            applicationsCache.find(
-                app =>
-                    String(app.id) ===
-                    String(id)
-            );
-
-
-        if (cached) {
-            cached.admin_note = note;
-        }
-
-
-        showToast(
-            "Admin note saved successfully.",
-            "success"
-        );
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        showToast(
-            "Failed to save note: " +
-            error.message,
-            "error-toast"
-        );
-    }
-}
 
 
 /* =========================================================
-   CLOSE MODAL
-========================================================= */
+   REFRESH
+========================================================== */
 
-function closeDetails() {
+refreshBtn.addEventListener(
+    "click",
+    async function() {
 
-    document.getElementById(
-        "detailsModal"
-    ).classList.remove("show");
-}
+        refreshBtn.disabled =
+            true;
+
+        refreshBtn.textContent =
+            "⟳ Loading...";
 
 
-function closeModalOutside(event) {
+        await loadAdvertisements();
 
-    if (
-        event.target.id ===
-        "detailsModal"
-    ) {
 
-        closeDetails();
+        refreshBtn.disabled =
+            false;
+
+        refreshBtn.textContent =
+            "🔄 Refresh";
+
     }
-}
+);
+
+
+
+/* =========================================================
+   LOGOUT
+========================================================== */
+
+logoutBtn.addEventListener(
+    "click",
+    async function() {
+
+        const confirmed =
+            confirm(
+                "Do you want to logout?"
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        await supabaseClient
+            .auth
+            .signOut();
+
+
+        window.location.href =
+            "admin-login.html";
+
+    }
+);
+
+
+
+/* =========================================================
+   MODAL EVENTS
+========================================================== */
+
+closeModal.addEventListener(
+    "click",
+    closePreview
+);
+
+
+imageModal.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target ===
+            imageModal
+        ) {
+
+            closePreview();
+
+        }
+
+    }
+);
 
 
 document.addEventListener(
@@ -2164,38 +2293,22 @@ document.addEventListener(
             event.key === "Escape"
         ) {
 
-            closeDetails();
+            closePreview();
+
         }
+
     }
 );
 
 
+
 /* =========================================================
-   HELPERS
-========================================================= */
+   SECURITY HELPERS
+========================================================== */
 
-function capitalize(text) {
-
-    if (!text) {
-        return "";
-    }
-
-    return (
-        text.charAt(0).toUpperCase() +
-        text.slice(1)
-    );
-}
-
-
-function escapeHtml(value) {
-
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "";
-    }
+function escapeHtml(
+    value
+) {
 
     return String(value)
         .replace(
@@ -2218,92 +2331,46 @@ function escapeHtml(value) {
             /'/g,
             "&#039;"
         );
+
 }
 
 
-function escapeJs(value) {
-
-    return String(value)
-        .replace(
-            /\\/g,
-            "\\\\"
-        )
-        .replace(
-            /'/g,
-            "\\'"
-        )
-        .replace(
-            /\r?\n/g,
-            "\\n"
-        );
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function showToast(
-    message,
-    type
+function escapeAttribute(
+    value
 ) {
 
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    toast.textContent =
-        message;
-
-
-    toast.className =
-        "toast " + type;
-
-
-    setTimeout(
-        function() {
-
-            toast.className =
-                "toast";
-
-        },
-        3500
+    return escapeHtml(
+        value
     );
+
 }
 
 
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-async function logout() {
-
-    await supabaseClient
-        .auth
-        .signOut();
-
-
-    window.location.href =
-        "admin-login.html";
-}
-
 
 /* =========================================================
-   INITIAL LOAD
-========================================================= */
+   INITIALIZE
+========================================================== */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
+(async function() {
 
-        loadApplications();
+    const isAdmin =
+        await checkAdmin();
+
+
+    if (!isAdmin) {
+
+        return;
 
     }
-);
+
+
+    await loadAdvertisements();
+
+})();
 
 </script>
 
+
 </body>
+
 </html>
