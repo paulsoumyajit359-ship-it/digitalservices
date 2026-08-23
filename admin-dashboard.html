@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -19,6 +20,10 @@
             background: #f4f7fb;
             color: #172033;
         }
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
 
         .header {
             background: white;
@@ -72,6 +77,14 @@
             font-weight: bold;
         }
 
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+        /* =====================================================
+           MAIN CONTAINER
+           ===================================================== */
+
         .container {
             max-width: 1400px;
             margin: 30px auto;
@@ -91,6 +104,10 @@
             margin: 0;
             color: #6b7280;
         }
+
+        /* =====================================================
+           STATISTICS
+           ===================================================== */
 
         .stats {
             display: grid;
@@ -128,6 +145,10 @@
         .completed-number {
             color: #16a34a;
         }
+
+        /* =====================================================
+           APPLICATION BOX
+           ===================================================== */
 
         .applications-box {
             background: white;
@@ -178,6 +199,10 @@
             border-radius: 8px;
         }
 
+        /* =====================================================
+           TABLE
+           ===================================================== */
+
         .table-container {
             overflow-x: auto;
         }
@@ -226,6 +251,10 @@
             white-space: nowrap;
         }
 
+        /* =====================================================
+           STATUS
+           ===================================================== */
+
         .status-select {
             padding: 9px 12px;
             border-radius: 7px;
@@ -254,6 +283,10 @@
             border-color: #9ae6b4;
         }
 
+        /* =====================================================
+           SAVE BUTTON
+           ===================================================== */
+
         .save-btn {
             padding: 8px 13px;
             border: none;
@@ -278,6 +311,10 @@
             cursor: not-allowed;
         }
 
+        /* =====================================================
+           ADMIN NOTE
+           ===================================================== */
+
         .note-input {
             width: 190px;
             padding: 9px;
@@ -299,11 +336,23 @@
             font-size: 12px;
         }
 
+        .note-save-btn:hover {
+            background: #334155;
+        }
+
+        /* =====================================================
+           EMPTY
+           ===================================================== */
+
         .empty {
             text-align: center;
             padding: 60px 20px;
             color: #777;
         }
+
+        /* =====================================================
+           TOAST
+           ===================================================== */
 
         .toast {
             position: fixed;
@@ -328,7 +377,12 @@
             background: #dc2626;
         }
 
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
         @media (max-width: 900px) {
+
             .stats {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -340,9 +394,11 @@
             .container {
                 padding: 0 12px;
             }
+
         }
 
         @media (max-width: 550px) {
+
             .stats {
                 grid-template-columns: 1fr;
             }
@@ -350,83 +406,177 @@
             .welcome h2 {
                 font-size: 23px;
             }
+
+            .brand h1 {
+                font-size: 18px;
+            }
+
+            .logout-btn {
+                padding: 9px 12px;
+            }
+
         }
+
     </style>
+
 </head>
 
 <body>
 
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
 <header class="header">
 
     <div class="brand">
-        <div class="logo">DS</div>
+
+        <div class="logo">
+            DS
+        </div>
 
         <div>
-            <h1>Digital Service</h1>
-            <p>Administrator Panel</p>
+
+            <h1>
+                Digital Service
+            </h1>
+
+            <p>
+                Administrator Panel
+            </p>
+
         </div>
+
     </div>
 
-    <button class="logout-btn" onclick="logout()">
+
+    <button
+        class="logout-btn"
+        onclick="logout()"
+    >
         Logout
     </button>
 
 </header>
 
 
+<!-- =========================================================
+     MAIN
+     ========================================================= -->
+
 <main class="container">
 
     <div class="welcome">
-        <h2>Admin Dashboard 👋</h2>
-        <p>Manage customer applications and update their work progress.</p>
+
+        <h2>
+            Admin Dashboard 👋
+        </h2>
+
+        <p>
+            Manage customer applications and update their work progress.
+        </p>
+
     </div>
 
 
-    <!-- STATISTICS -->
+    <!-- =====================================================
+         STATISTICS
+         ===================================================== -->
 
     <section class="stats">
 
         <div class="stat-card">
-            <h3>Total Applications</h3>
-            <div class="number" id="totalCount">0</div>
+
+            <h3>
+                Total Applications
+            </h3>
+
+            <div
+                class="number"
+                id="totalCount"
+            >
+                0
+            </div>
+
         </div>
 
-        <div class="stat-card">
-            <h3>Pending</h3>
-            <div class="number pending-number" id="pendingCount">0</div>
-        </div>
 
         <div class="stat-card">
-            <h3>Processing</h3>
-            <div class="number processing-number" id="processingCount">0</div>
+
+            <h3>
+                Pending
+            </h3>
+
+            <div
+                class="number pending-number"
+                id="pendingCount"
+            >
+                0
+            </div>
+
         </div>
 
+
         <div class="stat-card">
-            <h3>Completed</h3>
-            <div class="number completed-number" id="completedCount">0</div>
+
+            <h3>
+                Processing
+            </h3>
+
+            <div
+                class="number processing-number"
+                id="processingCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Completed
+            </h3>
+
+            <div
+                class="number completed-number"
+                id="completedCount"
+            >
+                0
+            </div>
+
         </div>
 
     </section>
 
 
-    <!-- APPLICATIONS -->
+    <!-- =====================================================
+         APPLICATIONS
+         ===================================================== -->
 
     <section class="applications-box">
 
         <div class="box-header">
 
-            <h2>Customer Applications</h2>
+            <h2>
+                Customer Applications
+            </h2>
 
-            <button class="refresh-btn" onclick="loadApplications()">
+            <button
+                class="refresh-btn"
+                onclick="loadApplications()"
+            >
                 🔄 Refresh
             </button>
 
         </div>
 
+
         <div id="content">
 
             <div class="loading">
-                Loading applications...
+                Checking admin access...
             </div>
 
         </div>
@@ -436,142 +586,375 @@
 </main>
 
 
-<div id="toast" class="toast"></div>
+<!-- =========================================================
+     TOAST
+     ========================================================= -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
 
 
 <script>
 
-    /* =========================================================
-       SUPABASE CONFIGURATION
-       ========================================================= */
+/* =========================================================
+   SUPABASE CONFIGURATION
+   ========================================================= */
 
-    const SUPABASE_URL = "https://nlzrdjvlkdqungmhnsrl.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+const SUPABASE_URL =
+    "https://nlzrdjvlkdqungmhnsrl.supabase.co";
 
-    const supabaseClient =
-        supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_ANON_KEY
+const SUPABASE_ANON_KEY =
+    "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+
+/* =========================================================
+   ADMIN CONFIGURATION
+   ========================================================= */
+
+const ADMIN_UID =
+    "e3c0a5b6-7bb7-4efa-b7c4-64b37cc84b08";
+
+
+const ADMIN_EMAIL =
+    "paulsoumyajit359@gmail.com";
+
+
+/* =========================================================
+   ADMIN ACCESS CHECK
+   ========================================================= */
+
+async function checkAdminAccess() {
+
+    try {
+
+        const {
+            data: { user },
+            error
+        } =
+            await supabaseClient.auth.getUser();
+
+
+        /* -------------------------------------------------
+           NO SESSION
+           ------------------------------------------------- */
+
+        if (error || !user) {
+
+            window.location.href =
+                "admin-login.html";
+
+            return false;
+
+        }
+
+
+        /* -------------------------------------------------
+           CHECK ADMIN UID
+           ------------------------------------------------- */
+
+        if (user.id !== ADMIN_UID) {
+
+            await supabaseClient.auth.signOut();
+
+            alert(
+                "Access denied. Admin account required."
+            );
+
+            window.location.href =
+                "admin-login.html";
+
+            return false;
+
+        }
+
+
+        /* -------------------------------------------------
+           EXTRA EMAIL CHECK
+           ------------------------------------------------- */
+
+        if (
+            String(user.email || "")
+                .toLowerCase()
+            !==
+            ADMIN_EMAIL.toLowerCase()
+        ) {
+
+            await supabaseClient.auth.signOut();
+
+            alert(
+                "Access denied. Unauthorized admin account."
+            );
+
+            window.location.href =
+                "admin-login.html";
+
+            return false;
+
+        }
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Admin access check failed:",
+            error
+        );
+
+        window.location.href =
+            "admin-login.html";
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD APPLICATIONS
+   ========================================================= */
+
+async function loadApplications() {
+
+    const content =
+        document.getElementById("content");
+
+
+    content.innerHTML = `
+        <div class="loading">
+            Loading applications...
+        </div>
+    `;
+
+
+    try {
+
+        /* -------------------------------------------------
+           CHECK ADMIN BEFORE DATABASE REQUEST
+           ------------------------------------------------- */
+
+        const isAdmin =
+            await checkAdminAccess();
+
+
+        if (!isAdmin) {
+
+            return;
+
+        }
+
+
+        /* -------------------------------------------------
+           FETCH APPLICATIONS
+           ------------------------------------------------- */
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        updateStatistics(
+            data || []
         );
 
 
-    /* =========================================================
-       LOAD APPLICATIONS
-       ========================================================= */
+        renderApplications(
+            data || []
+        );
 
-    async function loadApplications() {
 
-        const content = document.getElementById("content");
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
 
         content.innerHTML = `
-            <div class="loading">
-                Loading applications...
+            <div class="error">
+
+                <strong>
+                    Unable to load applications.
+                </strong>
+
+                <br><br>
+
+                ${escapeHtml(
+                    error.message
+                )}
+
             </div>
         `;
 
-        try {
+    }
 
-            const { data, error } = await supabaseClient
-                .from("applications")
-                .select("*")
-                .order("created_at", {
-                    ascending: false
-                });
+}
 
-            if (error) {
-                throw error;
-            }
 
-            updateStatistics(data || []);
+/* =========================================================
+   STATISTICS
+   ========================================================= */
 
-            renderApplications(data || []);
+function updateStatistics(
+    applications
+) {
 
-        } catch (error) {
+    const total =
+        applications.length;
 
-            console.error(error);
 
-            content.innerHTML = `
-                <div class="error">
-                    <strong>Unable to load applications.</strong>
-                    <br><br>
-                    ${escapeHtml(error.message)}
-                </div>
-            `;
+    const pending =
+        applications.filter(
+            app =>
+                String(
+                    app.status || ""
+                ).toLowerCase()
+                ===
+                "pending"
+        ).length;
 
-        }
+
+    const processing =
+        applications.filter(
+            app =>
+                String(
+                    app.status || ""
+                ).toLowerCase()
+                ===
+                "processing"
+        ).length;
+
+
+    const completed =
+        applications.filter(
+            app =>
+                String(
+                    app.status || ""
+                ).toLowerCase()
+                ===
+                "completed"
+        ).length;
+
+
+    document.getElementById(
+        "totalCount"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "pendingCount"
+    ).textContent =
+        pending;
+
+
+    document.getElementById(
+        "processingCount"
+    ).textContent =
+        processing;
+
+
+    document.getElementById(
+        "completedCount"
+    ).textContent =
+        completed;
+
+}
+
+
+/* =========================================================
+   RENDER APPLICATIONS
+   ========================================================= */
+
+function renderApplications(
+    applications
+) {
+
+    const content =
+        document.getElementById(
+            "content"
+        );
+
+
+    if (!applications.length) {
+
+        content.innerHTML = `
+            <div class="empty">
+
+                <h3>
+                    No Applications Found
+                </h3>
+
+                <p>
+                    There are currently no customer applications.
+                </p>
+
+            </div>
+        `;
+
+        return;
 
     }
 
 
-    /* =========================================================
-       STATISTICS
-       ========================================================= */
-
-    function updateStatistics(applications) {
-
-        const total = applications.length;
-
-        const pending = applications.filter(
-            app => String(app.status || "").toLowerCase() === "pending"
-        ).length;
-
-        const processing = applications.filter(
-            app => String(app.status || "").toLowerCase() === "processing"
-        ).length;
-
-        const completed = applications.filter(
-            app => String(app.status || "").toLowerCase() === "completed"
-        ).length;
+    let rows = "";
 
 
-        document.getElementById("totalCount").textContent = total;
-        document.getElementById("pendingCount").textContent = pending;
-        document.getElementById("processingCount").textContent = processing;
-        document.getElementById("completedCount").textContent = completed;
-
-    }
-
-
-    /* =========================================================
-       RENDER APPLICATIONS
-       ========================================================= */
-
-    function renderApplications(applications) {
-
-        const content = document.getElementById("content");
-
-
-        if (!applications.length) {
-
-            content.innerHTML = `
-                <div class="empty">
-                    <h3>No Applications Found</h3>
-                    <p>There are currently no customer applications.</p>
-                </div>
-            `;
-
-            return;
-        }
-
-
-        let rows = "";
-
-
-        applications.forEach(app => {
+    applications.forEach(
+        function(app) {
 
             const status =
-                String(app.status || "Pending").toLowerCase();
+                String(
+                    app.status ||
+                    "Pending"
+                ).toLowerCase();
 
 
             const safeStatus =
-                ["pending", "processing", "completed"].includes(status)
+                [
+                    "pending",
+                    "processing",
+                    "completed"
+                ].includes(status)
                     ? status
                     : "pending";
 
 
             const createdDate =
                 app.created_at
-                    ? new Date(app.created_at).toLocaleString("en-IN")
+                    ? new Date(
+                        app.created_at
+                    ).toLocaleString(
+                        "en-IN"
+                    )
                     : "N/A";
 
 
@@ -580,20 +963,42 @@
                 <tr>
 
                     <td>
+
                         <div class="application-id">
-                            ${escapeHtml(app.application_id || "N/A")}
+
+                            ${escapeHtml(
+                                app.application_id ||
+                                "N/A"
+                            )}
+
                         </div>
+
                     </td>
 
 
                     <td>
 
                         <div class="customer-name">
-                            ${escapeHtml(app.customer_name || "N/A")}
+
+                            ${escapeHtml(
+                                app.customer_name ||
+                                "N/A"
+                            )}
+
                         </div>
 
-                        <div style="color:#6b7280;margin-top:4px;">
-                            ${escapeHtml(app.mobile || "")}
+                        <div
+                            style="
+                                color:#6b7280;
+                                margin-top:4px;
+                            "
+                        >
+
+                            ${escapeHtml(
+                                app.mobile ||
+                                ""
+                            )}
+
                         </div>
 
                     </td>
@@ -601,7 +1006,10 @@
 
                     <td>
 
-                        ${escapeHtml(app.email || "N/A")}
+                        ${escapeHtml(
+                            app.email ||
+                            "N/A"
+                        )}
 
                     </td>
 
@@ -609,7 +1017,12 @@
                     <td>
 
                         <div class="service">
-                            ${escapeHtml(app.service || "N/A")}
+
+                            ${escapeHtml(
+                                app.service ||
+                                "N/A"
+                            )}
+
                         </div>
 
                     </td>
@@ -618,7 +1031,9 @@
                     <td>
 
                         <div class="date">
+
                             ${createdDate}
+
                         </div>
 
                     </td>
@@ -632,18 +1047,41 @@
                             onchange="statusChanged('${escapeHtml(app.id)}', this)"
                         >
 
-                            <option value="pending"
-                                ${safeStatus === "pending" ? "selected" : ""}>
+                            <option
+                                value="pending"
+                                ${
+                                    safeStatus ===
+                                    "pending"
+                                    ? "selected"
+                                    : ""
+                                }
+                            >
                                 Pending
                             </option>
 
-                            <option value="processing"
-                                ${safeStatus === "processing" ? "selected" : ""}>
+
+                            <option
+                                value="processing"
+                                ${
+                                    safeStatus ===
+                                    "processing"
+                                    ? "selected"
+                                    : ""
+                                }
+                            >
                                 Processing
                             </option>
 
-                            <option value="completed"
-                                ${safeStatus === "completed" ? "selected" : ""}>
+
+                            <option
+                                value="completed"
+                                ${
+                                    safeStatus ===
+                                    "completed"
+                                    ? "selected"
+                                    : ""
+                                }
+                            >
                                 Completed
                             </option>
 
@@ -671,7 +1109,10 @@
                             class="note-input"
                             id="note-${escapeHtml(app.id)}"
                             placeholder="Admin note..."
-                        >${escapeHtml(app.admin_note || "")}</textarea>
+                        >${escapeHtml(
+                            app.admin_note ||
+                            ""
+                        )}</textarea>
 
                         <br>
 
@@ -688,271 +1129,447 @@
 
             `;
 
-        });
+        }
+    );
 
 
-        content.innerHTML = `
+    content.innerHTML = `
 
-            <div class="table-container">
+        <div class="table-container">
 
-                <table>
+            <table>
 
-                    <thead>
+                <thead>
 
-                        <tr>
+                    <tr>
 
-                            <th>Application ID</th>
-                            <th>Customer</th>
-                            <th>Email</th>
-                            <th>Service</th>
-                            <th>Submitted</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                            <th>Admin Note</th>
+                        <th>
+                            Application ID
+                        </th>
 
-                        </tr>
+                        <th>
+                            Customer
+                        </th>
 
-                    </thead>
+                        <th>
+                            Email
+                        </th>
 
-                    <tbody>
+                        <th>
+                            Service
+                        </th>
 
-                        ${rows}
+                        <th>
+                            Submitted
+                        </th>
 
-                    </tbody>
+                        <th>
+                            Status
+                        </th>
 
-                </table>
+                        <th>
+                            Action
+                        </th>
 
-            </div>
+                        <th>
+                            Admin Note
+                        </th>
 
-        `;
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    ${rows}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   STATUS CHANGE DETECT
+   ========================================================= */
+
+function statusChanged(
+    id,
+    select
+) {
+
+    select.className =
+        "status-select " +
+        select.value;
+
+
+    const button =
+        document.getElementById(
+            "save-" + id
+        );
+
+
+    if (button) {
+
+        button.classList.add(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE STATUS
+   ========================================================= */
+
+async function updateStatus(
+    id
+) {
+
+    const select =
+        document.getElementById(
+            "status-" + id
+        );
+
+
+    const button =
+        document.getElementById(
+            "save-" + id
+        );
+
+
+    if (!select) {
+
+        return;
 
     }
 
 
-    /* =========================================================
-       STATUS CHANGE DETECT
-       ========================================================= */
+    /* -------------------------------------------------
+       CHECK ADMIN AGAIN
+       ------------------------------------------------- */
 
-    function statusChanged(id, select) {
-
-        select.className =
-            "status-select " + select.value;
+    const isAdmin =
+        await checkAdminAccess();
 
 
-        const button =
-            document.getElementById("save-" + id);
+    if (!isAdmin) {
 
-
-        if (button) {
-            button.classList.add("show");
-        }
+        return;
 
     }
 
 
-    /* =========================================================
-       UPDATE STATUS
-       ========================================================= */
-
-    async function updateStatus(id) {
-
-        const select =
-            document.getElementById("status-" + id);
-
-        const button =
-            document.getElementById("save-" + id);
+    const newStatus =
+        select.value;
 
 
-        if (!select) {
-            return;
-        }
+    button.disabled = true;
+
+    button.textContent =
+        "Saving...";
 
 
-        const newStatus =
-            select.value;
+    try {
 
-
-        button.disabled = true;
-        button.textContent = "Saving...";
-
-
-        try {
-
-            const { error } = await supabaseClient
+        const {
+            error
+        } =
+            await supabaseClient
                 .from("applications")
                 .update({
                     status: newStatus
                 })
-                .eq("id", id);
+                .eq(
+                    "id",
+                    id
+                );
 
 
-            if (error) {
-                throw error;
-            }
+        if (error) {
 
-
-            showToast(
-                "Status updated to " +
-                capitalize(newStatus),
-                "success"
-            );
-
-
-            button.classList.remove("show");
-
-
-            await loadApplications();
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            showToast(
-                "Failed to update status: " +
-                error.message,
-                "error-toast"
-            );
-
-
-            button.disabled = false;
-            button.textContent = "Save";
+            throw error;
 
         }
+
+
+        showToast(
+            "Status updated to " +
+            capitalize(
+                newStatus
+            ),
+            "success"
+        );
+
+
+        button.classList.remove(
+            "show"
+        );
+
+
+        await loadApplications();
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        showToast(
+            "Failed to update status: " +
+            error.message,
+            "error-toast"
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "Save";
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE ADMIN NOTE
+   ========================================================= */
+
+async function updateNote(
+    id
+) {
+
+    const input =
+        document.getElementById(
+            "note-" + id
+        );
+
+
+    if (!input) {
+
+        return;
 
     }
 
 
-    /* =========================================================
-       UPDATE ADMIN NOTE
-       ========================================================= */
+    /* -------------------------------------------------
+       CHECK ADMIN AGAIN
+       ------------------------------------------------- */
 
-    async function updateNote(id) {
-
-        const input =
-            document.getElementById("note-" + id);
+    const isAdmin =
+        await checkAdminAccess();
 
 
-        if (!input) {
-            return;
-        }
+    if (!isAdmin) {
+
+        return;
+
+    }
 
 
-        const note =
-            input.value.trim();
+    const note =
+        input.value.trim();
 
 
-        try {
+    try {
 
-            const { error } = await supabaseClient
+        const {
+            error
+        } =
+            await supabaseClient
                 .from("applications")
                 .update({
                     admin_note: note
                 })
-                .eq("id", id);
+                .eq(
+                    "id",
+                    id
+                );
 
 
-            if (error) {
-                throw error;
-            }
+        if (error) {
 
-
-            showToast(
-                "Admin note saved successfully.",
-                "success"
-            );
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            showToast(
-                "Failed to save note: " +
-                error.message,
-                "error-toast"
-            );
+            throw error;
 
         }
 
+
+        showToast(
+            "Admin note saved successfully.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        showToast(
+            "Failed to save note: " +
+            error.message,
+            "error-toast"
+        );
+
     }
 
-
-    /* =========================================================
-       TOAST
-       ========================================================= */
-
-    function showToast(message, type) {
-
-        const toast =
-            document.getElementById("toast");
+}
 
 
-        toast.textContent = message;
+/* =========================================================
+   TOAST
+   ========================================================= */
 
-        toast.className =
-            "toast " + type;
+function showToast(
+    message,
+    type
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
 
 
-        setTimeout(() => {
+    toast.textContent =
+        message;
+
+
+    toast.className =
+        "toast " +
+        type;
+
+
+    setTimeout(
+        function() {
 
             toast.className =
                 "toast";
 
-        }, 3000);
+        },
+        3000
+    );
+
+}
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function capitalize(
+    text
+) {
+
+    return (
+        text.charAt(0).toUpperCase() +
+        text.slice(1)
+    );
+
+}
+
+
+function escapeHtml(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
 
     }
 
 
-    /* =========================================================
-       HELPERS
-       ========================================================= */
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
-    function capitalize(text) {
-
-        return text.charAt(0).toUpperCase() +
-               text.slice(1);
-
-    }
-
-
-    function escapeHtml(value) {
-
-        if (value === null || value === undefined) {
-            return "";
-        }
-
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
+}
 
 
-    /* =========================================================
-       LOGOUT
-       ========================================================= */
+/* =========================================================
+   LOGOUT
+   ========================================================= */
 
-    async function logout() {
+async function logout() {
+
+    try {
 
         await supabaseClient.auth.signOut();
 
-        window.location.href = "login.html";
+    } catch (error) {
+
+        console.error(
+            "Logout error:",
+            error
+        );
 
     }
 
 
-    /* =========================================================
-       INITIAL LOAD
-       ========================================================= */
+    window.location.href =
+        "admin-login.html";
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        loadApplications
-    );
+}
+
+
+/* =========================================================
+   INITIAL LOAD
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function() {
+
+        const isAdmin =
+            await checkAdminAccess();
+
+
+        if (!isAdmin) {
+
+            return;
+
+        }
+
+
+        await loadApplications();
+
+    }
+);
 
 </script>
 
