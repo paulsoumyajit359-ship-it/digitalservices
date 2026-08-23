@@ -213,6 +213,23 @@
                         name="documents"
                         multiple
                         accept=".jpg,.jpeg,.png,.pdf"
+                        <script>
+const documentInput = document.getElementById("documents");
+
+documentInput.addEventListener("change", function () {
+    const maxSize = 5 * 1024 * 1024; // 5 MB
+
+    for (const file of this.files) {
+        if (file.size > maxSize) {
+            alert(`"${file.name}" is larger than 5 MB. Please select a smaller file.`);
+
+            // Remove all selected files
+            this.value = "";
+            return;
+        }
+    }
+});
+</script>
                     >
 
                     <p>
