@@ -317,87 +317,200 @@
 
     <!-- BASIC JAVASCRIPT -->
 
-    <script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        // Show selected files
+<script>
 
-        const documentInput =
-            document.getElementById("documents");
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
-        const fileList =
-            document.getElementById("fileList");
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
 
 
-        documentInput.addEventListener("change", function () {
+// ===============================
+// SHOW SELECTED FILES
+// ===============================
 
-            fileList.innerHTML = "";
+const documentInput = document.getElementById("documents");
+const fileList = document.getElementById("fileList");
 
-            const files = this.files;
+documentInput.addEventListener("change", function () {
 
-            if (files.length === 0) {
+    fileList.innerHTML = "";
+
+    const files = this.files;
+
+    if (files.length === 0) {
+        return;
+    }
+
+    const heading = document.createElement("p");
+
+    heading.innerHTML =
+        "<strong>Selected Documents:</strong>";
+
+    fileList.appendChild(heading);
+
+    for (let i = 0; i < files.length; i++) {
+
+        const item = document.createElement("div");
+
+        item.className = "file-item";
+
+        item.textContent =
+            "📄 " + files[i].name;
+
+        fileList.appendChild(item);
+    }
+
+});
+
+
+// ===============================
+// APPLICATION SUBMISSION
+// ===============================
+
+document
+    .getElementById("applicationForm")
+    .addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        const submitButton =
+            document.querySelector(".submit-btn");
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+
+
+        try {
+
+            // Check logged-in user
+
+            const {
+                data: { user },
+                error: userError
+            } = await supabaseClient.auth.getUser();
+
+
+            if (userError || !user) {
+
+                alert("Please login before submitting an application.");
+
+                window.location.href = "/login";
+
                 return;
             }
 
-            const heading =
-                document.createElement("p");
 
-            heading.innerHTML =
-                "<strong>Selected Documents:</strong>";
+            // Get form values
 
-            fileList.appendChild(heading);
+            const customerName =
+                document.getElementById("customerName").value.trim();
+
+            const mobile =
+                document.getElementById("mobile").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const whatsapp =
+                document.getElementById("whatsapp").value.trim();
+
+            const service =
+                document.getElementById("service").value;
+
+            const requirement =
+                document.getElementById("requirement").value.trim();
+
+            const address =
+                document.getElementById("address").value.trim();
 
 
-            for (let i = 0; i < files.length; i++) {
+            // Generate Application ID
 
-                const item =
-                    document.createElement("div");
+            const applicationId =
+                "DS" +
+                Date.now().toString().slice(-8);
 
-                item.className = "file-item";
 
-                item.textContent =
-                    "📄 " + files[i].name;
+            // Insert into Supabase
 
-                fileList.appendChild(item);
+            const { data, error } =
+                await supabaseClient
+                    .from("applications")
+                    .insert([
+                        {
+                            application_id: applicationId,
+                            customer_name: customerName,
+                            mobile: mobile,
+                            email: email,
+                            whatsapp: whatsapp,
+                            service: service,
+                            requirement: requirement,
+                            address: address,
+                            status: "Pending",
+                            admin_note: "",
+                            document_urls: [],
+                            user_id: user.id
+                        }
+                    ])
+                    .select()
+                    .single();
+
+
+            if (error) {
+
+                console.error(error);
+
+                alert(
+                    "Application submission failed.\n\n" +
+                    error.message
+                );
+
+                return;
             }
 
-        });
+
+            // Success
+
+            document
+                .getElementById("applicationId")
+                .textContent =
+                data.application_id;
 
 
-        // Temporary application submission
-
-        document
-            .getElementById("applicationForm")
-            .addEventListener("submit", function (event) {
-
-                event.preventDefault();
+            document
+                .getElementById("applicationForm")
+                .style.display = "none";
 
 
-                // Temporary Application ID
-                // Later this will come from our database.
-
-                const applicationId =
-                    "DS" +
-                    Date.now().toString().slice(-8);
+            document
+                .getElementById("successBox")
+                .style.display = "block";
 
 
-                document
-                    .getElementById("applicationId")
-                    .textContent =
-                    applicationId;
+        } catch (error) {
 
+            console.error(error);
 
-                document
-                    .getElementById("applicationForm")
-                    .style.display = "none";
+            alert(
+                "Something went wrong.\n\n" +
+                error.message
+            );
 
+        } finally {
 
-                document
-                    .getElementById("successBox")
-                    .style.display = "block";
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit Application";
 
-            });
+        }
 
-    </script>
+    });
 
+</script>
 </body>
 </html>
