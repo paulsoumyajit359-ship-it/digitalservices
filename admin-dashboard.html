@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -20,8 +20,6 @@
             background: #f4f7fb;
             color: #172033;
         }
-
-        /* ================= HEADER ================= */
 
         .header {
             background: white;
@@ -79,8 +77,6 @@
             background: #dc2626;
         }
 
-        /* ================= MAIN ================= */
-
         .container {
             max-width: 1500px;
             margin: 30px auto;
@@ -100,8 +96,6 @@
             margin: 0;
             color: #6b7280;
         }
-
-        /* ================= STATISTICS ================= */
 
         .stats {
             display: grid;
@@ -123,13 +117,9 @@
             color: #64748b;
         }
 
-        .stat-card .number {
+        .number {
             font-size: 34px;
             font-weight: bold;
-        }
-
-        .total-number {
-            color: #172033;
         }
 
         .pending-number {
@@ -143,8 +133,6 @@
         .completed-number {
             color: #16a34a;
         }
-
-        /* ================= APPLICATION BOX ================= */
 
         .applications-box {
             background: white;
@@ -181,8 +169,6 @@
             background: #1257bd;
         }
 
-        /* ================= TABLE ================= */
-
         .table-container {
             width: 100%;
             overflow-x: auto;
@@ -191,7 +177,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1250px;
+            min-width: 1450px;
         }
 
         th {
@@ -240,8 +226,6 @@
             font-size: 13px;
         }
 
-        /* ================= VIEW BUTTON ================= */
-
         .view-btn {
             border: none;
             background: #172033;
@@ -253,12 +237,6 @@
             white-space: nowrap;
         }
 
-        .view-btn:hover {
-            background: #0d1422;
-        }
-
-        /* ================= STATUS ================= */
-
         .status-select {
             padding: 9px 12px;
             border-radius: 7px;
@@ -267,7 +245,6 @@
             font-weight: bold;
             cursor: pointer;
             min-width: 130px;
-            outline: none;
         }
 
         .status-select.pending {
@@ -288,8 +265,6 @@
             border-color: #9ae6b4;
         }
 
-        /* ================= SAVE BUTTON ================= */
-
         .save-btn {
             padding: 8px 13px;
             border: none;
@@ -305,17 +280,6 @@
             display: inline-block;
         }
 
-        .save-btn:hover {
-            background: #15803d;
-        }
-
-        .save-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* ================= ADMIN NOTE ================= */
-
         .note-input {
             width: 200px;
             min-height: 55px;
@@ -324,11 +288,6 @@
             border-radius: 7px;
             resize: vertical;
             font-family: Arial, sans-serif;
-            outline: none;
-        }
-
-        .note-input:focus {
-            border-color: #1769e0;
         }
 
         .note-save-btn {
@@ -343,11 +302,76 @@
             font-weight: bold;
         }
 
-        .note-save-btn:hover {
-            background: #334155;
+        /* DOCUMENT AREA */
+
+        .upload-box {
+            min-width: 260px;
         }
 
-        /* ================= MODAL ================= */
+        .file-input {
+            width: 100%;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .upload-btn {
+            border: none;
+            background: #1769e0;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .upload-btn:hover {
+            background: #1257bd;
+        }
+
+        .upload-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .documents {
+            margin-top: 8px;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 5px;
+        }
+
+        .document-link {
+            color: #1769e0;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .document-link:hover {
+            text-decoration: underline;
+        }
+
+        .delete-document-btn {
+            border: none;
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 3px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .no-document {
+            color: #888;
+            font-size: 12px;
+        }
+
+        /* MODAL */
 
         .modal-overlay {
             display: none;
@@ -370,7 +394,6 @@
             max-width: 850px;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
             overflow: hidden;
         }
 
@@ -381,12 +404,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
         }
 
         .modal-header h2 {
             margin: 0;
-            font-size: 21px;
         }
 
         .modal-close {
@@ -395,7 +416,6 @@
             color: white;
             font-size: 28px;
             cursor: pointer;
-            line-height: 1;
         }
 
         .modal-body {
@@ -452,46 +472,12 @@
             font-weight: bold;
         }
 
-        .close-btn:hover {
-            background: #334155;
-        }
-
-        .document-list {
-            margin-top: 8px;
-        }
-
-        .document-link {
-            display: inline-block;
-            margin: 5px 5px 0 0;
-            padding: 7px 10px;
-            background: #eaf2ff;
-            color: #1769e0;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        /* ================= LOADING ================= */
-
-        .loading {
-            padding: 55px;
-            text-align: center;
-            color: #777;
-        }
-
+        .loading,
         .empty {
+            padding: 60px 20px;
             text-align: center;
-            padding: 65px 20px;
             color: #777;
         }
-
-        .empty h3 {
-            margin-bottom: 8px;
-            color: #475569;
-        }
-
-        /* ================= ERROR ================= */
 
         .error {
             margin: 20px;
@@ -500,8 +486,6 @@
             color: #991b1b;
             border-radius: 8px;
         }
-
-        /* ================= TOAST ================= */
 
         .toast {
             position: fixed;
@@ -513,8 +497,7 @@
             font-weight: bold;
             display: none;
             z-index: 9999;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            max-width: 400px;
+            max-width: 450px;
         }
 
         .toast.success {
@@ -527,20 +510,9 @@
             background: #dc2626;
         }
 
-        /* ================= MOBILE ================= */
-
         @media (max-width: 900px) {
-
             .stats {
                 grid-template-columns: repeat(2, 1fr);
-            }
-
-            .header {
-                padding: 15px;
-            }
-
-            .container {
-                padding: 0 12px;
             }
 
             .details-grid {
@@ -553,21 +525,16 @@
         }
 
         @media (max-width: 550px) {
-
             .stats {
                 grid-template-columns: 1fr;
             }
 
-            .welcome h2 {
-                font-size: 24px;
+            .header {
+                padding: 15px;
             }
 
-            .brand h1 {
-                font-size: 18px;
-            }
-
-            .logout-btn {
-                padding: 9px 13px;
+            .container {
+                padding: 0 12px;
             }
 
             .box-header {
@@ -579,28 +546,12 @@
                 left: 15px;
                 right: 15px;
                 bottom: 15px;
-                max-width: none;
-            }
-
-            .modal-overlay {
-                padding: 10px;
-            }
-
-            .modal-body {
-                padding: 18px;
             }
         }
-
     </style>
 </head>
 
-
 <body>
-
-
-<!-- =========================================================
-     HEADER
-========================================================= -->
 
 <header class="header">
 
@@ -611,36 +562,20 @@
         </div>
 
         <div>
-
-            <h1>
-                Digital Service
-            </h1>
-
-            <p>
-                Administrator Panel
-            </p>
-
+            <h1>Digital Service</h1>
+            <p>Administrator Panel</p>
         </div>
 
     </div>
 
-
-    <button
-        class="logout-btn"
-        onclick="logout()"
-    >
+    <button class="logout-btn" onclick="logout()">
         Logout
     </button>
 
 </header>
 
 
-<!-- =========================================================
-     MAIN
-========================================================= -->
-
 <main class="container">
-
 
     <div class="welcome">
 
@@ -649,99 +584,44 @@
         </h2>
 
         <p>
-            Manage customer applications and update their work progress.
+            Manage customer applications, documents and work progress.
         </p>
 
     </div>
 
 
-    <!-- =====================================================
-         STATISTICS
-    ====================================================== -->
-
     <section class="stats">
 
-
         <div class="stat-card">
-
-            <h3>
-                Total Applications
-            </h3>
-
-            <div
-                class="number total-number"
-                id="totalCount"
-            >
-                0
-            </div>
-
+            <h3>Total Applications</h3>
+            <div class="number" id="totalCount">0</div>
         </div>
 
-
         <div class="stat-card">
-
-            <h3>
-                Pending
-            </h3>
-
-            <div
-                class="number pending-number"
-                id="pendingCount"
-            >
-                0
-            </div>
-
+            <h3>Pending</h3>
+            <div class="number pending-number" id="pendingCount">0</div>
         </div>
 
-
         <div class="stat-card">
-
-            <h3>
-                Processing
-            </h3>
-
-            <div
-                class="number processing-number"
-                id="processingCount"
-            >
-                0
-            </div>
-
+            <h3>Processing</h3>
+            <div class="number processing-number" id="processingCount">0</div>
         </div>
 
-
         <div class="stat-card">
-
-            <h3>
-                Completed
-            </h3>
-
-            <div
-                class="number completed-number"
-                id="completedCount"
-            >
-                0
-            </div>
-
+            <h3>Completed</h3>
+            <div class="number completed-number" id="completedCount">0</div>
         </div>
-
 
     </section>
 
 
-    <!-- =====================================================
-         APPLICATIONS
-    ====================================================== -->
-
     <section class="applications-box">
-
 
         <div class="box-header">
 
             <h2>
                 Customer Applications
             </h2>
-
 
             <button
                 class="refresh-btn"
@@ -752,25 +632,18 @@
 
         </div>
 
-
         <div id="content">
-
             <div class="loading">
                 Loading applications...
             </div>
-
         </div>
 
-
     </section>
-
 
 </main>
 
 
-<!-- =========================================================
-     APPLICATION DETAILS MODAL
-========================================================= -->
+<!-- DETAILS MODAL -->
 
 <div
     id="detailsModal"
@@ -778,12 +651,10 @@
     onclick="closeModalOutside(event)"
 >
 
-
     <div
         class="modal"
         onclick="event.stopPropagation()"
     >
-
 
         <div class="modal-header">
 
@@ -791,27 +662,19 @@
                 Application Details
             </h2>
 
-
             <button
                 class="modal-close"
                 onclick="closeDetails()"
-                aria-label="Close"
             >
                 ×
             </button>
 
         </div>
 
-
         <div
             id="modalBody"
             class="modal-body"
-        >
-
-            <!-- Details inserted here -->
-
-        </div>
-
+        ></div>
 
         <div class="modal-footer">
 
@@ -824,33 +687,22 @@
 
         </div>
 
-
     </div>
-
 
 </div>
 
 
-<!-- =========================================================
-     TOAST
-========================================================= -->
-
-<div
-    id="toast"
-    class="toast"
-></div>
+<div id="toast" class="toast"></div>
 
 
 <script>
 
-
 /* =========================================================
-   SUPABASE CONFIGURATION
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
     "https://nlzrdjvlkdqungmhnsrl.supabase.co";
-
 
 const SUPABASE_ANON_KEY =
     "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
@@ -864,7 +716,14 @@ const supabaseClient =
 
 
 /* =========================================================
-   APPLICATION DATA CACHE
+   EXISTING SINGLE STORAGE BUCKET
+========================================================= */
+
+const STORAGE_BUCKET = "documents";
+
+
+/* =========================================================
+   CACHE
 ========================================================= */
 
 let applicationsCache = [];
@@ -876,90 +735,55 @@ let applicationsCache = [];
 
 async function loadApplications() {
 
-
     const content =
         document.getElementById("content");
 
-
     content.innerHTML = `
-
         <div class="loading">
             Loading applications...
         </div>
-
     `;
 
-
     try {
-
 
         const {
             data,
             error
         } = await supabaseClient
-
             .from("applications")
-
             .select("*")
-
-            .order(
-                "created_at",
-                {
-                    ascending: false
-                }
-            );
-
+            .order("created_at", {
+                ascending: false
+            });
 
         if (error) {
-
             throw error;
-
         }
 
-
-        applicationsCache =
-            data || [];
-
+        applicationsCache = data || [];
 
         updateStatistics(
             applicationsCache
         );
 
-
         renderApplications(
             applicationsCache
         );
 
-
     } catch (error) {
 
-
-        console.error(
-            "Load applications error:",
-            error
-        );
-
+        console.error(error);
 
         content.innerHTML = `
-
             <div class="error">
-
                 <strong>
                     Unable to load applications.
                 </strong>
-
                 <br><br>
-
-                ${escapeHtml(
-                    error.message
-                )}
-
+                ${escapeHtml(error.message)}
             </div>
-
         `;
-
     }
-
 }
 
 
@@ -967,68 +791,120 @@ async function loadApplications() {
    STATISTICS
 ========================================================= */
 
-function updateStatistics(
-    applications
-) {
-
+function updateStatistics(applications) {
 
     const total =
         applications.length;
 
-
     const pending =
         applications.filter(
             app =>
-                String(
-                    app.status || ""
-                ).toLowerCase() ===
-                "pending"
+                String(app.status || "")
+                    .toLowerCase() === "pending"
         ).length;
-
 
     const processing =
         applications.filter(
             app =>
-                String(
-                    app.status || ""
-                ).toLowerCase() ===
-                "processing"
+                String(app.status || "")
+                    .toLowerCase() === "processing"
         ).length;
-
 
     const completed =
         applications.filter(
             app =>
-                String(
-                    app.status || ""
-                ).toLowerCase() ===
-                "completed"
+                String(app.status || "")
+                    .toLowerCase() === "completed"
         ).length;
 
 
-    document.getElementById(
-        "totalCount"
-    ).textContent =
-        total;
+    document.getElementById("totalCount")
+        .textContent = total;
+
+    document.getElementById("pendingCount")
+        .textContent = pending;
+
+    document.getElementById("processingCount")
+        .textContent = processing;
+
+    document.getElementById("completedCount")
+        .textContent = completed;
+}
 
 
-    document.getElementById(
-        "pendingCount"
-    ).textContent =
-        pending;
+/* =========================================================
+   DOCUMENT ARRAY
+========================================================= */
+
+function getDocuments(app) {
+
+    if (
+        Array.isArray(app.document_urls)
+    ) {
+        return app.document_urls;
+    }
+
+    return [];
+}
 
 
-    document.getElementById(
-        "processingCount"
-    ).textContent =
-        processing;
+/* =========================================================
+   RENDER DOCUMENTS
+========================================================= */
 
+function renderDocuments(app) {
 
-    document.getElementById(
-        "completedCount"
-    ).textContent =
-        completed;
+    const documents =
+        getDocuments(app);
 
+    if (!documents.length) {
+
+        return `
+            <div class="no-document">
+                No document uploaded.
+            </div>
+        `;
+    }
+
+    let html = "";
+
+    documents.forEach(
+        (path, index) => {
+
+            html += `
+                <div class="document-item">
+
+                    <a
+                        href="#"
+                        class="document-link"
+                        onclick="
+                            openDocument(
+                                '${escapeJs(String(path))}'
+                            );
+                            return false;
+                        "
+                    >
+                        📄 Document ${index + 1}
+                    </a>
+
+                    <button
+                        class="delete-document-btn"
+                        onclick="
+                            deleteDocument(
+                                '${escapeJs(String(app.id))}',
+                                '${escapeJs(String(path))}'
+                            )
+                        "
+                    >
+                        Delete
+                    </button>
+
+                </div>
+            `;
+        }
+    );
+
+    return html;
 }
 
 
@@ -1036,39 +912,24 @@ function updateStatistics(
    RENDER APPLICATIONS
 ========================================================= */
 
-function renderApplications(
-    applications
-) {
-
+function renderApplications(applications) {
 
     const content =
-        document.getElementById(
-            "content"
-        );
+        document.getElementById("content");
 
 
     if (!applications.length) {
 
-
         content.innerHTML = `
-
             <div class="empty">
-
-                <h3>
-                    No Applications Found
-                </h3>
-
+                <h3>No Applications Found</h3>
                 <p>
                     There are currently no customer applications.
                 </p>
-
             </div>
-
         `;
 
-
         return;
-
     }
 
 
@@ -1078,11 +939,9 @@ function renderApplications(
     applications.forEach(
         app => {
 
-
             const status =
                 String(
-                    app.status ||
-                    "pending"
+                    app.status || "pending"
                 ).toLowerCase();
 
 
@@ -1100,9 +959,7 @@ function renderApplications(
                 app.created_at
                     ? new Date(
                         app.created_at
-                    ).toLocaleString(
-                        "en-IN"
-                    )
+                    ).toLocaleString("en-IN")
                     : "N/A";
 
 
@@ -1110,91 +967,54 @@ function renderApplications(
 
                 <tr>
 
-
-                    <!-- APPLICATION ID -->
-
                     <td>
-
                         <div class="application-id">
-
                             ${escapeHtml(
-                                app.application_id ||
-                                "N/A"
+                                app.application_id || "N/A"
                             )}
-
                         </div>
-
                     </td>
 
-
-                    <!-- CUSTOMER -->
 
                     <td>
 
                         <div class="customer-name">
-
                             ${escapeHtml(
-                                app.customer_name ||
-                                "N/A"
+                                app.customer_name || "N/A"
                             )}
-
                         </div>
-
 
                         <div class="mobile">
-
                             ${escapeHtml(
-                                app.mobile ||
-                                ""
+                                app.mobile || ""
                             )}
-
                         </div>
 
                     </td>
 
 
-                    <!-- EMAIL -->
-
                     <td>
-
                         ${escapeHtml(
-                            app.email ||
-                            "N/A"
+                            app.email || "N/A"
                         )}
-
                     </td>
 
 
-                    <!-- SERVICE -->
-
                     <td>
-
                         <div class="service">
-
                             ${escapeHtml(
-                                app.service ||
-                                "N/A"
+                                app.service || "N/A"
                             )}
-
                         </div>
-
                     </td>
 
-
-                    <!-- DATE -->
 
                     <td>
-
                         <div class="date">
-
-                            ${createdDate}
-
+                            ${escapeHtml(createdDate)}
                         </div>
-
                     </td>
 
-
-                    <!-- VIEW -->
 
                     <td>
 
@@ -1202,7 +1022,7 @@ function renderApplications(
                             class="view-btn"
                             onclick="
                                 viewApplication(
-                                    '${escapeHtml(app.id)}'
+                                    '${escapeJs(String(app.id))}'
                                 )
                             "
                         >
@@ -1212,93 +1032,53 @@ function renderApplications(
                     </td>
 
 
-                    <!-- STATUS -->
-
                     <td>
 
                         <select
-
-                            class="
-                                status-select
-                                ${safeStatus}
-                            "
-
-                            id="
-                                status-${escapeHtml(
-                                    app.id
-                                )}
-                            "
-
+                            class="status-select ${safeStatus}"
+                            id="status-${escapeHtml(app.id)}"
                             onchange="
                                 statusChanged(
-                                    '${escapeHtml(app.id)}',
+                                    '${escapeJs(String(app.id))}',
                                     this
                                 )
                             "
                         >
 
-
                             <option
                                 value="pending"
-                                ${
-                                    safeStatus ===
-                                    "pending"
-                                        ? "selected"
-                                        : ""
-                                }
+                                ${safeStatus === "pending" ? "selected" : ""}
                             >
                                 Pending
                             </option>
 
-
                             <option
                                 value="processing"
-                                ${
-                                    safeStatus ===
-                                    "processing"
-                                        ? "selected"
-                                        : ""
-                                }
+                                ${safeStatus === "processing" ? "selected" : ""}
                             >
                                 Processing
                             </option>
 
-
                             <option
                                 value="completed"
-                                ${
-                                    safeStatus ===
-                                    "completed"
-                                        ? "selected"
-                                        : ""
-                                }
+                                ${safeStatus === "completed" ? "selected" : ""}
                             >
                                 Completed
                             </option>
-
 
                         </select>
 
                     </td>
 
 
-                    <!-- ACTION -->
-
                     <td>
 
                         <button
-
                             class="save-btn"
-
-                            id="
-                                save-${escapeHtml(
-                                    app.id
-                                )}
-                            "
-
+                            id="save-${escapeHtml(app.id)}"
                             onclick="
                                 updateStatus(
-                                    '${escapeHtml(app.id)}'
+                                    '${escapeJs(String(app.id))}'
                                 )
                             "
                         >
@@ -1308,52 +1088,70 @@ function renderApplications(
                     </td>
 
 
-                    <!-- ADMIN NOTE -->
-
                     <td>
 
-
                         <textarea
-
                             class="note-input"
-
-                            id="
-                                note-${escapeHtml(
-                                    app.id
-                                )}
-                            "
-
+                            id="note-${escapeHtml(app.id)}"
                             placeholder="Admin note..."
-                        >${escapeHtml(
-                            app.admin_note ||
-                            ""
-                        )}</textarea>
-
+                        >${escapeHtml(app.admin_note || "")}</textarea>
 
                         <br>
 
-
                         <button
-
                             class="note-save-btn"
-
                             onclick="
                                 updateNote(
-                                    '${escapeHtml(app.id)}'
+                                    '${escapeJs(String(app.id))}'
                                 )
                             "
                         >
                             Save Note
                         </button>
 
-
                     </td>
 
+
+                    <!-- DOCUMENT -->
+
+                    <td>
+
+                        <div class="upload-box">
+
+                            <input
+                                type="file"
+                                class="file-input"
+                                id="file-${escapeHtml(app.id)}"
+                                accept=".pdf,.jpg,.jpeg,.png,.webp"
+                            >
+
+                            <button
+                                class="upload-btn"
+                                id="upload-${escapeHtml(app.id)}"
+                                onclick="
+                                    uploadDocument(
+                                        '${escapeJs(String(app.id))}'
+                                    )
+                                "
+                            >
+                                📤 Upload Document
+                            </button>
+
+
+                            <div
+                                class="documents"
+                                id="documents-${escapeHtml(app.id)}"
+                            >
+                                ${renderDocuments(app)}
+                            </div>
+
+                        </div>
+
+                    </td>
 
                 </tr>
 
             `;
-
         }
     );
 
@@ -1368,41 +1166,16 @@ function renderApplications(
 
                     <tr>
 
-                        <th>
-                            Application ID
-                        </th>
-
-                        <th>
-                            Customer
-                        </th>
-
-                        <th>
-                            Email
-                        </th>
-
-                        <th>
-                            Service
-                        </th>
-
-                        <th>
-                            Submitted
-                        </th>
-
-                        <th>
-                            View
-                        </th>
-
-                        <th>
-                            Status
-                        </th>
-
-                        <th>
-                            Action
-                        </th>
-
-                        <th>
-                            Admin Note
-                        </th>
+                        <th>Application ID</th>
+                        <th>Customer</th>
+                        <th>Email</th>
+                        <th>Service</th>
+                        <th>Submitted</th>
+                        <th>View</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Admin Note</th>
+                        <th>Document / Certificate</th>
 
                     </tr>
 
@@ -1410,9 +1183,7 @@ function renderApplications(
 
 
                 <tbody>
-
                     ${rows}
-
                 </tbody>
 
             </table>
@@ -1420,38 +1191,28 @@ function renderApplications(
         </div>
 
     `;
-
 }
 
 
 /* =========================================================
-   VIEW APPLICATION DETAILS
+   VIEW APPLICATION
 ========================================================= */
 
-function viewApplication(
-    id
-) {
-
+function viewApplication(id) {
 
     const application =
         applicationsCache.find(
             app =>
-                String(app.id) ===
-                String(id)
+                String(app.id) === String(id)
         );
 
 
     if (!application) {
-
-
         showToast(
-            "Application details not found.",
+            "Application not found.",
             "error-toast"
         );
-
-
         return;
-
     }
 
 
@@ -1459,79 +1220,19 @@ function viewApplication(
         application.created_at
             ? new Date(
                 application.created_at
-            ).toLocaleString(
-                "en-IN"
-            )
+            ).toLocaleString("en-IN")
             : "N/A";
 
 
-    const status =
-        capitalize(
-            String(
-                application.status ||
-                "Pending"
-            )
-        );
-
-
     let documentsHtml =
-        "No documents attached.";
-
-
-    if (
-        Array.isArray(
-            application.document_urls
-        ) &&
-        application.document_urls.length
-    ) {
-
-
-        documentsHtml =
-            `<div class="document-list">`;
-
-
-        application.document_urls.forEach(
-            (url, index) => {
-
-
-                if (
-                    typeof url ===
-                    "string"
-                ) {
-
-
-                    documentsHtml += `
-
-                        <a
-                            class="document-link"
-                            href="${escapeAttribute(url)}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            📄 Document ${index + 1}
-                        </a>
-
-                    `;
-
-                }
-
-            }
-        );
-
-
-        documentsHtml +=
-            "</div>";
-
-    }
+        renderDocuments(application);
 
 
     document.getElementById(
         "modalBody"
     ).innerHTML = `
 
-
         <div class="details-grid">
-
 
             <div class="detail-card">
 
@@ -1541,8 +1242,7 @@ function viewApplication(
 
                 <div class="detail-value">
                     ${escapeHtml(
-                        application.application_id ||
-                        "N/A"
+                        application.application_id || "N/A"
                     )}
                 </div>
 
@@ -1556,7 +1256,11 @@ function viewApplication(
                 </div>
 
                 <div class="detail-value">
-                    ${escapeHtml(status)}
+                    ${escapeHtml(
+                        capitalize(
+                            application.status || "pending"
+                        )
+                    )}
                 </div>
 
             </div>
@@ -1570,8 +1274,7 @@ function viewApplication(
 
                 <div class="detail-value">
                     ${escapeHtml(
-                        application.customer_name ||
-                        "N/A"
+                        application.customer_name || "N/A"
                     )}
                 </div>
 
@@ -1586,8 +1289,7 @@ function viewApplication(
 
                 <div class="detail-value">
                     ${escapeHtml(
-                        application.mobile ||
-                        "N/A"
+                        application.mobile || "N/A"
                     )}
                 </div>
 
@@ -1602,8 +1304,7 @@ function viewApplication(
 
                 <div class="detail-value">
                     ${escapeHtml(
-                        application.email ||
-                        "N/A"
+                        application.email || "N/A"
                     )}
                 </div>
 
@@ -1618,8 +1319,7 @@ function viewApplication(
 
                 <div class="detail-value">
                     ${escapeHtml(
-                        application.whatsapp ||
-                        "N/A"
+                        application.whatsapp || "N/A"
                     )}
                 </div>
 
@@ -1634,8 +1334,7 @@ function viewApplication(
 
                 <div class="detail-value">
                     ${escapeHtml(
-                        application.service ||
-                        "N/A"
+                        application.service || "N/A"
                     )}
                 </div>
 
@@ -1649,9 +1348,7 @@ function viewApplication(
                 </div>
 
                 <div class="detail-value">
-                    ${escapeHtml(
-                        createdDate
-                    )}
+                    ${escapeHtml(createdDate)}
                 </div>
 
             </div>
@@ -1708,17 +1405,14 @@ function viewApplication(
             <div class="detail-card full">
 
                 <div class="detail-label">
-                    Documents
+                    Documents / Certificates
                 </div>
 
                 <div class="detail-value">
-
                     ${documentsHtml}
-
                 </div>
 
             </div>
-
 
         </div>
 
@@ -1727,66 +1421,419 @@ function viewApplication(
 
     document.getElementById(
         "detailsModal"
-    ).classList.add(
-        "show"
-    );
-
-
+    ).classList.add("show");
 }
 
 
 /* =========================================================
-   CLOSE DETAILS MODAL
+   UPLOAD DOCUMENT
 ========================================================= */
 
-function closeDetails() {
+async function uploadDocument(id) {
+
+    const input =
+        document.getElementById(
+            "file-" + id
+        );
+
+    const button =
+        document.getElementById(
+            "upload-" + id
+        );
 
 
-    document.getElementById(
-        "detailsModal"
-    ).classList.remove(
-        "show"
-    );
+    if (!input || !input.files.length) {
 
-}
+        showToast(
+            "Please select a document first.",
+            "error-toast"
+        );
+
+        return;
+    }
 
 
-function closeModalOutside(
-    event
-) {
+    const file =
+        input.files[0];
+
+
+    const allowedTypes = [
+        "application/pdf",
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
 
 
     if (
-        event.target.id ===
-        "detailsModal"
+        !allowedTypes.includes(
+            file.type
+        )
     ) {
 
-        closeDetails();
+        showToast(
+            "Only PDF, JPG, PNG or WEBP files are allowed.",
+            "error-toast"
+        );
 
+        return;
     }
 
+
+    if (
+        file.size >
+        10 * 1024 * 1024
+    ) {
+
+        showToast(
+            "Maximum file size is 10 MB.",
+            "error-toast"
+        );
+
+        return;
+    }
+
+
+    const application =
+        applicationsCache.find(
+            app =>
+                String(app.id) === String(id)
+        );
+
+
+    if (!application) {
+
+        showToast(
+            "Application not found.",
+            "error-toast"
+        );
+
+        return;
+    }
+
+
+    button.disabled = true;
+    button.textContent = "Uploading...";
+
+
+    try {
+
+        const applicationId =
+            application.application_id ||
+            String(id);
+
+
+        const extension =
+            file.name
+                .split(".")
+                .pop()
+                .toLowerCase();
+
+
+        const safeName =
+            file.name
+                .replace(
+                    /[^a-zA-Z0-9._-]/g,
+                    "_"
+                );
+
+
+        const filePath =
+            `applications/${applicationId}/${Date.now()}_${safeName}`;
+
+
+        const {
+            error: uploadError
+        } = await supabaseClient
+            .storage
+            .from(STORAGE_BUCKET)
+            .upload(
+                filePath,
+                file,
+                {
+                    cacheControl: "3600",
+                    upsert: false,
+                    contentType: file.type
+                }
+            );
+
+
+        if (uploadError) {
+            throw uploadError;
+        }
+
+
+        let existingDocuments = [];
+
+        if (
+            Array.isArray(
+                application.document_urls
+            )
+        ) {
+            existingDocuments =
+                application.document_urls;
+        }
+
+
+        const newDocuments = [
+            ...existingDocuments,
+            filePath
+        ];
+
+
+        const {
+            error: updateError
+        } = await supabaseClient
+            .from("applications")
+            .update({
+                document_urls:
+                    newDocuments
+            })
+            .eq(
+                "id",
+                id
+            );
+
+
+        if (updateError) {
+
+            await supabaseClient
+                .storage
+                .from(STORAGE_BUCKET)
+                .remove([
+                    filePath
+                ]);
+
+            throw updateError;
+        }
+
+
+        application.document_urls =
+            newDocuments;
+
+
+        renderApplications(
+            applicationsCache
+        );
+
+
+        showToast(
+            "Document uploaded successfully.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Upload error:",
+            error
+        );
+
+
+        showToast(
+            "Upload failed: " +
+            error.message,
+            "error-toast"
+        );
+
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent =
+            "📤 Upload Document";
+    }
 }
 
 
 /* =========================================================
-   ESC KEY CLOSE MODAL
+   OPEN DOCUMENT
 ========================================================= */
 
-document.addEventListener(
-    "keydown",
-    function(event) {
+async function openDocument(path) {
+
+    try {
+
+        /*
+         * New format:
+         * Storage path
+         */
 
         if (
-            event.key ===
-            "Escape"
+            String(path).startsWith("http://") ||
+            String(path).startsWith("https://")
         ) {
 
-            closeDetails();
+            window.open(
+                path,
+                "_blank"
+            );
 
+            return;
         }
 
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .storage
+            .from(STORAGE_BUCKET)
+            .createSignedUrl(
+                path,
+                3600
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (!data || !data.signedUrl) {
+            throw new Error(
+                "Unable to create document URL."
+            );
+        }
+
+
+        window.open(
+            data.signedUrl,
+            "_blank"
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            "Unable to open document: " +
+            error.message,
+            "error-toast"
+        );
     }
-);
+}
+
+
+/* =========================================================
+   DELETE DOCUMENT
+========================================================= */
+
+async function deleteDocument(
+    id,
+    path
+) {
+
+    if (
+        !confirm(
+            "Delete this document?"
+        )
+    ) {
+        return;
+    }
+
+
+    try {
+
+        const application =
+            applicationsCache.find(
+                app =>
+                    String(app.id) ===
+                    String(id)
+            );
+
+
+        if (!application) {
+            throw new Error(
+                "Application not found."
+            );
+        }
+
+
+        /*
+         * Remove from Storage
+         */
+
+        if (
+            !String(path).startsWith("http")
+        ) {
+
+            const {
+                error: storageError
+            } = await supabaseClient
+                .storage
+                .from(STORAGE_BUCKET)
+                .remove([
+                    path
+                ]);
+
+
+            if (storageError) {
+                throw storageError;
+            }
+        }
+
+
+        /*
+         * Remove path from database array
+         */
+
+        const remaining =
+            getDocuments(application)
+                .filter(
+                    item =>
+                        String(item) !==
+                        String(path)
+                );
+
+
+        const {
+            error: updateError
+        } = await supabaseClient
+            .from("applications")
+            .update({
+                document_urls:
+                    remaining
+            })
+            .eq(
+                "id",
+                id
+            );
+
+
+        if (updateError) {
+            throw updateError;
+        }
+
+
+        application.document_urls =
+            remaining;
+
+
+        renderApplications(
+            applicationsCache
+        );
+
+
+        showToast(
+            "Document deleted successfully.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showToast(
+            "Delete failed: " +
+            error.message,
+            "error-toast"
+        );
+    }
+}
 
 
 /* =========================================================
@@ -1797,7 +1844,6 @@ function statusChanged(
     id,
     select
 ) {
-
 
     select.className =
         "status-select " +
@@ -1811,13 +1857,8 @@ function statusChanged(
 
 
     if (button) {
-
-        button.classList.add(
-            "show"
-        );
-
+        button.classList.add("show");
     }
-
 }
 
 
@@ -1825,16 +1866,12 @@ function statusChanged(
    UPDATE STATUS
 ========================================================= */
 
-async function updateStatus(
-    id
-) {
-
+async function updateStatus(id) {
 
     const select =
         document.getElementById(
             "status-" + id
         );
-
 
     const button =
         document.getElementById(
@@ -1843,9 +1880,7 @@ async function updateStatus(
 
 
     if (!select) {
-
         return;
-
     }
 
 
@@ -1853,30 +1888,20 @@ async function updateStatus(
         select.value;
 
 
-    button.disabled =
-        true;
-
-
-    button.textContent =
-        "Saving...";
+    button.disabled = true;
+    button.textContent = "Saving...";
 
 
     try {
 
-
         const {
             error
         } = await supabaseClient
-
             .from("applications")
-
             .update({
-
                 status:
                     newStatus
-
             })
-
             .eq(
                 "id",
                 id
@@ -1884,21 +1909,14 @@ async function updateStatus(
 
 
         if (error) {
-
             throw error;
-
         }
 
 
         showToast(
-
             "Status updated to " +
-            capitalize(
-                newStatus
-            ),
-
+            capitalize(newStatus),
             "success"
-
         );
 
 
@@ -1912,31 +1930,18 @@ async function updateStatus(
 
     } catch (error) {
 
-
-        console.error(
-            error
-        );
-
+        console.error(error);
 
         showToast(
-
             "Failed to update status: " +
             error.message,
-
             "error-toast"
-
         );
 
 
-        button.disabled =
-            false;
-
-
-        button.textContent =
-            "Save";
-
+        button.disabled = false;
+        button.textContent = "Save";
     }
-
 }
 
 
@@ -1944,10 +1949,7 @@ async function updateStatus(
    UPDATE ADMIN NOTE
 ========================================================= */
 
-async function updateNote(
-    id
-) {
-
+async function updateNote(id) {
 
     const input =
         document.getElementById(
@@ -1956,9 +1958,7 @@ async function updateNote(
 
 
     if (!input) {
-
         return;
-
     }
 
 
@@ -1968,20 +1968,14 @@ async function updateNote(
 
     try {
 
-
         const {
             error
         } = await supabaseClient
-
             .from("applications")
-
             .update({
-
                 admin_note:
                     note
-
             })
-
             .eq(
                 "id",
                 id
@@ -1989,26 +1983,9 @@ async function updateNote(
 
 
         if (error) {
-
             throw error;
-
         }
 
-
-        showToast(
-
-            "Admin note saved successfully.",
-
-            "success"
-
-        );
-
-
-        /*
-         * Update cached application
-         * so View Details immediately
-         * shows the new note.
-         */
 
         const cached =
             applicationsCache.find(
@@ -2019,32 +1996,130 @@ async function updateNote(
 
 
         if (cached) {
-
-            cached.admin_note =
-                note;
-
+            cached.admin_note = note;
         }
+
+
+        showToast(
+            "Admin note saved successfully.",
+            "success"
+        );
 
 
     } catch (error) {
 
-
-        console.error(
-            error
-        );
-
+        console.error(error);
 
         showToast(
-
             "Failed to save note: " +
             error.message,
-
             "error-toast"
-
         );
+    }
+}
 
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeDetails() {
+
+    document.getElementById(
+        "detailsModal"
+    ).classList.remove("show");
+}
+
+
+function closeModalOutside(event) {
+
+    if (
+        event.target.id ===
+        "detailsModal"
+    ) {
+        closeDetails();
+    }
+}
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+            closeDetails();
+        }
+    }
+);
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function capitalize(text) {
+
+    if (!text) {
+        return "";
     }
 
+    return (
+        text.charAt(0).toUpperCase() +
+        text.slice(1)
+    );
+}
+
+
+function escapeHtml(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+}
+
+
+function escapeJs(value) {
+
+    return String(value)
+        .replace(
+            /\\/g,
+            "\\\\"
+        )
+        .replace(
+            /'/g,
+            "\\'"
+        )
+        .replace(
+            /\r?\n/g,
+            "\\n"
+        );
 }
 
 
@@ -2057,7 +2132,6 @@ function showToast(
     type
 ) {
 
-
     const toast =
         document.getElementById(
             "toast"
@@ -2067,104 +2141,19 @@ function showToast(
     toast.textContent =
         message;
 
-
     toast.className =
         "toast " + type;
 
 
     setTimeout(
-        () => {
+        function() {
 
             toast.className =
                 "toast";
 
         },
-        3000
+        3500
     );
-
-}
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function capitalize(
-    text
-) {
-
-
-    if (
-        !text
-    ) {
-
-        return "";
-
-    }
-
-
-    return text
-        .charAt(0)
-        .toUpperCase() +
-        text.slice(1);
-
-}
-
-
-function escapeHtml(
-    value
-) {
-
-
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "";
-
-    }
-
-
-    return String(value)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-function escapeAttribute(
-    value
-) {
-
-
-    return escapeHtml(
-        value
-    );
-
 }
 
 
@@ -2174,15 +2163,12 @@ function escapeAttribute(
 
 async function logout() {
 
-
     await supabaseClient
         .auth
         .signOut();
 
-
     window.location.href =
-        "login.html";
-
+        "admin-login.html";
 }
 
 
