@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -81,7 +82,7 @@
         /* ================= MAIN ================= */
 
         .container {
-            max-width: 1450px;
+            max-width: 1500px;
             margin: 30px auto;
             padding: 0 20px;
         }
@@ -190,7 +191,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1150px;
+            min-width: 1250px;
         }
 
         th {
@@ -237,6 +238,23 @@
             color: #6b7280;
             white-space: nowrap;
             font-size: 13px;
+        }
+
+        /* ================= VIEW BUTTON ================= */
+
+        .view-btn {
+            border: none;
+            background: #172033;
+            color: white;
+            padding: 9px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .view-btn:hover {
+            background: #0d1422;
         }
 
         /* ================= STATUS ================= */
@@ -329,6 +347,131 @@
             background: #334155;
         }
 
+        /* ================= MODAL ================= */
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.65);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 850px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: #172033;
+            color: white;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .modal-close {
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .detail-card {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 9px;
+            padding: 14px;
+        }
+
+        .detail-card.full {
+            grid-column: 1 / -1;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #172033;
+            font-size: 15px;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
+        .modal-footer {
+            padding: 16px 25px;
+            border-top: 1px solid #e5e7eb;
+            text-align: right;
+        }
+
+        .close-btn {
+            border: none;
+            background: #475569;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            background: #334155;
+        }
+
+        .document-list {
+            margin-top: 8px;
+        }
+
+        .document-link {
+            display: inline-block;
+            margin: 5px 5px 0 0;
+            padding: 7px 10px;
+            background: #eaf2ff;
+            color: #1769e0;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
         /* ================= LOADING ================= */
 
         .loading {
@@ -399,6 +542,14 @@
             .container {
                 padding: 0 12px;
             }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-card.full {
+                grid-column: auto;
+            }
         }
 
         @media (max-width: 550px) {
@@ -430,13 +581,26 @@
                 bottom: 15px;
                 max-width: none;
             }
+
+            .modal-overlay {
+                padding: 10px;
+            }
+
+            .modal-body {
+                padding: 18px;
+            }
         }
+
     </style>
 </head>
 
+
 <body>
 
-<!-- ================= HEADER ================= -->
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
 <header class="header">
 
@@ -447,11 +611,19 @@
         </div>
 
         <div>
-            <h1>Digital Service</h1>
-            <p>Administrator Panel</p>
+
+            <h1>
+                Digital Service
+            </h1>
+
+            <p>
+                Administrator Panel
+            </p>
+
         </div>
 
     </div>
+
 
     <button
         class="logout-btn"
@@ -463,9 +635,12 @@
 </header>
 
 
-<!-- ================= MAIN ================= -->
+<!-- =========================================================
+     MAIN
+========================================================= -->
 
 <main class="container">
+
 
     <div class="welcome">
 
@@ -480,9 +655,12 @@
     </div>
 
 
-    <!-- ================= STATISTICS ================= -->
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
 
     <section class="stats">
+
 
         <div class="stat-card">
 
@@ -547,18 +725,23 @@
 
         </div>
 
+
     </section>
 
 
-    <!-- ================= APPLICATIONS ================= -->
+    <!-- =====================================================
+         APPLICATIONS
+    ====================================================== -->
 
     <section class="applications-box">
+
 
         <div class="box-header">
 
             <h2>
                 Customer Applications
             </h2>
+
 
             <button
                 class="refresh-btn"
@@ -578,12 +761,79 @@
 
         </div>
 
+
     </section>
+
 
 </main>
 
 
-<!-- ================= TOAST ================= -->
+<!-- =========================================================
+     APPLICATION DETAILS MODAL
+========================================================= -->
+
+<div
+    id="detailsModal"
+    class="modal-overlay"
+    onclick="closeModalOutside(event)"
+>
+
+
+    <div
+        class="modal"
+        onclick="event.stopPropagation()"
+    >
+
+
+        <div class="modal-header">
+
+            <h2>
+                Application Details
+            </h2>
+
+
+            <button
+                class="modal-close"
+                onclick="closeDetails()"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            id="modalBody"
+            class="modal-body"
+        >
+
+            <!-- Details inserted here -->
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                class="close-btn"
+                onclick="closeDetails()"
+            >
+                Close
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
 
 <div
     id="toast"
@@ -593,12 +843,14 @@
 
 <script>
 
+
 /* =========================================================
    SUPABASE CONFIGURATION
-   ========================================================= */
+========================================================= */
 
 const SUPABASE_URL =
     "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+
 
 const SUPABASE_ANON_KEY =
     "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
@@ -612,23 +864,34 @@ const supabaseClient =
 
 
 /* =========================================================
+   APPLICATION DATA CACHE
+========================================================= */
+
+let applicationsCache = [];
+
+
+/* =========================================================
    LOAD APPLICATIONS
-   ========================================================= */
+========================================================= */
 
 async function loadApplications() {
+
 
     const content =
         document.getElementById("content");
 
 
     content.innerHTML = `
+
         <div class="loading">
             Loading applications...
         </div>
+
     `;
 
 
     try {
+
 
         const {
             data,
@@ -639,36 +902,46 @@ async function loadApplications() {
 
             .select("*")
 
-            .order("created_at", {
-                ascending: false
-            });
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
 
 
         if (error) {
+
             throw error;
+
         }
 
 
-        const applications =
+        applicationsCache =
             data || [];
 
 
         updateStatistics(
-            applications
+            applicationsCache
         );
 
 
         renderApplications(
-            applications
+            applicationsCache
         );
 
 
     } catch (error) {
 
-        console.error(error);
+
+        console.error(
+            "Load applications error:",
+            error
+        );
 
 
         content.innerHTML = `
+
             <div class="error">
 
                 <strong>
@@ -677,21 +950,27 @@ async function loadApplications() {
 
                 <br><br>
 
-                ${escapeHtml(error.message)}
+                ${escapeHtml(
+                    error.message
+                )}
 
             </div>
+
         `;
+
     }
+
 }
 
 
 /* =========================================================
    STATISTICS
-   ========================================================= */
+========================================================= */
 
 function updateStatistics(
     applications
 ) {
+
 
     const total =
         applications.length;
@@ -729,38 +1008,47 @@ function updateStatistics(
 
     document.getElementById(
         "totalCount"
-    ).textContent = total;
+    ).textContent =
+        total;
 
 
     document.getElementById(
         "pendingCount"
-    ).textContent = pending;
+    ).textContent =
+        pending;
 
 
     document.getElementById(
         "processingCount"
-    ).textContent = processing;
+    ).textContent =
+        processing;
 
 
     document.getElementById(
         "completedCount"
-    ).textContent = completed;
+    ).textContent =
+        completed;
+
 }
 
 
 /* =========================================================
    RENDER APPLICATIONS
-   ========================================================= */
+========================================================= */
 
 function renderApplications(
     applications
 ) {
 
+
     const content =
-        document.getElementById("content");
+        document.getElementById(
+            "content"
+        );
 
 
     if (!applications.length) {
+
 
         content.innerHTML = `
 
@@ -778,7 +1066,9 @@ function renderApplications(
 
         `;
 
+
         return;
+
     }
 
 
@@ -788,9 +1078,11 @@ function renderApplications(
     applications.forEach(
         app => {
 
+
             const status =
                 String(
-                    app.status || "pending"
+                    app.status ||
+                    "pending"
                 ).toLowerCase();
 
 
@@ -817,6 +1109,7 @@ function renderApplications(
             rows += `
 
                 <tr>
+
 
                     <!-- APPLICATION ID -->
 
@@ -846,6 +1139,7 @@ function renderApplications(
                             )}
 
                         </div>
+
 
                         <div class="mobile">
 
@@ -900,17 +1194,40 @@ function renderApplications(
                     </td>
 
 
+                    <!-- VIEW -->
+
+                    <td>
+
+                        <button
+                            class="view-btn"
+                            onclick="
+                                viewApplication(
+                                    '${escapeHtml(app.id)}'
+                                )
+                            "
+                        >
+                            👁 View
+                        </button>
+
+                    </td>
+
+
                     <!-- STATUS -->
 
                     <td>
 
                         <select
 
-                            class="status-select ${safeStatus}"
+                            class="
+                                status-select
+                                ${safeStatus}
+                            "
 
-                            id="status-${escapeHtml(
-                                app.id
-                            )}"
+                            id="
+                                status-${escapeHtml(
+                                    app.id
+                                )}
+                            "
 
                             onchange="
                                 statusChanged(
@@ -919,6 +1236,7 @@ function renderApplications(
                                 )
                             "
                         >
+
 
                             <option
                                 value="pending"
@@ -958,6 +1276,7 @@ function renderApplications(
                                 Completed
                             </option>
 
+
                         </select>
 
                     </td>
@@ -971,9 +1290,11 @@ function renderApplications(
 
                             class="save-btn"
 
-                            id="save-${escapeHtml(
-                                app.id
-                            )}"
+                            id="
+                                save-${escapeHtml(
+                                    app.id
+                                )}
+                            "
 
                             onclick="
                                 updateStatus(
@@ -991,13 +1312,16 @@ function renderApplications(
 
                     <td>
 
+
                         <textarea
 
                             class="note-input"
 
-                            id="note-${escapeHtml(
-                                app.id
-                            )}"
+                            id="
+                                note-${escapeHtml(
+                                    app.id
+                                )}
+                            "
 
                             placeholder="Admin note..."
                         >${escapeHtml(
@@ -1022,11 +1346,14 @@ function renderApplications(
                             Save Note
                         </button>
 
+
                     </td>
+
 
                 </tr>
 
             `;
+
         }
     );
 
@@ -1062,6 +1389,10 @@ function renderApplications(
                         </th>
 
                         <th>
+                            View
+                        </th>
+
+                        <th>
                             Status
                         </th>
 
@@ -1089,17 +1420,384 @@ function renderApplications(
         </div>
 
     `;
+
 }
 
 
 /* =========================================================
-   STATUS CHANGE DETECT
-   ========================================================= */
+   VIEW APPLICATION DETAILS
+========================================================= */
+
+function viewApplication(
+    id
+) {
+
+
+    const application =
+        applicationsCache.find(
+            app =>
+                String(app.id) ===
+                String(id)
+        );
+
+
+    if (!application) {
+
+
+        showToast(
+            "Application details not found.",
+            "error-toast"
+        );
+
+
+        return;
+
+    }
+
+
+    const createdDate =
+        application.created_at
+            ? new Date(
+                application.created_at
+            ).toLocaleString(
+                "en-IN"
+            )
+            : "N/A";
+
+
+    const status =
+        capitalize(
+            String(
+                application.status ||
+                "Pending"
+            )
+        );
+
+
+    let documentsHtml =
+        "No documents attached.";
+
+
+    if (
+        Array.isArray(
+            application.document_urls
+        ) &&
+        application.document_urls.length
+    ) {
+
+
+        documentsHtml =
+            `<div class="document-list">`;
+
+
+        application.document_urls.forEach(
+            (url, index) => {
+
+
+                if (
+                    typeof url ===
+                    "string"
+                ) {
+
+
+                    documentsHtml += `
+
+                        <a
+                            class="document-link"
+                            href="${escapeAttribute(url)}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            📄 Document ${index + 1}
+                        </a>
+
+                    `;
+
+                }
+
+            }
+        );
+
+
+        documentsHtml +=
+            "</div>";
+
+    }
+
+
+    document.getElementById(
+        "modalBody"
+    ).innerHTML = `
+
+
+        <div class="details-grid">
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Application ID
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        application.application_id ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Current Status
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(status)}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Customer Name
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        application.customer_name ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Mobile
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        application.mobile ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Email
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        application.email ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    WhatsApp
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        application.whatsapp ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Service
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        application.service ||
+                        "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card">
+
+                <div class="detail-label">
+                    Submitted
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        createdDate
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card full">
+
+                <div class="detail-label">
+                    Requirement
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        application.requirement ||
+                        "No requirement provided."
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card full">
+
+                <div class="detail-label">
+                    Address
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        application.address ||
+                        "No address provided."
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card full">
+
+                <div class="detail-label">
+                    Admin Note
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHtml(
+                        application.admin_note ||
+                        "No admin note."
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="detail-card full">
+
+                <div class="detail-label">
+                    Documents
+                </div>
+
+                <div class="detail-value">
+
+                    ${documentsHtml}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "detailsModal"
+    ).classList.add(
+        "show"
+    );
+
+
+}
+
+
+/* =========================================================
+   CLOSE DETAILS MODAL
+========================================================= */
+
+function closeDetails() {
+
+
+    document.getElementById(
+        "detailsModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+function closeModalOutside(
+    event
+) {
+
+
+    if (
+        event.target.id ===
+        "detailsModal"
+    ) {
+
+        closeDetails();
+
+    }
+
+}
+
+
+/* =========================================================
+   ESC KEY CLOSE MODAL
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            closeDetails();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   STATUS CHANGE
+========================================================= */
 
 function statusChanged(
     id,
     select
 ) {
+
 
     select.className =
         "status-select " +
@@ -1119,16 +1817,18 @@ function statusChanged(
         );
 
     }
+
 }
 
 
 /* =========================================================
    UPDATE STATUS
-   ========================================================= */
+========================================================= */
 
 async function updateStatus(
     id
 ) {
+
 
     const select =
         document.getElementById(
@@ -1143,7 +1843,9 @@ async function updateStatus(
 
 
     if (!select) {
+
         return;
+
     }
 
 
@@ -1151,13 +1853,16 @@ async function updateStatus(
         select.value;
 
 
-    button.disabled = true;
+    button.disabled =
+        true;
+
 
     button.textContent =
         "Saving...";
 
 
     try {
+
 
         const {
             error
@@ -1166,7 +1871,10 @@ async function updateStatus(
             .from("applications")
 
             .update({
-                status: newStatus
+
+                status:
+                    newStatus
+
             })
 
             .eq(
@@ -1176,7 +1884,9 @@ async function updateStatus(
 
 
         if (error) {
+
             throw error;
+
         }
 
 
@@ -1202,7 +1912,10 @@ async function updateStatus(
 
     } catch (error) {
 
-        console.error(error);
+
+        console.error(
+            error
+        );
 
 
         showToast(
@@ -1218,19 +1931,23 @@ async function updateStatus(
         button.disabled =
             false;
 
+
         button.textContent =
             "Save";
+
     }
+
 }
 
 
 /* =========================================================
    UPDATE ADMIN NOTE
-   ========================================================= */
+========================================================= */
 
 async function updateNote(
     id
 ) {
+
 
     const input =
         document.getElementById(
@@ -1239,7 +1956,9 @@ async function updateNote(
 
 
     if (!input) {
+
         return;
+
     }
 
 
@@ -1249,6 +1968,7 @@ async function updateNote(
 
     try {
 
+
         const {
             error
         } = await supabaseClient
@@ -1257,7 +1977,8 @@ async function updateNote(
 
             .update({
 
-                admin_note: note
+                admin_note:
+                    note
 
             })
 
@@ -1268,7 +1989,9 @@ async function updateNote(
 
 
         if (error) {
+
             throw error;
+
         }
 
 
@@ -1281,9 +2004,34 @@ async function updateNote(
         );
 
 
+        /*
+         * Update cached application
+         * so View Details immediately
+         * shows the new note.
+         */
+
+        const cached =
+            applicationsCache.find(
+                app =>
+                    String(app.id) ===
+                    String(id)
+            );
+
+
+        if (cached) {
+
+            cached.admin_note =
+                note;
+
+        }
+
+
     } catch (error) {
 
-        console.error(error);
+
+        console.error(
+            error
+        );
 
 
         showToast(
@@ -1294,18 +2042,21 @@ async function updateNote(
             "error-toast"
 
         );
+
     }
+
 }
 
 
 /* =========================================================
    TOAST
-   ========================================================= */
+========================================================= */
 
 function showToast(
     message,
     type
 ) {
+
 
     const toast =
         document.getElementById(
@@ -1330,21 +2081,33 @@ function showToast(
         },
         3000
     );
+
 }
 
 
 /* =========================================================
    HELPERS
-   ========================================================= */
+========================================================= */
 
 function capitalize(
     text
 ) {
 
+
+    if (
+        !text
+    ) {
+
+        return "";
+
+    }
+
+
     return text
         .charAt(0)
         .toUpperCase() +
         text.slice(1);
+
 }
 
 
@@ -1352,12 +2115,14 @@ function escapeHtml(
     value
 ) {
 
+
     if (
         value === null ||
         value === undefined
     ) {
 
         return "";
+
     }
 
 
@@ -1387,14 +2152,28 @@ function escapeHtml(
             /'/g,
             "&#039;"
         );
+
+}
+
+
+function escapeAttribute(
+    value
+) {
+
+
+    return escapeHtml(
+        value
+    );
+
 }
 
 
 /* =========================================================
    LOGOUT
-   ========================================================= */
+========================================================= */
 
 async function logout() {
+
 
     await supabaseClient
         .auth
@@ -1403,16 +2182,17 @@ async function logout() {
 
     window.location.href =
         "login.html";
+
 }
 
 
 /* =========================================================
    INITIAL LOAD
-   ========================================================= */
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
-    () => {
+    function() {
 
         loadApplications();
 
