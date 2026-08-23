@@ -21,65 +21,88 @@
             color: #172033;
         }
 
-        .navbar {
-            background: #1769d1;
-            color: white;
-            padding: 18px 6%;
+        /* HEADER */
+
+        .header {
+            background: white;
+            padding: 18px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
 
-        .brand {
+        .logo-area {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .logo {
-            width: 45px;
-            height: 45px;
-            background: white;
-            color: #1769d1;
+        .logo-box {
+            width: 48px;
+            height: 48px;
+            background: #1769d1;
+            color: white;
             border-radius: 10px;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             font-weight: bold;
             font-size: 20px;
         }
 
-        .brand h2 {
+        .logo-area h1 {
             font-size: 21px;
         }
 
-        .brand p {
-            font-size: 12px;
-            opacity: 0.9;
+        .logo-area p {
+            color: #666;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-email {
+            color: #555;
+            font-size: 14px;
         }
 
         .logout-btn {
-            background: white;
-            color: #1769d1;
             border: none;
-            padding: 10px 18px;
+            background: #dc3545;
+            color: white;
+            padding: 10px 16px;
             border-radius: 7px;
-            font-weight: bold;
             cursor: pointer;
+            font-weight: bold;
         }
 
+        .logout-btn:hover {
+            background: #bb2d3b;
+        }
+
+        /* MAIN */
+
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 35px auto;
             padding: 0 20px;
         }
 
         .welcome {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
             margin-bottom: 25px;
         }
 
-        .welcome h1 {
-            font-size: 30px;
+        .welcome h2 {
             margin-bottom: 8px;
         }
 
@@ -87,174 +110,215 @@
             color: #666;
         }
 
-        .cards {
+        /* STATS */
+
+        .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            gap: 18px;
             margin-bottom: 30px;
         }
 
-        .card {
+        .stat-card {
             background: white;
-            padding: 25px;
-            border-radius: 12px;
+            padding: 22px;
+            border-radius: 13px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.07);
         }
 
-        .card-icon {
-            font-size: 28px;
+        .stat-card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        /* APPLICATIONS */
+
+        .applications-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+        }
+
+        .applications-card h2 {
+            margin-bottom: 20px;
+        }
+
+        .application-item {
+            border: 1px solid #e3e6eb;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .application-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
             margin-bottom: 12px;
         }
 
-        .card h3 {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 8px;
-        }
-
-        .card .number {
-            font-size: 28px;
+        .application-id {
             font-weight: bold;
             color: #1769d1;
         }
 
-        .section {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .section-header h2 {
-            font-size: 21px;
-        }
-
-        .apply-btn {
-            background: #1769d1;
-            color: white;
-            text-decoration: none;
-            padding: 11px 18px;
-            border-radius: 7px;
+        .service-name {
+            font-size: 18px;
             font-weight: bold;
-        }
-
-        .profile-row {
-            display: grid;
-            grid-template-columns: 180px 1fr;
-            padding: 14px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .profile-row:last-child {
-            border-bottom: none;
-        }
-
-        .profile-label {
-            font-weight: bold;
-            color: #666;
-        }
-
-        .empty {
-            text-align: center;
-            padding: 35px 20px;
-            color: #777;
-        }
-
-        .empty-icon {
-            font-size: 45px;
-            margin-bottom: 10px;
-        }
-
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .service {
-            border: 1px solid #e1e5eb;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .service-icon {
-            font-size: 35px;
-            margin-bottom: 10px;
-        }
-
-        .service h3 {
             margin-bottom: 8px;
         }
 
-        .service p {
+        .application-date {
             color: #777;
             font-size: 13px;
-            margin-bottom: 15px;
         }
 
-        .service a {
+        .status {
             display: inline-block;
-            background: #1769d1;
-            color: white;
-            text-decoration: none;
-            padding: 9px 15px;
-            border-radius: 6px;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-completed {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-approved {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .status-default {
+            background: #e2e3e5;
+            color: #41464b;
+        }
+
+        .details {
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .details p {
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        .details strong {
+            color: #333;
+        }
+
+        .admin-note {
+            margin-top: 12px;
+            background: #f4f7fb;
+            padding: 12px;
+            border-radius: 8px;
             font-size: 14px;
         }
 
         .loading {
             text-align: center;
-            padding: 50px;
-            font-size: 18px;
+            padding: 30px;
+            color: #666;
         }
 
-        @media (max-width: 900px) {
-            .cards {
+        .no-applications {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #842029;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn {
+            border: none;
+            background: #1769d1;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn:hover {
+            background: #0d55b3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .stats {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .service-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .navbar {
+            .header {
                 padding: 15px;
             }
 
-            .brand h2 {
-                font-size: 17px;
+            .user-email {
+                display: none;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
             }
 
-            .container {
-                margin: 25px auto;
+            .stat-card {
+                padding: 15px;
             }
 
-            .cards {
-                grid-template-columns: 1fr;
+            .stat-number {
+                font-size: 24px;
             }
 
-            .service-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .profile-row {
-                grid-template-columns: 1fr;
-                gap: 5px;
-            }
-
-            .welcome h1 {
-                font-size: 25px;
+            .application-top {
+                align-items: flex-start;
+                flex-direction: column;
             }
         }
     </style>
@@ -262,367 +326,305 @@
 
 <body>
 
-    <div class="navbar">
+<header class="header">
 
-        <div class="brand">
-            <div class="logo">DS</div>
+    <div class="logo-area">
 
-            <div>
-                <h2>Digital Service</h2>
-                <p>Digital • Tax • Business Services</p>
-            </div>
+        <div class="logo-box">
+            DS
         </div>
 
-        <button class="logout-btn" id="logoutButton">
+        <div>
+            <h1>Digital Service</h1>
+            <p>Customer Dashboard</p>
+        </div>
+
+    </div>
+
+    <div class="header-right">
+
+        <span
+            id="userEmail"
+            class="user-email"
+        >
+            Loading...
+        </span>
+
+        <button
+            id="logoutButton"
+            class="logout-btn"
+        >
             Logout
         </button>
 
     </div>
 
-
-    <div id="loading" class="loading">
-        Loading Dashboard...
-    </div>
+</header>
 
 
-    <div class="container" id="dashboard" style="display:none;">
-
-        <!-- WELCOME -->
-
-        <div class="welcome">
-
-            <h1>
-                Welcome, <span id="customerName">Customer</span> 👋
-            </h1>
-
-            <p>
-                Manage your Digital Service applications from your dashboard.
-            </p>
-
-        </div>
+<main class="container">
 
 
-        <!-- STATISTICS -->
+    <!-- WELCOME -->
 
-        <div class="cards">
+    <section class="welcome">
 
-            <div class="card">
+        <h2>
+            Welcome, <span id="customerName">Customer</span> 👋
+        </h2>
 
-                <div class="card-icon">📋</div>
+        <p>
+            Track your applications and check their current status here.
+        </p>
 
-                <h3>Total Applications</h3>
-
-                <div class="number" id="totalApplications">
-                    0
-                </div>
-
-            </div>
+    </section>
 
 
-            <div class="card">
+    <!-- ERROR -->
 
-                <div class="card-icon">🟡</div>
-
-                <h3>Pending</h3>
-
-                <div class="number" id="pendingApplications">
-                    0
-                </div>
-
-            </div>
+    <div
+        id="errorBox"
+        class="error"
+        style="display:none;"
+    ></div>
 
 
-            <div class="card">
+    <!-- STATISTICS -->
 
-                <div class="card-icon">🔵</div>
+    <section class="stats">
 
-                <h3>Processing</h3>
+        <div class="stat-card">
 
-                <div class="number" id="processingApplications">
-                    0
-                </div>
+            <h3>
+                Total Applications
+            </h3>
 
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-icon">🟢</div>
-
-                <h3>Completed</h3>
-
-                <div class="number" id="completedApplications">
-                    0
-                </div>
-
+            <div
+                id="totalApplications"
+                class="stat-number"
+            >
+                0
             </div>
 
         </div>
 
 
-        <!-- PROFILE -->
+        <div class="stat-card">
 
-        <div class="section">
+            <h3>
+                Pending
+            </h3>
 
-            <div class="section-header">
-
-                <h2>👤 My Profile</h2>
-
-            </div>
-
-
-            <div class="profile-row">
-
-                <div class="profile-label">
-                    Name
-                </div>
-
-                <div id="profileName">
-                    -
-                </div>
-
-            </div>
-
-
-            <div class="profile-row">
-
-                <div class="profile-label">
-                    Email
-                </div>
-
-                <div id="profileEmail">
-                    -
-                </div>
-
-            </div>
-
-
-            <div class="profile-row">
-
-                <div class="profile-label">
-                    Account Status
-                </div>
-
-                <div style="color:green;font-weight:bold;">
-                    Active
-                </div>
-
+            <div
+                id="pendingApplications"
+                class="stat-number"
+            >
+                0
             </div>
 
         </div>
 
 
-        <!-- APPLICATIONS -->
+        <div class="stat-card">
 
-        <div class="section">
+            <h3>
+                Processing
+            </h3>
 
-            <div class="section-header">
-
-                <h2>📋 My Applications</h2>
-
-                <a href="apply.html" class="apply-btn">
-                    + Apply for Service
-                </a>
-
-            </div>
-
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    📂
-                </div>
-
-                <h3>No Applications Yet</h3>
-
-                <p style="margin-top:8px;">
-                    You haven't submitted any service application yet.
-                </p>
-
+            <div
+                id="processingApplications"
+                class="stat-number"
+            >
+                0
             </div>
 
         </div>
 
 
-        <!-- SERVICES -->
+        <div class="stat-card">
 
-        <div class="section">
+            <h3>
+                Completed
+            </h3>
 
-            <div class="section-header">
-
-                <h2>🚀 Apply for a Service</h2>
-
-            </div>
-
-
-            <div class="service-grid">
-
-
-                <div class="service">
-
-                    <div class="service-icon">
-                        🪪
-                    </div>
-
-                    <h3>PAN Card</h3>
-
-                    <p>
-                        Apply for a new PAN Card.
-                    </p>
-
-                    <a href="apply.html?service=pan">
-                        Apply Now
-                    </a>
-
-                </div>
-
-
-                <div class="service">
-
-                    <div class="service-icon">
-                        🆔
-                    </div>
-
-                    <h3>Aadhaar Services</h3>
-
-                    <p>
-                        Aadhaar related services.
-                    </p>
-
-                    <a href="apply.html?service=aadhaar">
-                        Apply Now
-                    </a>
-
-                </div>
-
-
-                <div class="service">
-
-                    <div class="service-icon">
-                        🏪
-                    </div>
-
-                    <h3>Trade License</h3>
-
-                    <p>
-                        Apply for Trade License.
-                    </p>
-
-                    <a href="apply.html?service=trade-license">
-                        Apply Now
-                    </a>
-
-                </div>
-
-
-                <div class="service">
-
-                    <div class="service-icon">
-                        🧾
-                    </div>
-
-                    <h3>GST</h3>
-
-                    <p>
-                        GST registration and services.
-                    </p>
-
-                    <a href="apply.html?service=gst">
-                        Apply Now
-                    </a>
-
-                </div>
-
-
-                <div class="service">
-
-                    <div class="service-icon">
-                        🍴
-                    </div>
-
-                    <h3>FSSAI</h3>
-
-                    <p>
-                        Food license application.
-                    </p>
-
-                    <a href="apply.html?service=fssai">
-                        Apply Now
-                    </a>
-
-                </div>
-
-
-                <div class="service">
-
-                    <div class="service-icon">
-                        💰
-                    </div>
-
-                    <h3>Income Tax</h3>
-
-                    <p>
-                        Income Tax related services.
-                    </p>
-
-                    <a href="apply.html?service=income-tax">
-                        Apply Now
-                    </a>
-
-                </div>
-
+            <div
+                id="completedApplications"
+                class="stat-number"
+            >
+                0
             </div>
 
         </div>
 
-    </div>
+    </section>
+
+
+    <!-- APPLICATIONS -->
+
+    <section class="applications-card">
+
+        <h2>
+            My Applications
+        </h2>
+
+        <button
+            id="refreshButton"
+            class="refresh-btn"
+        >
+            🔄 Refresh Applications
+        </button>
+
+
+        <div
+            id="loading"
+            class="loading"
+        >
+            Loading applications...
+        </div>
+
+
+        <div
+            id="applicationsList"
+        ></div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    © 2026 Digital Service. All Rights Reserved.
+
+</footer>
 
 
 <script>
 
-    // ==============================
-    // SUPABASE CONFIG
-    // ==============================
+    // ==========================================
+    // SUPABASE CONFIGURATION
+    // ==========================================
 
     const SUPABASE_URL =
         "https://nlzrdjvlkdqungmhnsrl.supabase.co";
 
-    const SUPABASE_PUBLISHABLE_KEY =
+    const SUPABASE_ANON_KEY =
         "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
-
 
     const supabaseClient =
         window.supabase.createClient(
             SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY
+            SUPABASE_ANON_KEY
         );
 
 
-    // ==============================
-    // LOAD CUSTOMER
-    // ==============================
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const userEmailElement =
+        document.getElementById("userEmail");
+
+    const customerNameElement =
+        document.getElementById("customerName");
+
+    const applicationsList =
+        document.getElementById("applicationsList");
+
+    const loadingElement =
+        document.getElementById("loading");
+
+    const errorBox =
+        document.getElementById("errorBox");
+
+
+    // ==========================================
+    // SHOW ERROR
+    // ==========================================
+
+    function showError(message) {
+
+        errorBox.textContent = message;
+
+        errorBox.style.display = "block";
+    }
+
+
+    function hideError() {
+
+        errorBox.textContent = "";
+
+        errorBox.style.display = "none";
+    }
+
+
+    // ==========================================
+    // STATUS CLASS
+    // ==========================================
+
+    function getStatusClass(status) {
+
+        const value =
+            String(status || "")
+                .toLowerCase()
+                .trim();
+
+        if (value === "pending") {
+            return "status status-pending";
+        }
+
+        if (value === "processing") {
+            return "status status-processing";
+        }
+
+        if (value === "completed") {
+            return "status status-completed";
+        }
+
+        if (value === "approved") {
+            return "status status-approved";
+        }
+
+        if (value === "rejected") {
+            return "status status-rejected";
+        }
+
+        return "status status-default";
+    }
+
+
+    // ==========================================
+    // LOAD CUSTOMER + APPLICATIONS
+    // ==========================================
 
     async function loadDashboard() {
 
-        const loading =
-            document.getElementById("loading");
+        hideError();
 
-        const dashboard =
-            document.getElementById("dashboard");
+        loadingElement.style.display = "block";
+
+        applicationsList.innerHTML = "";
 
 
         try {
 
+            // Get logged-in user
+
             const {
-                data: {
-                    user
-                },
-                error
-            } =
-                await supabaseClient.auth.getUser();
+                data: { user },
+                error: userError
+            } = await supabaseClient.auth.getUser();
 
 
-            if (error || !user) {
+            if (userError) {
+
+                throw userError;
+            }
+
+
+            // No logged-in user
+
+            if (!user) {
 
                 window.location.href =
                     "login.html";
@@ -631,54 +633,342 @@
             }
 
 
-            // ==========================
+            // Show email
+
+            userEmailElement.textContent =
+                user.email || "";
+
+
+            // ======================================
+            // LOAD APPLICATIONS
+            // ======================================
+
+            const {
+                data: applications,
+                error: applicationError
+            } = await supabaseClient
+                .from("applications")
+                .select(`
+                    id,
+                    application_id,
+                    customer_name,
+                    mobile,
+                    email,
+                    whatsapp,
+                    service,
+                    requirement,
+                    address,
+                    status,
+                    admin_note,
+                    document_urls,
+                    created_at
+                `)
+                .eq("user_id", user.id)
+                .order("created_at", {
+                    ascending: false
+                });
+
+
+            if (applicationError) {
+
+                throw applicationError;
+            }
+
+
+            const applicationData =
+                applications || [];
+
+
+            // ======================================
             // CUSTOMER NAME
-            // ==========================
+            // ======================================
 
-            const name =
-                user.user_metadata?.full_name ||
-                user.user_metadata?.name ||
-                user.email.split("@")[0];
+            if (applicationData.length > 0) {
 
+                customerNameElement.textContent =
+                    applicationData[0].customer_name ||
+                    "Customer";
 
-            document.getElementById("customerName")
-                .textContent = name;
+            } else {
 
-
-            document.getElementById("profileName")
-                .textContent = name;
-
-
-            document.getElementById("profileEmail")
-                .textContent = user.email;
+                customerNameElement.textContent =
+                    "Customer";
+            }
 
 
-            loading.style.display = "none";
+            // ======================================
+            // COUNTERS
+            // ======================================
 
-            dashboard.style.display = "block";
+            let pendingCount = 0;
+            let processingCount = 0;
+            let completedCount = 0;
+
+
+            applicationData.forEach(function(application) {
+
+                const status =
+                    String(application.status || "")
+                        .toLowerCase()
+                        .trim();
+
+
+                if (status === "pending") {
+
+                    pendingCount++;
+
+                } else if (status === "processing") {
+
+                    processingCount++;
+
+                } else if (
+                    status === "completed" ||
+                    status === "approved"
+                ) {
+
+                    completedCount++;
+                }
+
+            });
+
+
+            document
+                .getElementById("totalApplications")
+                .textContent =
+                applicationData.length;
+
+
+            document
+                .getElementById("pendingApplications")
+                .textContent =
+                pendingCount;
+
+
+            document
+                .getElementById("processingApplications")
+                .textContent =
+                processingCount;
+
+
+            document
+                .getElementById("completedApplications")
+                .textContent =
+                completedCount;
+
+
+            // ======================================
+            // NO APPLICATIONS
+            // ======================================
+
+            if (applicationData.length === 0) {
+
+                loadingElement.style.display = "none";
+
+                applicationsList.innerHTML = `
+                    <div class="no-applications">
+                        <h3>No Applications Yet</h3>
+                        <p>
+                            You have not submitted any application yet.
+                        </p>
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            // ======================================
+            // DISPLAY APPLICATIONS
+            // ======================================
+
+            applicationData.forEach(function(application) {
+
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "application-item";
+
+
+                const createdDate =
+                    application.created_at
+                        ? new Date(
+                            application.created_at
+                        ).toLocaleString()
+                        : "N/A";
+
+
+                const status =
+                    application.status ||
+                    "Pending";
+
+
+                const note =
+                    application.admin_note ||
+                    "";
+
+
+                item.innerHTML = `
+
+                    <div class="application-top">
+
+                        <div>
+
+                            <div class="application-id">
+                                ${escapeHtml(
+                                    application.application_id ||
+                                    "N/A"
+                                )}
+                            </div>
+
+                            <div class="application-date">
+                                Submitted: ${escapeHtml(createdDate)}
+                            </div>
+
+                        </div>
+
+                        <span class="${getStatusClass(status)}">
+                            ${escapeHtml(status)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="service-name">
+
+                        ${escapeHtml(
+                            application.service ||
+                            "Service"
+                        )}
+
+                    </div>
+
+
+                    <div class="details">
+
+                        <p>
+                            <strong>Customer Name:</strong>
+                            ${escapeHtml(
+                                application.customer_name ||
+                                ""
+                            )}
+                        </p>
+
+                        <p>
+                            <strong>Mobile:</strong>
+                            ${escapeHtml(
+                                application.mobile ||
+                                ""
+                            )}
+                        </p>
+
+                        <p>
+                            <strong>Email:</strong>
+                            ${escapeHtml(
+                                application.email ||
+                                ""
+                            )}
+                        </p>
+
+                        <p>
+                            <strong>Requirement:</strong>
+                            ${escapeHtml(
+                                application.requirement ||
+                                "N/A"
+                            )}
+                        </p>
+
+                        ${
+                            note
+                            ? `
+                            <div class="admin-note">
+
+                                <strong>
+                                    Admin Note:
+                                </strong>
+
+                                <br>
+
+                                ${escapeHtml(note)}
+
+                            </div>
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+                `;
+
+
+                applicationsList.appendChild(item);
+
+            });
+
+
+            loadingElement.style.display = "none";
 
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Dashboard error:",
+                error
+            );
 
-            window.location.href =
-                "login.html";
+
+            loadingElement.style.display = "none";
+
+
+            showError(
+                error.message ||
+                "Unable to load applications."
+            );
 
         }
 
     }
 
 
-    // ==============================
+    // ==========================================
+    // HTML ESCAPE
+    // ==========================================
+
+    function escapeHtml(value) {
+
+        return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    // ==========================================
     // LOGOUT
-    // ==============================
+    // ==========================================
 
     document
         .getElementById("logoutButton")
         .addEventListener("click", async function() {
 
-            await supabaseClient.auth.signOut();
+            const {
+                error
+            } =
+                await supabaseClient.auth.signOut();
+
+
+            if (error) {
+
+                alert(
+                    "Logout failed: " +
+                    error.message
+                );
+
+                return;
+            }
+
 
             window.location.href =
                 "login.html";
@@ -686,9 +976,22 @@
         });
 
 
-    // ==============================
-    // START
-    // ==============================
+    // ==========================================
+    // REFRESH
+    // ==========================================
+
+    document
+        .getElementById("refreshButton")
+        .addEventListener("click", function() {
+
+            loadDashboard();
+
+        });
+
+
+    // ==========================================
+    // INITIAL LOAD
+    // ==========================================
 
     loadDashboard();
 
