@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Digital Service</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        .header {
+            background: white;
+            padding: 18px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: #1769e0;
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .brand p {
+            margin: 3px 0 0;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .logout-btn {
+            border: none;
+            background: #ef4444;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            margin: 0 0 7px;
+            font-size: 28px;
+        }
+
+        .welcome p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .stat-card h3 {
+            margin: 0 0 10px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .pending-number {
+            color: #d99a00;
+        }
+
+        .processing-number {
+            color: #1769e0;
+        }
+
+        .completed-number {
+            color: #16a34a;
+        }
+
+        .applications-box {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .box-header {
+            padding: 22px 25px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .box-header h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .refresh-btn {
+            background: #1769e0;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .refresh-btn:hover {
+            background: #1257bd;
+        }
+
+        .loading {
+            padding: 50px;
+            text-align: center;
+            color: #777;
+        }
+
+        .error {
+            margin: 20px;
+            padding: 15px;
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 8px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+
+        th {
+            text-align: left;
+            background: #f8fafc;
+            padding: 15px;
+            font-size: 13px;
+            color: #475569;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 16px 15px;
+            border-bottom: 1px solid #eef0f3;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #fafcff;
+        }
+
+        .application-id {
+            font-weight: bold;
+            color: #1769e0;
+        }
+
+        .customer-name {
+            font-weight: bold;
+        }
+
+        .service {
+            font-weight: bold;
+        }
+
+        .date {
+            color: #6b7280;
+            white-space: nowrap;
+        }
+
+        .status-select {
+            padding: 9px 12px;
+            border-radius: 7px;
+            border: 1px solid #d1d5db;
+            background: white;
+            font-weight: bold;
+            cursor: pointer;
+            min-width: 125px;
+        }
+
+        .status-select.pending {
+            color: #b77900;
+            background: #fff8df;
+            border-color: #f4d47c;
+        }
+
+        .status-select.processing {
+            color: #1769e0;
+            background: #eaf2ff;
+            border-color: #a9c8ff;
+        }
+
+        .status-select.completed {
+            color: #15803d;
+            background: #ecfdf3;
+            border-color: #9ae6b4;
+        }
+
+        .save-btn {
+            padding: 8px 13px;
+            border: none;
+            border-radius: 6px;
+            background: #16a34a;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            display: none;
+        }
+
+        .save-btn.show {
+            display: inline-block;
+        }
+
+        .save-btn:hover {
+            background: #15803d;
+        }
+
+        .save-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .note-input {
+            width: 190px;
+            padding: 9px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            resize: vertical;
+            min-height: 40px;
+            font-family: Arial, sans-serif;
+        }
+
+        .note-save-btn {
+            margin-top: 5px;
+            padding: 7px 11px;
+            border: none;
+            background: #475569;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #777;
+        }
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            padding: 14px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .toast.success {
+            display: block;
+            background: #16a34a;
+        }
+
+        .toast.error-toast {
+            display: block;
+            background: #dc2626;
+        }
+
+        @media (max-width: 900px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome h2 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="brand">
+        <div class="logo">DS</div>
+
+        <div>
+            <h1>Digital Service</h1>
+            <p>Administrator Panel</p>
+        </div>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">
+        Logout
+    </button>
+
+</header>
+
+
+<main class="container">
+
+    <div class="welcome">
+        <h2>Admin Dashboard 👋</h2>
+        <p>Manage customer applications and update their work progress.</p>
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+            <h3>Total Applications</h3>
+            <div class="number" id="totalCount">0</div>
+        </div>
+
+        <div class="stat-card">
+            <h3>Pending</h3>
+            <div class="number pending-number" id="pendingCount">0</div>
+        </div>
+
+        <div class="stat-card">
+            <h3>Processing</h3>
+            <div class="number processing-number" id="processingCount">0</div>
+        </div>
+
+        <div class="stat-card">
+            <h3>Completed</h3>
+            <div class="number completed-number" id="completedCount">0</div>
+        </div>
+
+    </section>
+
+
+    <!-- APPLICATIONS -->
+
+    <section class="applications-box">
+
+        <div class="box-header">
+
+            <h2>Customer Applications</h2>
+
+            <button class="refresh-btn" onclick="loadApplications()">
+                🔄 Refresh
+            </button>
+
+        </div>
+
+        <div id="content">
+
+            <div class="loading">
+                Loading applications...
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+    /* =========================================================
+       SUPABASE CONFIGURATION
+       ========================================================= */
+
+    const SUPABASE_URL = "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+
+    const supabaseClient =
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+
+    /* =========================================================
+       LOAD APPLICATIONS
+       ========================================================= */
+
+    async function loadApplications() {
+
+        const content = document.getElementById("content");
+
+        content.innerHTML = `
+            <div class="loading">
+                Loading applications...
+            </div>
+        `;
+
+        try {
+
+            const { data, error } = await supabaseClient
+                .from("applications")
+                .select("*")
+                .order("created_at", {
+                    ascending: false
+                });
+
+            if (error) {
+                throw error;
+            }
+
+            updateStatistics(data || []);
+
+            renderApplications(data || []);
+
+        } catch (error) {
+
+            console.error(error);
+
+            content.innerHTML = `
+                <div class="error">
+                    <strong>Unable to load applications.</strong>
+                    <br><br>
+                    ${escapeHtml(error.message)}
+                </div>
+            `;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       STATISTICS
+       ========================================================= */
+
+    function updateStatistics(applications) {
+
+        const total = applications.length;
+
+        const pending = applications.filter(
+            app => String(app.status || "").toLowerCase() === "pending"
+        ).length;
+
+        const processing = applications.filter(
+            app => String(app.status || "").toLowerCase() === "processing"
+        ).length;
+
+        const completed = applications.filter(
+            app => String(app.status || "").toLowerCase() === "completed"
+        ).length;
+
+
+        document.getElementById("totalCount").textContent = total;
+        document.getElementById("pendingCount").textContent = pending;
+        document.getElementById("processingCount").textContent = processing;
+        document.getElementById("completedCount").textContent = completed;
+
+    }
+
+
+    /* =========================================================
+       RENDER APPLICATIONS
+       ========================================================= */
+
+    function renderApplications(applications) {
+
+        const content = document.getElementById("content");
+
+
+        if (!applications.length) {
+
+            content.innerHTML = `
+                <div class="empty">
+                    <h3>No Applications Found</h3>
+                    <p>There are currently no customer applications.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        let rows = "";
+
+
+        applications.forEach(app => {
+
+            const status =
+                String(app.status || "Pending").toLowerCase();
+
+
+            const safeStatus =
+                ["pending", "processing", "completed"].includes(status)
+                    ? status
+                    : "pending";
+
+
+            const createdDate =
+                app.created_at
+                    ? new Date(app.created_at).toLocaleString("en-IN")
+                    : "N/A";
+
+
+            rows += `
+
+                <tr>
+
+                    <td>
+                        <div class="application-id">
+                            ${escapeHtml(app.application_id || "N/A")}
+                        </div>
+                    </td>
+
+
+                    <td>
+
+                        <div class="customer-name">
+                            ${escapeHtml(app.customer_name || "N/A")}
+                        </div>
+
+                        <div style="color:#6b7280;margin-top:4px;">
+                            ${escapeHtml(app.mobile || "")}
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHtml(app.email || "N/A")}
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="service">
+                            ${escapeHtml(app.service || "N/A")}
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="date">
+                            ${createdDate}
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <select
+                            class="status-select ${safeStatus}"
+                            id="status-${escapeHtml(app.id)}"
+                            onchange="statusChanged('${escapeHtml(app.id)}', this)"
+                        >
+
+                            <option value="pending"
+                                ${safeStatus === "pending" ? "selected" : ""}>
+                                Pending
+                            </option>
+
+                            <option value="processing"
+                                ${safeStatus === "processing" ? "selected" : ""}>
+                                Processing
+                            </option>
+
+                            <option value="completed"
+                                ${safeStatus === "completed" ? "selected" : ""}>
+                                Completed
+                            </option>
+
+                        </select>
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            class="save-btn"
+                            id="save-${escapeHtml(app.id)}"
+                            onclick="updateStatus('${escapeHtml(app.id)}')"
+                        >
+                            Save
+                        </button>
+
+                    </td>
+
+
+                    <td>
+
+                        <textarea
+                            class="note-input"
+                            id="note-${escapeHtml(app.id)}"
+                            placeholder="Admin note..."
+                        >${escapeHtml(app.admin_note || "")}</textarea>
+
+                        <br>
+
+                        <button
+                            class="note-save-btn"
+                            onclick="updateNote('${escapeHtml(app.id)}')"
+                        >
+                            Save Note
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+
+        content.innerHTML = `
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Application ID</th>
+                            <th>Customer</th>
+                            <th>Email</th>
+                            <th>Service</th>
+                            <th>Submitted</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                            <th>Admin Note</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        ${rows}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================================================
+       STATUS CHANGE DETECT
+       ========================================================= */
+
+    function statusChanged(id, select) {
+
+        select.className =
+            "status-select " + select.value;
+
+
+        const button =
+            document.getElementById("save-" + id);
+
+
+        if (button) {
+            button.classList.add("show");
+        }
+
+    }
+
+
+    /* =========================================================
+       UPDATE STATUS
+       ========================================================= */
+
+    async function updateStatus(id) {
+
+        const select =
+            document.getElementById("status-" + id);
+
+        const button =
+            document.getElementById("save-" + id);
+
+
+        if (!select) {
+            return;
+        }
+
+
+        const newStatus =
+            select.value;
+
+
+        button.disabled = true;
+        button.textContent = "Saving...";
+
+
+        try {
+
+            const { error } = await supabaseClient
+                .from("applications")
+                .update({
+                    status: newStatus
+                })
+                .eq("id", id);
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            showToast(
+                "Status updated to " +
+                capitalize(newStatus),
+                "success"
+            );
+
+
+            button.classList.remove("show");
+
+
+            await loadApplications();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+                "Failed to update status: " +
+                error.message,
+                "error-toast"
+            );
+
+
+            button.disabled = false;
+            button.textContent = "Save";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       UPDATE ADMIN NOTE
+       ========================================================= */
+
+    async function updateNote(id) {
+
+        const input =
+            document.getElementById("note-" + id);
+
+
+        if (!input) {
+            return;
+        }
+
+
+        const note =
+            input.value.trim();
+
+
+        try {
+
+            const { error } = await supabaseClient
+                .from("applications")
+                .update({
+                    admin_note: note
+                })
+                .eq("id", id);
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            showToast(
+                "Admin note saved successfully.",
+                "success"
+            );
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showToast(
+                "Failed to save note: " +
+                error.message,
+                "error-toast"
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       TOAST
+       ========================================================= */
+
+    function showToast(message, type) {
+
+        const toast =
+            document.getElementById("toast");
+
+
+        toast.textContent = message;
+
+        toast.className =
+            "toast " + type;
+
+
+        setTimeout(() => {
+
+            toast.className =
+                "toast";
+
+        }, 3000);
+
+    }
+
+
+    /* =========================================================
+       HELPERS
+       ========================================================= */
+
+    function capitalize(text) {
+
+        return text.charAt(0).toUpperCase() +
+               text.slice(1);
+
+    }
+
+
+    function escapeHtml(value) {
+
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================================================
+       LOGOUT
+       ========================================================= */
+
+    async function logout() {
+
+        await supabaseClient.auth.signOut();
+
+        window.location.href = "login.html";
+
+    }
+
+
+    /* =========================================================
+       INITIAL LOAD
+       ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadApplications
+    );
+
+</script>
+
+</body>
+</html>
