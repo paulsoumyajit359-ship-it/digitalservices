@@ -1,528 +1,750 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Digital Service | Digital • Tax • Business Services</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f7fb;
-      color: #174a96;
-    }
-
-    /* =========================
-       NAVBAR
-    ========================== */
-
-    .navbar {
-      width: 100%;
-      height: 100px;
-      background: linear-gradient(135deg, #174a96, #0879e8);
-      display: flex;
-      align-items: center;
-      padding: 0 6%;
-      color: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .brand-logo {
-      width: 58px;
-      height: 58px;
-      background: white;
-      color: #1760b9;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 25px;
-      font-weight: bold;
-    }
-
-    .brand-text h2 {
-      font-size: 25px;
-      margin-bottom: 4px;
-    }
-
-    .brand-text p {
-      font-size: 14px;
-      opacity: 0.9;
-    }
-
-    .nav-links {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 30px;
-    }
-
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-size: 17px;
-      font-weight: 600;
-      transition: 0.2s;
-    }
-
-    .nav-links a:hover {
-      opacity: 0.75;
-    }
-
-    /* =========================
-       HERO
-    ========================== */
-
-    .hero {
-      background: white;
-      text-align: center;
-      padding: 55px 20px 65px;
-    }
-
-    .hero h1 {
-      font-size: 46px;
-      color: #174a96;
-      margin-bottom: 30px;
-    }
-
-    .hero p {
-      max-width: 900px;
-      margin: auto;
-      font-size: 20px;
-      line-height: 1.7;
-      color: #45658d;
-    }
-
-    .hero-buttons {
-      margin-top: 38px;
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .hero-btn {
-      display: inline-block;
-      padding: 17px 30px;
-      border-radius: 9px;
-      text-decoration: none;
-      font-size: 18px;
-      font-weight: bold;
-      border: 2px solid #0879e8;
-      transition: 0.25s;
-    }
-
-    .hero-btn.primary {
-      background: #0879e8;
-      color: white;
-    }
-
-    .hero-btn.secondary {
-      background: white;
-      color: #0879e8;
-    }
-
-    .hero-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    /* =========================
-       ADVERTISEMENT SLIDER
-    ========================== */
-
-    .advertisement-section {
-      background: white;
-      padding: 0 4% 35px;
-    }
-
-    .ad-slider {
-      width: 100%;
-      max-width: 1500px;
-      height: 330px;
-      margin: auto;
-      position: relative;
-      overflow: hidden;
-      border-radius: 18px;
-      background: #eaf2ff;
-      box-shadow: 0 8px 30px rgba(0, 55, 130, 0.10);
-    }
-
-    .ad-slide {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.5s ease;
-      cursor: pointer;
-    }
-
-    .ad-slide.active {
-      opacity: 1;
-      visibility: visible;
-      z-index: 2;
-    }
-
-    .ad-slide img {
-      width: 100%;
-      height: 100%;
-      display: block;
-
-      /*
-        IMPORTANT:
-        Poster পুরো box-এর মধ্যে fit করবে।
-        কোন অংশ crop হবে না।
-      */
-      object-fit: contain;
-
-      background: white;
-    }
-
-    /* arrows */
-
-    .ad-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(80, 92, 110, 0.75);
-      color: white;
-      font-size: 32px;
-      line-height: 54px;
-      cursor: pointer;
-      z-index: 10;
-      transition: 0.2s;
-    }
-
-    .ad-arrow:hover {
-      background: rgba(30, 70, 120, 0.95);
-    }
-
-    .ad-prev {
-      left: 18px;
-    }
-
-    .ad-next {
-      right: 18px;
-    }
-
-    /* dots */
-
-    .ad-dots {
-      position: absolute;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-      z-index: 10;
-    }
-
-    .ad-dot {
-      width: 10px;
-      height: 10px;
-      background: rgba(255,255,255,0.75);
-      border-radius: 50%;
-      cursor: pointer;
-      border: 1px solid rgba(0,0,0,0.15);
-    }
-
-    .ad-dot.active {
-      background: #0879e8;
-    }
-
-    .ad-message {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #50709b;
-      font-size: 18px;
-      z-index: 1;
-    }
-
-    /* =========================
-       SERVICES
-    ========================== */
-
-    .services-section {
-      padding: 70px 7%;
-      background: #f4f7fb;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-
-    .section-title h2 {
-      font-size: 38px;
-      margin-bottom: 14px;
-      color: #174a96;
-    }
-
-    .section-title p {
-      color: #617896;
-      font-size: 18px;
-    }
-
-    .services-grid {
-      max-width: 1250px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 28px;
-    }
-
-    .service-card {
-      background: white;
-      min-height: 230px;
-      border-radius: 16px;
-      padding: 35px 25px;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(0,50,100,0.08);
-      transition: 0.25s;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-
-    .service-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 30px rgba(0,50,100,0.14);
-    }
-
-    .service-icon {
-      font-size: 45px;
-      margin-bottom: 18px;
-    }
-
-    .service-card h3 {
-      font-size: 22px;
-      color: #174a96;
-      margin-bottom: 14px;
-    }
-
-    .service-card p {
-      color: #6b7f99;
-      font-size: 16px;
-      line-height: 1.5;
-    }
-
-    /* =========================
-       MOBILE
-    ========================== */
-
-    @media (max-width: 1000px) {
-
-      .navbar {
-        padding: 0 25px;
-      }
-
-      .nav-links {
-        gap: 15px;
-      }
-
-      .nav-links a {
-        font-size: 14px;
-      }
-
-      .hero h1 {
-        font-size: 38px;
-      }
-
-      .services-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 700px) {
-
-      .navbar {
-        height: auto;
-        padding: 15px 20px;
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .nav-links {
-        margin-left: 0;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      .hero {
-        padding: 40px 20px;
-      }
-
-      .hero h1 {
-        font-size: 31px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
-
-      .ad-slider {
-        height: 210px;
-        border-radius: 12px;
-      }
-
-      .ad-arrow {
-        width: 42px;
-        height: 42px;
-        line-height: 42px;
-        font-size: 24px;
-      }
-
-      .ad-prev {
-        left: 10px;
-      }
-
-      .ad-next {
-        right: 10px;
-      }
-
-      .services-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section-title h2 {
-        font-size: 30px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Service | Digital • Tax • Business Services</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #123b75;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================== */
+
+        .navbar {
+            width: 100%;
+            background: linear-gradient(135deg, #164b9b, #0875dc);
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        .brand-logo {
+            width: 58px;
+            height: 58px;
+            background: white;
+            color: #1260c9;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .brand-text h1 {
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .brand-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 28px;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            color: white;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.75;
+        }
+
+        /* =========================
+           HERO
+        ========================== */
+
+        .hero {
+            background: white;
+            text-align: center;
+            padding: 90px 20px 70px;
+        }
+
+        .hero h2 {
+            font-size: 44px;
+            color: #124692;
+            margin-bottom: 28px;
+        }
+
+        .hero p {
+            max-width: 800px;
+            margin: auto;
+            font-size: 19px;
+            line-height: 1.6;
+            color: #516b8f;
+        }
+
+        .hero-buttons {
+            margin-top: 38px;
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 28px;
+            border-radius: 9px;
+            font-size: 17px;
+            font-weight: 700;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #086bdc;
+            color: white;
+            border: 2px solid #086bdc;
+        }
+
+        .btn-primary:hover {
+            background: #075ab8;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #086bdc;
+            border: 2px solid #086bdc;
+        }
+
+        .btn-outline:hover {
+            background: #edf5ff;
+        }
+
+        /* =========================
+           ADVERTISEMENT SECTION
+        ========================== */
+
+        .advertisement-section {
+            background: white;
+            padding: 10px 4% 30px;
+        }
+
+        .ad-slider {
+            width: 100%;
+            max-width: 1500px;
+            height: 360px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            background: #eaf1fc;
+            box-shadow: 0 10px 30px rgba(20,70,130,0.12);
+        }
+
+        .ad-track {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .ad-slide {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.45s ease;
+            cursor: pointer;
+        }
+
+        .ad-slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 2;
+        }
+
+        .ad-slide img {
+            width: 100%;
+            height: 100%;
+            display: block;
+
+            /*
+              IMPORTANT:
+              contain = পুরো poster দেখা যাবে
+              crop হবে না
+            */
+            object-fit: contain;
+            object-position: center;
+            background: white;
+        }
+
+        /* Arrows */
+
+        .ad-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(30, 40, 55, 0.58);
+            color: white;
+            font-size: 30px;
+            line-height: 48px;
+            text-align: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: 0.2s;
+        }
+
+        .ad-arrow:hover {
+            background: rgba(0, 89, 180, 0.9);
+        }
+
+        .ad-prev {
+            left: 16px;
+        }
+
+        .ad-next {
+            right: 16px;
+        }
+
+        /* Dots */
+
+        .ad-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 7px;
+            z-index: 10;
+        }
+
+        .ad-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.75);
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.15);
+        }
+
+        .ad-dot.active {
+            background: #0875dc;
+            transform: scale(1.2);
+        }
+
+        .ad-loading {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #55708f;
+            font-size: 18px;
+        }
+
+        .ad-empty {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #55708f;
+            font-size: 17px;
+        }
+
+        /* =========================
+           SERVICES
+        ========================== */
+
+        .services-section {
+            background: #f4f7fb;
+            padding: 70px 5% 90px;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-heading h2 {
+            font-size: 38px;
+            color: #124692;
+            margin-bottom: 15px;
+        }
+
+        .section-heading p {
+            color: #607a9e;
+            font-size: 17px;
+        }
+
+        .services-grid {
+            max-width: 1350px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 28px;
+        }
+
+        .service-card {
+            position: relative;
+            background: white;
+            min-height: 225px;
+            padding: 34px 22px 28px;
+            border-radius: 16px;
+            box-shadow: 0 10px 28px rgba(33,72,120,0.10);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s;
+            border: 1px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+            border-color: #bcd8fa;
+            box-shadow: 0 15px 35px rgba(33,72,120,0.16);
+        }
+
+        /* New arrow */
+
+        .service-arrow {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #eaf3ff;
+            color: #086bdc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .service-card:hover .service-arrow {
+            background: #086bdc;
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .service-icon {
+            font-size: 47px;
+            margin-bottom: 17px;
+            line-height: 1;
+        }
+
+        .service-card h3 {
+            font-size: 21px;
+            color: #124692;
+            margin-bottom: 12px;
+        }
+
+        .service-card p {
+            color: #667f9f;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        /* =========================
+           PROFESSIONAL FOOTER
+        ========================== */
+
+        .site-footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            margin-top: 0;
+        }
+
+        .footer-main {
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: 55px 5% 40px;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1.2fr 1.1fr;
+            gap: 42px;
+        }
+
+        .footer-brand h2 {
+            color: #ffffff;
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand p {
+            max-width: 350px;
+            font-size: 14px;
+            line-height: 1.75;
+            color: #b9c5d6;
+        }
+
+        .footer-column h3 {
+            color: #ffffff;
+            font-size: 17px;
+            margin-bottom: 18px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #60a5fa;
+            padding-left: 4px;
+        }
+
+        .footer-contact p {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .footer-contact .support-badge {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 8px 12px;
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 13px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.10);
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .footer-bottom a {
+            color: #94a3b8;
+            transition: 0.2s;
+        }
+
+        .footer-bottom a:hover {
+            color: #60a5fa;
+        }
+
+        /* =========================
+           MOBILE
+        ========================== */
+
+        @media (max-width: 1100px) {
+
+            .navbar {
+                padding: 15px 3%;
+            }
+
+            .nav-links {
+                gap: 16px;
+                font-size: 14px;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                gap: 14px 20px;
+            }
+
+            .hero {
+                padding: 60px 20px 45px;
+            }
+
+            .hero h2 {
+                font-size: 34px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .ad-slider {
+                height: 250px;
+                border-radius: 12px;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            .brand-logo {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+
+            .brand-text h1 {
+                font-size: 20px;
+            }
+
+            .brand-text p {
+                font-size: 12px;
+            }
+
+            .hero h2 {
+                font-size: 29px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .advertisement-section {
+                padding-left: 3%;
+                padding-right: 3%;
+            }
+
+            .ad-slider {
+                height: 190px;
+            }
+
+            .ad-arrow {
+                width: 38px;
+                height: 38px;
+                line-height: 38px;
+                font-size: 23px;
+            }
+
+            .ad-prev {
+                left: 8px;
+            }
+
+            .ad-next {
+                right: 8px;
+            }
+
+            .services-section {
+                padding: 50px 4%;
+            }
+
+            .section-heading h2 {
+                font-size: 30px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-card {
+                min-height: 205px;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                gap: 28px;
+                padding: 42px 6% 30px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                padding: 18px 6%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <!-- =========================
-       NAVBAR
-  ========================== -->
+<!-- =========================
+     NAVBAR
+========================== -->
 
-  <nav class="navbar">
+<header class="navbar">
 
-    <div class="brand">
+    <a href="index.html" class="brand">
 
-      <div class="brand-logo">
-        DS
-      </div>
+        <div class="brand-logo">
+            DS
+        </div>
 
-      <div class="brand-text">
-        <h2>Digital Service</h2>
-        <p>Digital • Tax • Business Services</p>
-      </div>
+        <div class="brand-text">
+            <h1>Digital Service</h1>
+            <p>Digital • Tax • Business Services</p>
+        </div>
 
-    </div>
+    </a>
 
-    <div class="nav-links">
+    <nav class="nav-links">
 
-      <a href="index.html">Home</a>
-      <a href="#services">Services</a>
-      <a href="apply.html">Apply</a>
-      <a href="login.html">Customer Login</a>
-      <a href="signup.html">Sign Up</a>
-      <a href="admin-login.html">🔐 Admin Login</a>
+        <a href="index.html">Home</a>
 
-    </div>
+        <a href="#services">Services</a>
 
-  </nav>
+        <a href="apply.html">Apply</a>
+
+        <a href="customer-login.html">Customer Login</a>
+
+        <a href="signup.html">Sign Up</a>
+
+        <a href="admin-login.html">🔐 Admin Login</a>
+
+    </nav>
+
+</header>
 
 
-  <!-- =========================
-       HERO
-  ========================== -->
+<!-- =========================
+     HERO
+========================== -->
 
-  <section class="hero">
+<section class="hero">
 
-    <h1>Your Digital Service Partner</h1>
+    <h2>Your Digital Service Partner</h2>
 
     <p>
-      Get Digital, Tax and Business related services easily from one place.
-      Submit your application online and manage your service request.
+        Get Digital, Tax and Business related services easily from one place.
+        Submit your application online and manage your service request.
     </p>
 
     <div class="hero-buttons">
 
-      <a href="#services" class="hero-btn primary">
-        Explore Services
-      </a>
+        <a href="#services" class="btn btn-primary">
+            Explore Services
+        </a>
 
-      <a href="apply.html" class="hero-btn secondary">
-        Apply for a Service
-      </a>
+        <a href="apply.html" class="btn btn-outline">
+            Apply for a Service
+        </a>
 
     </div>
 
-  </section>
+</section>
 
 
-  <!-- =========================
-       ADVERTISEMENT
-  ========================== -->
+<!-- =========================
+     ADVERTISEMENT SLIDER
+========================== -->
 
-  <section class="advertisement-section">
+<section class="advertisement-section">
 
     <div class="ad-slider" id="adSlider">
 
-      <div class="ad-message" id="adMessage">
-        Loading advertisements...
-      </div>
+        <div id="adTrack" class="ad-track">
 
-      <button
-        class="ad-arrow ad-prev"
-        id="adPrev"
-        type="button"
-        aria-label="Previous advertisement">
-        ‹
-      </button>
+            <div class="ad-loading">
+                Loading advertisements...
+            </div>
 
-      <button
-        class="ad-arrow ad-next"
-        id="adNext"
-        type="button"
-        aria-label="Next advertisement">
-        ›
-      </button>
+        </div>
 
-      <div class="ad-dots" id="adDots"></div>
+        <button
+            type="button"
+            class="ad-arrow ad-prev"
+            id="adPrev"
+            aria-label="Previous advertisement">
+            ‹
+        </button>
+
+        <button
+            type="button"
+            class="ad-arrow ad-next"
+            id="adNext"
+            aria-label="Next advertisement">
+            ›
+        </button>
+
+        <div
+            class="ad-dots"
+            id="adDots">
+        </div>
 
     </div>
 
-  </section>
+</section>
 
 
-  <!-- =========================
-       SERVICES
-  ========================== -->
+<!-- =========================
+     SERVICES
+========================== -->
 
-  <section class="services-section" id="services">
+<section class="services-section" id="services">
 
-    <div class="section-title">
+    <div class="section-heading">
 
-      <h2>Our Services</h2>
+        <h2>Our Services</h2>
 
-      <p>
-        Select the service you require and apply online.
-      </p>
+        <p>
+            Select the service you require and apply online.
+        </p>
 
     </div>
 
@@ -530,749 +752,888 @@
     <div class="services-grid">
 
 
-      <a class="service-card"
-         href="apply.html?service=PAN%20Card">
+        <!-- PAN -->
 
-        <div class="service-icon">🪪</div>
+        <div
+            class="service-card"
+            onclick="openService('PAN Card')">
 
-        <h3>PAN Card</h3>
+            <div class="service-arrow">›</div>
 
-        <p>
-          New PAN, correction and related services.
-        </p>
+            <div class="service-icon">🪪</div>
 
-      </a>
+            <h3>PAN Card</h3>
 
+            <p>
+                New PAN, correction and related services.
+            </p>
 
-      <a class="service-card"
-         href="apply.html?service=Aadhaar%20Card">
-
-        <div class="service-icon">🆔</div>
-
-        <h3>Aadhaar Card</h3>
-
-        <p>
-          Aadhaar related digital assistance.
-        </p>
-
-      </a>
+        </div>
 
 
-      <a class="service-card"
-         href="apply.html?service=Ration%20Card">
+        <!-- AADHAAR -->
 
-        <div class="service-icon">🍚</div>
+        <div
+            class="service-card"
+            onclick="openService('Aadhaar Card')">
 
-        <h3>Ration Card</h3>
+            <div class="service-arrow">›</div>
 
-        <p>
-          Ration card application and correction.
-        </p>
+            <div class="service-icon">🆔</div>
 
-      </a>
+            <h3>Aadhaar Card</h3>
 
+            <p>
+                Aadhaar related digital assistance.
+            </p>
 
-      <a class="service-card"
-         href="apply.html?service=Trade%20License">
-
-        <div class="service-icon">🏪</div>
-
-        <h3>Trade License</h3>
-
-        <p>
-          Trade license application assistance.
-        </p>
-
-      </a>
+        </div>
 
 
-      <a class="service-card"
-         href="apply.html?service=Shop%20Establishment">
+        <!-- RATION -->
 
-        <div class="service-icon">🏢</div>
+        <div
+            class="service-card"
+            onclick="openService('Ration Card')">
 
-        <h3>Shop Establishment</h3>
+            <div class="service-arrow">›</div>
 
-        <p>
-          Shop and establishment registration services.
-        </p>
+            <div class="service-icon">🍚</div>
 
-      </a>
+            <h3>Ration Card</h3>
 
+            <p>
+                Ration card application and correction.
+            </p>
 
-      <a class="service-card"
-         href="apply.html?service=FSSAI%20License">
-
-        <div class="service-icon">🍴</div>
-
-        <h3>FSSAI License</h3>
-
-        <p>
-          Food business registration and licensing.
-        </p>
-
-      </a>
+        </div>
 
 
-      <a class="service-card"
-         href="apply.html?service=GST">
+        <!-- TRADE LICENSE -->
 
-        <div class="service-icon">📊</div>
+        <div
+            class="service-card"
+            onclick="openService('Trade License')">
 
-        <h3>GST</h3>
+            <div class="service-arrow">›</div>
 
-        <p>
-          GST registration and compliance services.
-        </p>
+            <div class="service-icon">🏪</div>
 
-      </a>
+            <h3>Trade License</h3>
 
+            <p>
+                Trade license application assistance.
+            </p>
 
-      <a class="service-card"
-         href="apply.html?service=TDS">
-
-        <div class="service-icon">🧾</div>
-
-        <h3>TDS</h3>
-
-        <p>
-          TDS related filing and compliance assistance.
-        </p>
-
-      </a>
+        </div>
 
 
-      <a class="service-card"
-         href="apply.html?service=Income%20Tax">
+        <!-- SHOP ESTABLISHMENT -->
 
-        <div class="service-icon">💰</div>
+        <div
+            class="service-card"
+            onclick="openService('Shop Establishment')">
 
-        <h3>Income Tax</h3>
+            <div class="service-arrow">›</div>
 
-        <p>
-          ITR filing and income tax related services.
-        </p>
+            <div class="service-icon">🏢</div>
 
-      </a>
+            <h3>Shop Establishment</h3>
+
+            <p>
+                Shop and establishment registration services.
+            </p>
+
+        </div>
+
+
+        <!-- FSSAI -->
+
+        <div
+            class="service-card"
+            onclick="openService('FSSAI License')">
+
+            <div class="service-arrow">›</div>
+
+            <div class="service-icon">🍴</div>
+
+            <h3>FSSAI License</h3>
+
+            <p>
+                Food business registration and licensing.
+            </p>
+
+        </div>
+
+
+        <!-- GST -->
+
+        <div
+            class="service-card"
+            onclick="openService('GST')">
+
+            <div class="service-arrow">›</div>
+
+            <div class="service-icon">📊</div>
+
+            <h3>GST</h3>
+
+            <p>
+                GST registration and compliance services.
+            </p>
+
+        </div>
+
+
+        <!-- TDS -->
+
+        <div
+            class="service-card"
+            onclick="openService('TDS')">
+
+            <div class="service-arrow">›</div>
+
+            <div class="service-icon">🧾</div>
+
+            <h3>TDS</h3>
+
+            <p>
+                TDS related filing and compliance assistance.
+            </p>
+
+        </div>
+
+
+        <!-- INCOME TAX -->
+
+        <div
+            class="service-card"
+            onclick="openService('Income Tax')">
+
+            <div class="service-arrow">›</div>
+
+            <div class="service-icon">💰</div>
+
+            <h3>Income Tax</h3>
+
+            <p>
+                ITR filing and income tax related services.
+            </p>
+
+        </div>
 
     </div>
 
-  </section>
+</section>
 
 
-  <!-- =========================
-       ADVERTISEMENT SCRIPT
-  ========================== -->
+<!-- =========================
+     PROFESSIONAL FOOTER
+========================== -->
 
-  <script>
+<footer class="site-footer">
+
+    <div class="footer-main">
+
+        <div class="footer-column footer-brand">
+            <h2>Digital Service</h2>
+            <p>
+                Your digital service partner for tax, government,
+                business and online services. Submit your request
+                online and manage your service easily from one place.
+            </p>
+        </div>
+
+        <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="apply.html">Apply for a Service</a></li>
+                <li><a href="customer-login.html">Customer Login</a></li>
+                <li><a href="signup.html">Sign Up</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Our Services</h3>
+            <ul class="footer-links">
+                <li><a href="apply.html?service=PAN%20Card">PAN Card</a></li>
+                <li><a href="apply.html?service=Aadhaar%20Card">Aadhaar Card</a></li>
+                <li><a href="apply.html?service=GST">GST</a></li>
+                <li><a href="apply.html?service=TDS">TDS</a></li>
+                <li><a href="apply.html?service=Income%20Tax">Income Tax</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column footer-contact">
+            <h3>Need Help?</h3>
+            <p>
+                Submit your application online and our team can review
+                your service request.
+            </p>
+            <span class="support-badge">Online Service Support</span>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <div>
+            © 2026 Digital Service. All Rights Reserved.
+        </div>
+        <div>
+            <a href="#">Privacy Policy</a>
+            &nbsp; | &nbsp;
+            <a href="#">Terms &amp; Conditions</a>
+        </div>
+    </div>
+
+</footer>
+
+
+
+<script>
+
+/* =====================================================
+   SERVICE CARD → APPLY PAGE
+===================================================== */
+
+function openService(serviceName) {
+
+    window.location.href =
+        "apply.html?service=" +
+        encodeURIComponent(serviceName);
+
+}
+
+
+/* =====================================================
+   ADVERTISEMENT SYSTEM
+===================================================== */
+
+/*
+   IMPORTANT
+
+   Your public Supabase bucket name is:
+
+       advertisements
+
+   If your Worker already has an API endpoint:
+
+       /api/advertisements
+
+   the website will try that first.
+
+   If API is unavailable, the fallback files below
+   will be used.
+*/
+
+
+const ADVERTISEMENT_FILES = [
 
     /*
-      =========================================================
-      SUPABASE SETTINGS
-      =========================================================
-
-      এখানে তোমার existing Supabase URL এবং ANON KEY বসাবে।
-    */
-
-    const SUPABASE_URL = "https://nlzrdjvlkdqungmhnsrl.supabase.co";
-
-    const SUPABASE_ANON_KEY = "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
-
-
-    /*
-      Storage bucket name
-    */
-
-    const BUCKET_NAME = "advertisements";
-
-
-    /*
-      Advertisement settings
-    */
-
-    const SLIDE_TIME = 3000; // 3 seconds
-
-
-    let advertisements = [];
-
-    let currentAd = 0;
-
-    let slideTimer = null;
-
-
-    /*
-      DOM
-    */
-
-    const slider = document.getElementById("adSlider");
-
-    const dotsContainer = document.getElementById("adDots");
-
-    const message = document.getElementById("adMessage");
-
-    const prevButton = document.getElementById("adPrev");
-
-    const nextButton = document.getElementById("adNext");
-
-
-    /*
-      =========================================================
-      LOAD ADVERTISEMENTS
-      =========================================================
-    */
-
-    async function loadAdvertisements() {
-
-      try {
-
-        message.textContent = "Loading advertisements...";
-
-        /*
-          Supabase Storage API থেকে files list নেওয়া হচ্ছে
-        */
-
-        const response = await fetch(
-          `${SUPABASE_URL}/storage/v1/object/list/${BUCKET_NAME}`,
-          {
-            method: "POST",
-
-            headers: {
-              "apikey": SUPABASE_ANON_KEY,
-              "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-              "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-              prefix: "",
-              limit: 100,
-              offset: 0,
-              sortBy: {
-                column: "name",
-                order: "asc"
-              }
-            })
-          }
-        );
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            "Storage request failed: " + response.status
-          );
-
-        }
-
-
-        const files = await response.json();
-
-
-        /*
-          শুধুমাত্র image files নেওয়া হবে
-        */
-
-        const imageFiles = files.filter(file => {
-
-          if (!file.name) return false;
-
-          const name = file.name.toLowerCase();
-
-          return (
-            name.endsWith(".jpg") ||
-            name.endsWith(".jpeg") ||
-            name.endsWith(".png") ||
-            name.endsWith(".webp") ||
-            name.endsWith(".gif")
-          );
-
-        });
-
-
-        /*
-          যদি image না পাওয়া যায়
-        */
-
-        if (imageFiles.length === 0) {
-
-          message.textContent = "No advertisements available.";
-
-          return;
-
-        }
-
-
-        /*
-          Public URL তৈরি
-        */
-
-        advertisements = imageFiles.map(file => {
-
-          return {
-
-            name: file.name,
-
-            url:
-              `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${encodeURIComponent(file.name)}`
-
-          };
-
-        });
-
-
-        /*
-          Message hide
-        */
-
-        message.style.display = "none";
-
-
-        /*
-          Slider তৈরি
-        */
-
-        createAdvertisements();
-
-
-        /*
-          First slide
-        */
-
-        showAd(0);
-
-
-        /*
-          Automatic slider
-        */
-
-        startAutoSlide();
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "Advertisement loading error:",
-          error
-        );
-
-        message.textContent =
-          "Unable to load advertisements.";
-
-      }
-
-    }
-
-
-    /*
-      =========================================================
-      CREATE SLIDES
-      =========================================================
-    */
-
-    function createAdvertisements() {
-
-      /*
-        পুরনো slides remove
-      */
-
-      document
-        .querySelectorAll(".ad-slide")
-        .forEach(el => el.remove());
-
-
-      dotsContainer.innerHTML = "";
-
-
-      advertisements.forEach((ad, index) => {
-
-
-        /*
-          Slide
-        */
-
-        const slide = document.createElement("div");
-
-        slide.className = "ad-slide";
-
-
-        /*
-          Image
-        */
-
-        const img = document.createElement("img");
-
-        img.src = ad.url;
-
-        img.alt = "Digital Service Advertisement";
-
-
-        /*
-          Image load error
-        */
-
-        img.onerror = function () {
-
-          console.error(
-            "Unable to load image:",
-            ad.url
-          );
-
-        };
-
-
-        slide.appendChild(img);
-
-
-        /*
-          =====================================================
-          AD CLICK → APPLY FORM
-          =====================================================
-
-          Filename অনুযায়ী service detect করা হচ্ছে।
-        */
-
-        slide.addEventListener("click", function () {
-
-          const service =
-            getServiceFromFilename(ad.name);
-
-          if (service) {
-
-            window.location.href =
-              "apply.html?service=" +
-              encodeURIComponent(service);
-
-          }
-
-          else {
-
-            window.location.href =
-              "apply.html";
-
-          }
-
-        });
-
-
-        slider.appendChild(slide);
-
-
-        /*
-          Dot
-        */
-
-        const dot =
-          document.createElement("div");
-
-        dot.className = "ad-dot";
-
-
-        dot.addEventListener("click", function (event) {
-
-          event.stopPropagation();
-
-          showAd(index);
-
-          restartAutoSlide();
-
-        });
-
-
-        dotsContainer.appendChild(dot);
-
-      });
-
-    }
-
-
-    /*
-      =========================================================
-      SERVICE DETECTION
-      =========================================================
-
-      Poster filename-এর মধ্যে service-এর নাম থাকলে
-      সেই service-এর Apply form open হবে।
+      If necessary, put your public Supabase URLs here.
 
       Example:
 
-      advertisement_pan_card.png
-      advertisement_aadhaar_card.png
-      advertisement_gst.png
-      advertisement_income_tax.png
+      "https://YOUR-PROJECT.supabase.co/storage/v1/object/public/advertisements/advertisement_poster_01.png"
+
     */
 
-    function getServiceFromFilename(filename) {
+];
 
-      const name =
-        filename.toLowerCase();
 
+/* =====================================================
+   VARIABLES
+===================================================== */
 
-      if (
-        name.includes("pan")
-      ) {
+let advertisements = [];
 
-        return "PAN Card";
+let currentAd = 0;
 
-      }
+let adTimer = null;
 
+const AD_INTERVAL = 3000; // 3 seconds
 
-      if (
-        name.includes("aadhaar") ||
-        name.includes("aadhar")
-      ) {
 
-        return "Aadhaar Card";
+const adTrack =
+    document.getElementById("adTrack");
 
-      }
+const adDots =
+    document.getElementById("adDots");
 
+const adPrev =
+    document.getElementById("adPrev");
 
-      if (
-        name.includes("ration")
-      ) {
+const adNext =
+    document.getElementById("adNext");
 
-        return "Ration Card";
 
-      }
+/* =====================================================
+   LOAD ADVERTISEMENTS
+===================================================== */
 
+async function loadAdvertisements() {
 
-      if (
-        name.includes("trade")
-      ) {
+    try {
 
-        return "Trade License";
+        /*
+          First try existing Worker API.
+        */
 
-      }
+        const response =
+            await fetch("/api/advertisements", {
+                method: "GET",
+                cache: "no-store"
+            });
 
 
-      if (
-        name.includes("shop")
-      ) {
+        if (response.ok) {
 
-        return "Shop Establishment";
+            const data =
+                await response.json();
 
-      }
+            if (Array.isArray(data) && data.length > 0) {
 
+                advertisements =
+                    normaliseAdvertisements(data);
 
-      if (
-        name.includes("fssai")
-      ) {
+                renderAdvertisements();
 
-        return "FSSAI License";
-
-      }
-
-
-      if (
-        name.includes("gst")
-      ) {
-
-        return "GST";
-
-      }
-
-
-      if (
-        name.includes("tds")
-      ) {
-
-        return "TDS";
-
-      }
-
-
-      if (
-        name.includes("income") ||
-        name.includes("itr")
-      ) {
-
-        return "Income Tax";
-
-      }
-
-
-      return null;
-
-    }
-
-
-    /*
-      =========================================================
-      SHOW AD
-      =========================================================
-    */
-
-    function showAd(index) {
-
-      const slides =
-        document.querySelectorAll(".ad-slide");
-
-      const dots =
-        document.querySelectorAll(".ad-dot");
-
-
-      if (!slides.length) return;
-
-
-      currentAd =
-        (index + slides.length) %
-        slides.length;
-
-
-      slides.forEach((slide, i) => {
-
-        slide.classList.toggle(
-          "active",
-          i === currentAd
-        );
-
-      });
-
-
-      dots.forEach((dot, i) => {
-
-        dot.classList.toggle(
-          "active",
-          i === currentAd
-        );
-
-      });
-
-    }
-
-
-    /*
-      =========================================================
-      NEXT
-      =========================================================
-    */
-
-    function nextAd() {
-
-      showAd(currentAd + 1);
-
-    }
-
-
-    /*
-      =========================================================
-      PREVIOUS
-      =========================================================
-    */
-
-    function previousAd() {
-
-      showAd(currentAd - 1);
-
-    }
-
-
-    /*
-      =========================================================
-      AUTO SLIDE
-      =========================================================
-    */
-
-    function startAutoSlide() {
-
-      stopAutoSlide();
-
-
-      slideTimer =
-        setInterval(
-          nextAd,
-          SLIDE_TIME
-        );
-
-    }
-
-
-    function stopAutoSlide() {
-
-      if (slideTimer) {
-
-        clearInterval(slideTimer);
-
-        slideTimer = null;
-
-      }
-
-    }
-
-
-    function restartAutoSlide() {
-
-      startAutoSlide();
-
-    }
-
-
-    /*
-      =========================================================
-      ARROW EVENTS
-      =========================================================
-    */
-
-    nextButton.addEventListener(
-      "click",
-      function () {
-
-        nextAd();
-
-        restartAutoSlide();
-
-      }
-    );
-
-
-    prevButton.addEventListener(
-      "click",
-      function () {
-
-        previousAd();
-
-        restartAutoSlide();
-
-      }
-    );
-
-
-    /*
-      =========================================================
-      MOUSE HOVER
-      =========================================================
-
-      Mouse slider-এর উপর থাকলে auto-slide pause হবে।
-    */
-
-    slider.addEventListener(
-      "mouseenter",
-      stopAutoSlide
-    );
-
-
-    slider.addEventListener(
-      "mouseleave",
-      function () {
-
-        if (advertisements.length > 1) {
-
-          startAutoSlide();
+                return;
+            }
 
         }
 
-      }
-    );
+    } catch (error) {
+
+        console.log(
+            "Advertisement API unavailable."
+        );
+
+    }
 
 
     /*
-      =========================================================
-      START
-      =========================================================
+      Fallback to manually configured files.
     */
 
-    loadAdvertisements();
+    if (ADVERTISEMENT_FILES.length > 0) {
 
-  </script>
+        advertisements =
+            ADVERTISEMENT_FILES.map(
+                (url, index) => ({
+                    id: index + 1,
+                    image_url: url,
+                    service: "",
+                    title: ""
+                })
+            );
+
+        renderAdvertisements();
+
+        return;
+    }
+
+
+    /*
+      If nothing found.
+    */
+
+    showNoAdvertisements();
+
+}
+
+
+/* =====================================================
+   NORMALISE API DATA
+===================================================== */
+
+function normaliseAdvertisements(data) {
+
+    return data
+        .map((item, index) => {
+
+            let imageUrl =
+                item.image_url ||
+                item.imageUrl ||
+                item.url ||
+                item.file_url ||
+                item.fileUrl;
+
+            if (!imageUrl && item.filename) {
+
+                imageUrl =
+                    item.filename;
+
+            }
+
+            return {
+
+                id:
+                    item.id ||
+                    index + 1,
+
+                image_url:
+                    imageUrl,
+
+                service:
+                    item.service ||
+                    item.service_name ||
+                    item.serviceName ||
+                    "",
+
+                title:
+                    item.title ||
+                    item.name ||
+                    ""
+
+            };
+
+        })
+        .filter(
+            item => item.image_url
+        );
+
+}
+
+
+/* =====================================================
+   RENDER ADS
+===================================================== */
+
+function renderAdvertisements() {
+
+    adTrack.innerHTML = "";
+
+    adDots.innerHTML = "";
+
+    if (!advertisements.length) {
+
+        showNoAdvertisements();
+
+        return;
+    }
+
+
+    advertisements.forEach(
+        (ad, index) => {
+
+            const slide =
+                document.createElement("div");
+
+            slide.className =
+                "ad-slide";
+
+
+            if (index === 0) {
+
+                slide.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            const image =
+                document.createElement("img");
+
+
+            image.src =
+                ad.image_url;
+
+            image.alt =
+                ad.title ||
+                "Digital Service Advertisement";
+
+
+            image.loading =
+                index === 0
+                    ? "eager"
+                    : "lazy";
+
+
+            /*
+              CLICK POSTER
+            */
+
+            slide.addEventListener(
+                "click",
+                function () {
+
+                    openAdvertisement(
+                        ad
+                    );
+
+                }
+            );
+
+
+            slide.appendChild(
+                image
+            );
+
+
+            adTrack.appendChild(
+                slide
+            );
+
+
+            /*
+              DOT
+            */
+
+            const dot =
+                document.createElement("span");
+
+            dot.className =
+                "ad-dot";
+
+
+            if (index === 0) {
+
+                dot.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            dot.addEventListener(
+                "click",
+                function (event) {
+
+                    event.stopPropagation();
+
+                    showAd(index);
+
+                    restartAdTimer();
+
+                }
+            );
+
+
+            adDots.appendChild(
+                dot
+            );
+
+        }
+    );
+
+
+    startAdTimer();
+
+}
+
+
+/* =====================================================
+   AD CLICK → APPLY PAGE
+===================================================== */
+
+function openAdvertisement(ad) {
+
+    /*
+      If admin has assigned a service to the poster,
+      automatically open that service.
+    */
+
+    if (ad.service) {
+
+        window.location.href =
+            "apply.html?service=" +
+            encodeURIComponent(
+                ad.service
+            );
+
+        return;
+    }
+
+
+    /*
+      Otherwise simply open Apply page.
+    */
+
+    window.location.href =
+        "apply.html";
+
+}
+
+
+/* =====================================================
+   SHOW AD
+===================================================== */
+
+function showAd(index) {
+
+    const slides =
+        document.querySelectorAll(
+            ".ad-slide"
+        );
+
+    const dots =
+        document.querySelectorAll(
+            ".ad-dot"
+        );
+
+
+    if (!slides.length) {
+        return;
+    }
+
+
+    currentAd =
+        (index + advertisements.length) %
+        advertisements.length;
+
+
+    slides.forEach(
+        slide =>
+            slide.classList.remove(
+                "active"
+            )
+    );
+
+
+    dots.forEach(
+        dot =>
+            dot.classList.remove(
+                "active"
+            )
+    );
+
+
+    slides[currentAd]
+        .classList.add(
+            "active"
+        );
+
+
+    if (dots[currentAd]) {
+
+        dots[currentAd]
+            .classList.add(
+                "active"
+            );
+
+    }
+
+}
+
+
+/* =====================================================
+   NEXT AD
+===================================================== */
+
+function nextAd() {
+
+    showAd(
+        currentAd + 1
+    );
+
+}
+
+
+/* =====================================================
+   PREVIOUS AD
+===================================================== */
+
+function previousAd() {
+
+    showAd(
+        currentAd - 1
+    );
+
+}
+
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+function startAdTimer() {
+
+    stopAdTimer();
+
+
+    adTimer =
+        setInterval(
+            function () {
+
+                nextAd();
+
+            },
+            AD_INTERVAL
+        );
+
+}
+
+
+function stopAdTimer() {
+
+    if (adTimer) {
+
+        clearInterval(
+            adTimer
+        );
+
+        adTimer = null;
+
+    }
+
+}
+
+
+function restartAdTimer() {
+
+    startAdTimer();
+
+}
+
+
+/* =====================================================
+   ARROW EVENTS
+===================================================== */
+
+adNext.addEventListener(
+    "click",
+    function (event) {
+
+        event.stopPropagation();
+
+        nextAd();
+
+        restartAdTimer();
+
+    }
+);
+
+
+adPrev.addEventListener(
+    "click",
+    function (event) {
+
+        event.stopPropagation();
+
+        previousAd();
+
+        restartAdTimer();
+
+    }
+);
+
+
+/* =====================================================
+   PAUSE TIMER WHEN MOUSE IS OVER AD
+===================================================== */
+
+const adSlider =
+    document.getElementById(
+        "adSlider"
+    );
+
+
+adSlider.addEventListener(
+    "mouseenter",
+    function () {
+
+        stopAdTimer();
+
+    }
+);
+
+
+adSlider.addEventListener(
+    "mouseleave",
+    function () {
+
+        startAdTimer();
+
+    }
+);
+
+
+/* =====================================================
+   TOUCH / SWIPE SUPPORT
+===================================================== */
+
+let touchStartX = 0;
+
+let touchEndX = 0;
+
+
+adSlider.addEventListener(
+    "touchstart",
+    function (event) {
+
+        touchStartX =
+            event.changedTouches[0].screenX;
+
+        stopAdTimer();
+
+    },
+    { passive: true }
+);
+
+
+adSlider.addEventListener(
+    "touchend",
+    function (event) {
+
+        touchEndX =
+            event.changedTouches[0].screenX;
+
+
+        const difference =
+            touchStartX - touchEndX;
+
+
+        if (Math.abs(difference) > 50) {
+
+            if (difference > 0) {
+
+                nextAd();
+
+            } else {
+
+                previousAd();
+
+            }
+
+        }
+
+
+        startAdTimer();
+
+    },
+    { passive: true }
+);
+
+
+/* =====================================================
+   NO ADVERTISEMENT
+===================================================== */
+
+function showNoAdvertisements() {
+
+    adTrack.innerHTML = `
+        <div class="ad-empty">
+            Advertisements will appear here.
+        </div>
+    `;
+
+    adDots.innerHTML = "";
+
+}
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+loadAdvertisements();
+
+
+</script>
 
 </body>
 </html>
