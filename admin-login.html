@@ -129,6 +129,23 @@
             cursor: pointer;
         }
 
+        .toggle-password.password-visible {
+            position: absolute;
+        }
+
+        .toggle-password.password-visible::after {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 2px;
+            background: #555;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            border-radius: 2px;
+            pointer-events: none;
+        }
+
         .toggle-password:hover {
             background: transparent;
             color: #111;
@@ -222,11 +239,13 @@
 
         if (input.type === "password") {
             input.type = "text";
-            button.textContent = "🙈";
+            button.innerHTML = "&#128065;";
+            button.classList.add("password-visible");
             button.setAttribute("aria-label", "Hide password");
         } else {
             input.type = "password";
-            button.textContent = "👁";
+            button.innerHTML = "&#128065;";
+            button.classList.remove("password-visible");
             button.setAttribute("aria-label", "Show password");
         }
     }
