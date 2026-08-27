@@ -311,15 +311,16 @@
             Password
         </label>
 
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
-            autocomplete="current-password"
-            required
-        >
-
+        <div class="password-wrapper">
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+            >
+            <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Show password">&#128065;</button>
+        </div>
 
         <a
             href="#"
@@ -360,6 +361,23 @@
 
 
 <script>
+
+    function togglePassword() {
+
+        const input = document.getElementById("password");
+        const button = document.querySelector(".toggle-password");
+
+        if (input.type === "password") {
+            input.type = "text";
+            button.classList.add("password-visible");
+            button.setAttribute("aria-label", "Hide password");
+        } else {
+            input.type = "password";
+            button.classList.remove("password-visible");
+            button.setAttribute("aria-label", "Show password");
+        }
+    }
+
 
 
     // =========================================================

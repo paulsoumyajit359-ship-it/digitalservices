@@ -101,6 +101,52 @@
             color: #16733a;
         }
 
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            box-sizing: border-box;
+            padding-right: 50px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            margin: 0;
+            background: transparent;
+            border: none;
+            color: #555;
+            font-size: 18px;
+            line-height: 24px;
+            cursor: pointer;
+        }
+
+        .toggle-password:hover {
+            background: transparent;
+            color: #111;
+        }
+
+        .toggle-password.password-visible::after {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 2px;
+            background: #555;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            border-radius: 2px;
+            pointer-events: none;
+        }
         .message.error {
             display: block;
             background: #fdeaea;
@@ -208,13 +254,16 @@
                         Password *
                     </label>
 
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Create a password"
-                        minlength="8"
-                        required
-                    >
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Create a password"
+                            minlength="8"
+                            required
+                        >
+                        <button type="button" class="toggle-password" onclick="togglePasswordField('password', this)" aria-label="Show password">&#128065;</button>
+                    </div>
 
                 </div>
 
@@ -226,13 +275,16 @@
                         Confirm Password *
                     </label>
 
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        placeholder="Confirm your password"
-                        minlength="8"
-                        required
-                    >
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm your password"
+                            minlength="8"
+                            required
+                        >
+                        <button type="button" class="toggle-password" onclick="togglePasswordField('confirmPassword', this)" aria-label="Show password">&#128065;</button>
+                    </div>
 
                 </div>
 
@@ -280,6 +332,21 @@
 
 
     <script>
+
+    function togglePasswordField(fieldId, button) {
+        const input = document.getElementById(fieldId);
+
+        if (input.type === "password") {
+            input.type = "text";
+            button.classList.add("password-visible");
+            button.setAttribute("aria-label", "Hide password");
+        } else {
+            input.type = "password";
+            button.classList.remove("password-visible");
+            button.setAttribute("aria-label", "Show password");
+        }
+    }
+
 
         /* ==============================
            SUPABASE CONFIGURATION
