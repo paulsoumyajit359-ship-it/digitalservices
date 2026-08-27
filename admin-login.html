@@ -93,39 +93,45 @@
         }
 
         button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
 
         .password-wrapper {
             position: relative;
             width: 100%;
+            margin-bottom: 15px;
         }
 
         .password-wrapper input {
             width: 100%;
-            padding-right: 50px;
             box-sizing: border-box;
+            padding: 13px 50px 13px 13px;
+            margin-bottom: 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
         }
 
         .toggle-password {
             position: absolute;
-            right: 8px;
-            top: 4px;
-            width: 42px;
-            height: 42px;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: auto;
             padding: 0;
             margin: 0;
             background: transparent;
-            color: #555;
-            font-size: 20px;
             border: none;
+            color: #555;
+            font-size: 18px;
+            line-height: 1;
             cursor: pointer;
         }
 
         .toggle-password:hover {
             background: transparent;
             color: #111;
-        }
-            opacity: 0.6;
-            cursor: not-allowed;
         }
 
         #message {
