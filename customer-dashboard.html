@@ -568,14 +568,13 @@ function updateCounters(applications){
     document.getElementById("completedApplications").textContent = completed;
 }
 
-function getDocuments(app){
-    // document_urls = customer-uploaded/input documents
-    // document_path = final document supplied by Digital Service
-    if(app.document_path){
-        return [app.document_path];
-    }
-
-    return [];
+function getFinalDocument(app){
+    // document_path contains the final document supplied by Digital Service.
+    // document_urls contains customer-uploaded/input files and must NOT be
+    // treated as the final certificate/document.
+    return app && app.document_path
+        ? String(app.document_path)
+        : "";
 }
 
 function progressState(status){
@@ -734,9 +733,8 @@ function renderApplication(app){
     const service = app.service || "Service";
     const status = app.status || "Pending";
     const note = app.admin_note || "";
-    // document_urls = customer-uploaded/input files
-    // document_path = final document supplied by Digital Service
-    const finalDocument = app.document_path || "";
+    const finalDocument = getFinalDocument(app);
+    const hasFinalDocument = !!finalDocument;
 
     const createdDate = app.created_at
         ? new Date(app.created_at).toLocaleString("en-IN")
@@ -779,21 +777,21 @@ function renderApplication(app){
                 ${escapeHtml(note)}
             </div>` : ""}
 
-        ${finalDocument && normalizedStatus(status) === "completed" ? `
+        ${hasFinalDocument ? `
             <div class="document-ready">
                 <div>
-                    <strong>🎉 Your document is ready</strong>
-                    <span>Your completed document is available to view/download.</span>
+                    <strong>${normalizedStatus(status) === "completed" ? "🎉 Your document is ready" : "📄 Document received from Digital Service"}</strong>
+                    <span>${normalizedStatus(status) === "completed" ? "Your completed document is available to view/download." : "A document has been uploaded for this application and is available to view/download."}</span>
                 </div>
-                <button class="action-btn green" onclick="openDocument('${escapeJs(String(finalDocument))}')">
+                <button class="action-btn green" onclick="openDocument('${escapeJs(finalDocument)}')">
                     📥 Download / View
                 </button>
             </div>` : ""}
 
         <div class="app-footer">
             <div class="app-meta">
-                ${finalDocument && normalizedStatus(status) === "completed"
-                    ? "📄 Completed document available"
+                ${hasFinalDocument
+                    ? "📄 Document available"
                     : "📄 Document will appear here when ready"}
             </div>
 
@@ -810,9 +808,9 @@ function renderApplication(app){
                     </button>
                 `}
 
-                ${finalDocument && normalizedStatus(status) === "completed" ? `
+                ${hasFinalDocument ? `
                     <button class="action-btn blue"
-                        onclick="openDocument('${escapeJs(String(finalDocument))}')">
+                        onclick="openDocument('${escapeJs(finalDocument)}')">
                         📄 Open Document
                     </button>
                 ` : ""}
@@ -837,9 +835,7 @@ function viewApplication(id){
     const app = findApplication(id);
     if(!app) return;
 
-    // Only document_path is a final document.
-    // document_urls contains customer-uploaded/input files.
-    const finalDocument = app.document_path || "";
+    const finalDocument = getFinalDocument(app);
     const createdDate = app.created_at
         ? new Date(app.created_at).toLocaleString("en-IN")
         : "N/A";
@@ -894,9 +890,9 @@ function viewApplication(id){
             <div class="detail-box full">
                 <div class="detail-label">Document</div>
                 <div class="detail-value">
-                    ${finalDocument && normalizedStatus(app.status) === "completed"
-                        ? `<button class="action-btn blue" onclick="openDocument('${escapeJs(String(finalDocument))}')">📄 Open / Download Document</button>`
-                        : "No completed document available yet."}
+                    ${finalDocument
+                        ? `<button class="action-btn blue" onclick="openDocument('${escapeJs(finalDocument)}')">📄 Open / Download Document</button>`
+                        : "No document uploaded by Digital Service yet."}
                 </div>
             </div>
         </div>`;
