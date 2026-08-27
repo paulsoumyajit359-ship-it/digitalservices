@@ -1,199 +1,1262 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0">
+
 <title>Apply for Service | Digital Service</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#172033;line-height:1.6}
-.header{background:linear-gradient(135deg,#063b8f,#1769d1);color:#fff;padding:18px 6%;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 12px rgba(0,0,0,.15)}
-.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;background:#fff;color:#0755b8;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px}
-.brand h1{font-size:23px}.brand p{font-size:13px;opacity:.9}.home-btn{color:#fff;text-decoration:none;font-weight:700}
-.container{max-width:850px;margin:45px auto;padding:0 20px}.card{background:#fff;border-radius:16px;padding:35px;box-shadow:0 8px 30px rgba(20,40,80,.1)}
-h2{text-align:center;color:#063b8f;margin-bottom:8px}.subtitle{text-align:center;color:#687386;margin-bottom:30px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.group{margin-bottom:18px}.full{grid-column:1/-1}
-label{display:block;font-weight:700;margin-bottom:7px;color:#24324a}input,select,textarea{width:100%;padding:12px 13px;border:1px solid #ccd5e2;border-radius:8px;font:inherit;background:#fff}textarea{min-height:110px;resize:vertical}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#1769d1;box-shadow:0 0 0 3px rgba(23,105,209,.1)}
-.file-box{border:1px dashed #9fb0c8;padding:18px;border-radius:10px;background:#f8fafc}.help{font-size:12px;color:#687386;margin-top:6px}
-button{width:100%;padding:14px;border:0;border-radius:9px;background:#0866d8;color:#fff;font-size:16px;font-weight:700;cursor:pointer}button:hover{background:#064fa8}button:disabled{opacity:.6;cursor:not-allowed}
-.message{margin-top:18px;padding:13px;border-radius:8px;display:none}.success{display:block;background:#e8f7ee;color:#16733a}.error{display:block;background:#fdeaea;color:#b42318}
-.selected-note{display:none;background:#eef5ff;color:#064fa8;padding:10px 12px;border-radius:8px;margin-bottom:18px;font-weight:600}
-@media(max-width:700px){.header{flex-direction:column;gap:12px;text-align:center}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.card{padding:24px}.container{margin:25px auto}}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+.header{
+    background:linear-gradient(
+        135deg,
+        #063b8f,
+        #1769d1
+    );
+    color:#fff;
+    padding:16px 6%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:48px;
+    height:48px;
+    background:#fff;
+    color:#0755b8;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.brand h1{
+    font-size:23px;
+}
+
+.brand p{
+    font-size:13px;
+    opacity:.9;
+}
+
+.header-actions{
+    display:flex;
+    gap:9px;
+    align-items:center;
+}
+
+.header-btn{
+    color:#1769d1;
+    background:#fff;
+    text-decoration:none;
+    padding:9px 13px;
+    border-radius:8px;
+    font-weight:700;
+    font-size:13px;
+}
+
+.container{
+    max-width:900px;
+    margin:35px auto;
+    padding:0 20px;
+}
+
+.card{
+    background:#fff;
+    border-radius:16px;
+    padding:35px;
+    box-shadow:0 8px 30px rgba(20,40,80,.1);
+}
+
+h2{
+    text-align:center;
+    color:#063b8f;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#687386;
+    margin-bottom:30px;
+}
+
+.section-title{
+    color:#1769d1;
+    font-size:17px;
+    font-weight:800;
+    margin:25px 0 15px;
+    padding-bottom:8px;
+    border-bottom:1px solid #e5eaf1;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.group{
+    margin-bottom:2px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    font-weight:700;
+    margin-bottom:7px;
+    color:#24324a;
+}
+
+.required{
+    color:#dc3545;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px 13px;
+    border:1px solid #ccd5e2;
+    border-radius:8px;
+    font:inherit;
+    background:#fff;
+}
+
+textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline:none;
+    border-color:#1769d1;
+    box-shadow:0 0 0 3px rgba(23,105,209,.1);
+}
+
+input[readonly]{
+    background:#f4f7fb;
+}
+
+.file-box{
+    border:1px dashed #9fb0c8;
+    padding:18px;
+    border-radius:10px;
+    background:#f8fafc;
+}
+
+.help{
+    font-size:12px;
+    color:#687386;
+    margin-top:6px;
+}
+
+button.submit-btn{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:9px;
+    background:#0866d8;
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+button.submit-btn:hover{
+    background:#064fa8;
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.message{
+    margin-top:18px;
+    padding:13px;
+    border-radius:8px;
+    display:none;
+}
+
+.success{
+    display:block;
+    background:#e8f7ee;
+    color:#16733a;
+}
+
+.error{
+    display:block;
+    background:#fdeaea;
+    color:#b42318;
+}
+
+.selected-note{
+    display:none;
+    background:#eef5ff;
+    color:#064fa8;
+    padding:10px 12px;
+    border-radius:8px;
+    margin-bottom:18px;
+    font-weight:600;
+}
+
+.profile-note{
+    background:#eef5ff;
+    color:#1455a0;
+    padding:12px;
+    border-radius:9px;
+    font-size:13px;
+    margin-bottom:20px;
+}
+
+@media(max-width:700px){
+
+    .header{
+        flex-direction:column;
+        gap:12px;
+        text-align:center;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .card{
+        padding:24px;
+    }
+
+    .container{
+        margin:25px auto;
+    }
+
+}
+
 </style>
 </head>
+
 <body>
 
 <header class="header">
-<div class="brand"><div class="logo">DS</div><div><h1>Digital Service</h1><p>Digital • Tax • Business Services</p></div></div>
-<a href="index.html" class="home-btn">← Home</a>
+
+<div class="brand">
+
+    <div class="logo">
+        DS
+    </div>
+
+    <div>
+        <h1>Digital Service</h1>
+        <p>Digital • Tax • Business Services</p>
+    </div>
+
+</div>
+
+<div class="header-actions">
+
+    <a
+        href="customer-profile.html"
+        class="header-btn">
+        👤 Customer Profile
+    </a>
+
+    <a
+        href="customer-dashboard.html"
+        class="header-btn">
+        ← Dashboard
+    </a>
+
+</div>
+
 </header>
 
+
 <main class="container">
+
 <div class="card">
-<h2>Apply for a Service</h2>
-<p class="subtitle">Submit your details and we will process your service request.</p>
-<div id="selectedNote" class="selected-note"></div>
+
+<h2>
+    Apply for a Service
+</h2>
+
+<p class="subtitle">
+    Submit your details and we will process your service request.
+</p>
+
+
+<div class="profile-note">
+    💡 Your saved Customer Profile information is automatically loaded here.
+    You can edit the application-specific details before submitting.
+</div>
+
+
+<div
+    id="selectedNote"
+    class="selected-note">
+</div>
+
 
 <form id="applicationForm">
+
+
+<div class="section-title">
+    👤 Customer Information
+</div>
+
+
 <div class="form-grid">
-<div class="group"><label for="customerName">Customer Name *</label><input id="customerName" type="text" required placeholder="Enter your full name"></div>
-<div class="group"><label for="mobile">Mobile Number *</label><input id="mobile" type="tel" maxlength="10" inputmode="numeric" required placeholder="10 digit mobile number"></div>
-<div class="group"><label for="email">Email Address *</label><input id="email" type="email" required placeholder="Enter your email"></div>
-<div class="group"><label for="whatsapp">WhatsApp Number</label><input id="whatsapp" type="tel" maxlength="10" inputmode="numeric" placeholder="WhatsApp number"></div>
-<div class="group full"><label for="service">Service *</label>
+
+
+<div class="group">
+
+<label>
+    Customer Name
+    <span class="required">*</span>
+</label>
+
+<input
+    id="customerName"
+    type="text"
+    required
+    placeholder="Enter your full name">
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Date of Birth
+</label>
+
+<input
+    id="dob"
+    type="date">
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Father's Name
+</label>
+
+<input
+    id="fatherName"
+    type="text"
+    placeholder="Father's name">
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Mother's Name
+</label>
+
+<input
+    id="motherName"
+    type="text"
+    placeholder="Mother's name">
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Mobile Number
+    <span class="required">*</span>
+</label>
+
+<input
+    id="mobile"
+    type="tel"
+    maxlength="10"
+    inputmode="numeric"
+    required
+    placeholder="10 digit mobile number">
+
+</div>
+
+
+<div class="group">
+
+<label>
+    WhatsApp Number
+</label>
+
+<input
+    id="whatsapp"
+    type="tel"
+    maxlength="10"
+    inputmode="numeric"
+    placeholder="WhatsApp number">
+
+</div>
+
+
+<div class="group full">
+
+<label>
+    Email Address
+    <span class="required">*</span>
+</label>
+
+<input
+    id="email"
+    type="email"
+    readonly
+    required>
+
+</div>
+
+
+</div>
+
+
+<div class="section-title">
+    🏠 Address
+</div>
+
+
+<div class="form-grid">
+
+
+<div class="group full">
+
+<label>
+    Full Address
+</label>
+
+<textarea
+    id="address"
+    placeholder="Enter your complete address"></textarea>
+
+</div>
+
+
+<div class="group">
+
+<label>
+    District
+</label>
+
+<input
+    id="district"
+    type="text"
+    placeholder="District">
+
+</div>
+
+
+<div class="group">
+
+<label>
+    State
+</label>
+
+<input
+    id="state"
+    type="text"
+    placeholder="State">
+
+</div>
+
+
+<div class="group">
+
+<label>
+    PIN Code
+</label>
+
+<input
+    id="pin"
+    type="text"
+    maxlength="6"
+    inputmode="numeric"
+    placeholder="6 digit PIN">
+
+</div>
+
+
+</div>
+
+
+<div class="section-title">
+    🪪 Identity Information
+</div>
+
+
+<div class="form-grid">
+
+
+<div class="group">
+
+<label>
+    PAN Number
+</label>
+
+<input
+    id="pan"
+    type="text"
+    maxlength="10"
+    style="text-transform:uppercase"
+    placeholder="ABCDE1234F">
+
+</div>
+
+
+<div class="group">
+
+<label>
+    Aadhaar Number
+</label>
+
+<input
+    id="aadhaar"
+    type="text"
+    maxlength="12"
+    inputmode="numeric"
+    placeholder="12 digit Aadhaar number">
+
+</div>
+
+
+</div>
+
+
+<div class="section-title">
+    📋 Service Details
+</div>
+
+
+<div class="form-grid">
+
+
+<div class="group full">
+
+<label>
+    Service
+    <span class="required">*</span>
+</label>
+
 <select id="service" required>
-<option value="">Select a service</option>
-<option value="PAN Card">PAN Card</option>
-<option value="Aadhaar">Aadhaar Card</option>
-<option value="Ration Card">Ration Card</option>
-<option value="Trade License">Trade License</option>
-<option value="Shop & Establishment">Shop & Establishment</option>
-<option value="FSSAI License">FSSAI License</option>
-<option value="GST">GST</option>
-<option value="TDS">TDS</option>
-<option value="Income Tax">Income Tax</option>
-<option value="Other Services">Other Services</option>
+
+<option value="">
+    Select a service
+</option>
+
+<option value="PAN Card">
+    PAN Card
+</option>
+
+<option value="Aadhaar">
+    Aadhaar Card
+</option>
+
+<option value="Ration Card">
+    Ration Card
+</option>
+
+<option value="Trade License">
+    Trade License
+</option>
+
+<option value="Shop & Establishment">
+    Shop & Establishment
+</option>
+
+<option value="FSSAI License">
+    FSSAI License
+</option>
+
+<option value="GST">
+    GST
+</option>
+
+<option value="TDS">
+    TDS
+</option>
+
+<option value="Income Tax">
+    Income Tax
+</option>
+
+<option value="Other Services">
+    Other Services
+</option>
+
 </select>
+
 </div>
-<div class="group full"><label for="address">Address</label><textarea id="address" placeholder="Enter your address"></textarea></div>
-<div class="group"><label for="dob">Date of Birth</label><input id="dob" type="date"></div>
-<div class="group"><label for="panNumber">PAN Number</label><input id="panNumber" type="text" maxlength="10" placeholder="PAN Number" style="text-transform:uppercase"></div>
-<div class="group full"><label for="requirement">Requirement / Details *</label><textarea id="requirement" required placeholder="Tell us what service you need"></textarea></div>
-<div class="group full"><label for="document">Upload Document</label><div class="file-box"><input id="document" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp"><div class="help">PDF / JPG / PNG / WEBP • Maximum 5 MB</div></div></div>
-<div class="group full"><button id="submitButton" type="submit">Submit Application</button><div id="message" class="message"></div></div>
+
+
+<div class="group full">
+
+<label>
+    Requirement / Details
+    <span class="required">*</span>
+</label>
+
+<textarea
+    id="requirement"
+    required
+    placeholder="Tell us what service you need"></textarea>
+
 </div>
+
+
+<div class="group full">
+
+<label>
+    Upload Document
+</label>
+
+<div class="file-box">
+
+<input
+    id="document"
+    type="file"
+    accept=".pdf,.jpg,.jpeg,.png,.webp">
+
+<div class="help">
+    PDF / JPG / PNG / WEBP • Maximum 5 MB
+</div>
+
+</div>
+
+</div>
+
+
+<div class="group full">
+
+<button
+    id="submitButton"
+    class="submit-btn"
+    type="submit">
+
+    Submit Application
+
+</button>
+
+<div
+    id="message"
+    class="message">
+</div>
+
+</div>
+
+
+</div>
+
 </form>
+
 </div>
+
 </main>
 
+
 <script>
-const SUPABASE_URL="https://nlzrdjvlkdqungmhnsrl.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY="sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+
+const SUPABASE_URL =
+"https://nlzrdjvlkdqungmhnsrl.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_ZJldK78Tl0wQW0r2k4Sakw_lYTXIET6";
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
 const STORAGE_BUCKET="documents";
 
-const form=document.getElementById("applicationForm");
-const serviceSelect=document.getElementById("service");
-const selectedNote=document.getElementById("selectedNote");
-const message=document.getElementById("message");
-const button=document.getElementById("submitButton");
+const form=
+document.getElementById(
+    "applicationForm"
+);
+
+const serviceSelect=
+document.getElementById("service");
+
+const selectedNote=
+document.getElementById("selectedNote");
+
+const message=
+document.getElementById("message");
+
+const button=
+document.getElementById("submitButton");
+
 
 const serviceAliases={
- "PAN Card":"PAN Card","pan":"PAN Card",
- "Aadhaar":"Aadhaar","aadhaar":"Aadhaar","Aadhaar Card":"Aadhaar",
- "Ration Card":"Ration Card","ration-card":"Ration Card",
- "Trade License":"Trade License","trade-license":"Trade License",
- "Shop & Establishment":"Shop & Establishment",
- "FSSAI License":"FSSAI License","fssai":"FSSAI License",
- "GST":"GST","gst":"GST",
- "TDS":"TDS","tds":"TDS",
- "Income Tax":"Income Tax","income-tax":"Income Tax"
+
+    "PAN Card":"PAN Card",
+
+    "pan":"PAN Card",
+
+    "Aadhaar":"Aadhaar",
+
+    "aadhaar":"Aadhaar",
+
+    "Aadhaar Card":"Aadhaar",
+
+    "Ration Card":"Ration Card",
+
+    "ration-card":"Ration Card",
+
+    "Trade License":"Trade License",
+
+    "trade-license":"Trade License",
+
+    "Shop & Establishment":
+        "Shop & Establishment",
+
+    "FSSAI License":
+        "FSSAI License",
+
+    "fssai":
+        "FSSAI License",
+
+    "GST":"GST",
+
+    "gst":"GST",
+
+    "TDS":"TDS",
+
+    "tds":"TDS",
+
+    "Income Tax":"Income Tax",
+
+    "income-tax":"Income Tax"
+
 };
 
-function showMessage(text,type){message.textContent=text;message.className="message "+type}
-function getApplicationId(){return "DS"+String(Math.floor(10000000+Math.random()*90000000))}
-function safeFileName(name){return name.replace(/[^a-zA-Z0-9._-]/g,"_")}
+
+function showMessage(text,type){
+
+    message.textContent=text;
+
+    message.className=
+        "message " + type;
+
+}
+
+
+function getApplicationId(){
+
+    return "DS" +
+        String(
+            Math.floor(
+                10000000 +
+                Math.random()*90000000
+            )
+        );
+
+}
+
+
+function safeFileName(name){
+
+    return name.replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+    );
+
+}
+
+
+function setValue(id,value){
+
+    document.getElementById(id).value=
+        value || "";
+
+}
+
 
 async function loadUserDefaults(){
- const {data:{user},error}=await supabaseClient.auth.getUser();
- if(error) throw error;
- if(user){
-   const m=user.user_metadata||{};
-   document.getElementById("email").value=user.email||"";
-   document.getElementById("customerName").value=m.full_name||m.name||"";
-   document.getElementById("mobile").value=m.mobile||"";
-   document.getElementById("whatsapp").value=m.whatsapp||"";
-   document.getElementById("address").value=m.address||"";
-   document.getElementById("dob").value=m.dob||"";
-   document.getElementById("panNumber").value=m.pan_number||"";
- }
+
+    try{
+
+        const {
+            data:{user},
+            error
+        } =
+        await supabaseClient.auth.getUser();
+
+        if(error)
+            throw error;
+
+        if(!user){
+
+            window.location.href="login.html";
+            return;
+
+        }
+
+        const m=
+            user.user_metadata || {};
+
+
+        setValue(
+            "email",
+            user.email
+        );
+
+
+        setValue(
+            "customerName",
+            m.full_name ||
+            m.name
+        );
+
+
+        setValue(
+            "dob",
+            m.dob
+        );
+
+
+        setValue(
+            "fatherName",
+            m.father_name
+        );
+
+
+        setValue(
+            "motherName",
+            m.mother_name
+        );
+
+
+        setValue(
+            "mobile",
+            m.mobile
+        );
+
+
+        setValue(
+            "whatsapp",
+            m.whatsapp
+        );
+
+
+        setValue(
+            "address",
+            m.address
+        );
+
+
+        setValue(
+            "district",
+            m.district
+        );
+
+
+        setValue(
+            "state",
+            m.state
+        );
+
+
+        setValue(
+            "pin",
+            m.pin
+        );
+
+
+        setValue(
+            "pan",
+            m.pan
+        );
+
+
+        setValue(
+            "aadhaar",
+            m.aadhaar
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Profile loading error:",
+            error
+        );
+
+        showMessage(
+            "Unable to load your profile: " +
+            (
+                error.message ||
+                "Unknown error"
+            ),
+            "error"
+        );
+
+    }
+
 }
+
 
 function applyServiceFromUrl(){
- const raw=new URLSearchParams(location.search).get("service");
- if(!raw)return;
- const value=serviceAliases[raw]||raw;
- const option=[...serviceSelect.options].find(o=>o.value.toLowerCase()===String(value).toLowerCase());
- if(option){
-   serviceSelect.value=option.value;
-   selectedNote.textContent="Selected service: "+option.textContent;
-   selectedNote.style.display="block";
- }
+
+    const raw=
+        new URLSearchParams(
+            location.search
+        ).get("service");
+
+    if(!raw)
+        return;
+
+    const value=
+        serviceAliases[raw] ||
+        raw;
+
+    const option=
+        [
+            ...serviceSelect.options
+        ].find(
+            option =>
+                option.value.toLowerCase()
+                ===
+                String(value).toLowerCase()
+        );
+
+    if(option){
+
+        serviceSelect.value=
+            option.value;
+
+        selectedNote.textContent=
+            "Selected service: " +
+            option.textContent;
+
+        selectedNote.style.display=
+            "block";
+
+    }
+
 }
 
-form.addEventListener("submit",async e=>{
- e.preventDefault();
- message.className="message";message.textContent="";
- const customerName=document.getElementById("customerName").value.trim();
- const mobile=document.getElementById("mobile").value.trim();
- const email=document.getElementById("email").value.trim().toLowerCase();
- const whatsapp=document.getElementById("whatsapp").value.trim();
- const service=serviceSelect.value;
- const address=document.getElementById("address").value.trim();
- const requirement=document.getElementById("requirement").value.trim();
- const file=document.getElementById("document").files[0];
 
- if(!/^[0-9]{10}$/.test(mobile)){showMessage("Please enter a valid 10 digit mobile number.","error");return}
- if(whatsapp && !/^[0-9]{10}$/.test(whatsapp)){showMessage("Please enter a valid WhatsApp number.","error");return}
- const pan=document.getElementById("panNumber").value.trim().toUpperCase();
- if(pan && !/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)){showMessage("Please enter a valid PAN format, e.g. ABCDE1234F.","error");return}
- if(file && file.size>5*1024*1024){showMessage("Maximum file size is 5 MB.","error");return}
+form.addEventListener(
+"submit",
+async function(event){
 
- button.disabled=true;button.textContent="Submitting...";
+    event.preventDefault();
 
- let applicationId=getApplicationId();
- let uploadedPath=null;
+    message.className="message";
+    message.textContent="";
 
- try{
-   const {data:{user}}=await supabaseClient.auth.getUser();
 
-   const {error:insertError}=await supabaseClient.from("applications").insert({
-     application_id:applicationId,
-     customer_name:customerName,
-     mobile:mobile,
-     email:email,
-     whatsapp:whatsapp||null,
-     service:service,
-     requirement:requirement,
-     address:address||null,
-     status:"Pending",
-     admin_note:null,
-     document_urls:[],
-     user_id:user?.id||null
-   });
-   if(insertError)throw insertError;
+    const customerName=
+        document.getElementById(
+            "customerName"
+        ).value.trim();
 
-   if(file){
-     const path=`applications/${applicationId}/${Date.now()}_${safeFileName(file.name)}`;
-     const {error:uploadError}=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{
-       cacheControl:"3600",upsert:false,contentType:file.type
-     });
-     if(uploadError)throw uploadError;
+    const mobile=
+        document.getElementById(
+            "mobile"
+        ).value.trim();
 
-     const {error:updateError}=await supabaseClient.from("applications").update({document_urls:[path]}).eq("application_id",applicationId);
-     if(updateError){
-       await supabaseClient.storage.from(STORAGE_BUCKET).remove([path]);
-       throw updateError;
-     }
-     uploadedPath=path;
-   }
+    const email=
+        document.getElementById(
+            "email"
+        ).value.trim().toLowerCase();
 
-   showMessage("Application submitted successfully. Application ID: "+applicationId,"success");
-   form.reset();
-   selectedNote.style.display="none";
-   await loadUserDefaults();
- }catch(err){
-   console.error(err);
-   showMessage("Application submission failed: "+(err.message||"Unknown error"),"error");
- }finally{
-   button.disabled=false;button.textContent="Submit Application";
- }
+    const whatsapp=
+        document.getElementById(
+            "whatsapp"
+        ).value.trim();
+
+    const service=
+        serviceSelect.value;
+
+    const address=
+        document.getElementById(
+            "address"
+        ).value.trim();
+
+    const requirement=
+        document.getElementById(
+            "requirement"
+        ).value.trim();
+
+    const file=
+        document.getElementById(
+            "document"
+        ).files[0];
+
+
+    if(
+        !/^[0-9]{10}$/.test(mobile)
+    ){
+
+        showMessage(
+            "Please enter a valid 10 digit mobile number.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        whatsapp &&
+        !/^[0-9]{10}$/.test(whatsapp)
+    ){
+
+        showMessage(
+            "Please enter a valid WhatsApp number.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    button.disabled=true;
+    button.textContent=
+        "Submitting...";
+
+
+    const applicationId=
+        getApplicationId();
+
+    let uploadedPath=null;
+
+
+    try{
+
+        const {
+            data:{user},
+            error:userError
+        } =
+        await supabaseClient
+            .auth
+            .getUser();
+
+        if(userError)
+            throw userError;
+
+        if(!user)
+            throw new Error(
+                "Please login again."
+            );
+
+
+        const {
+            error:insertError
+        } =
+        await supabaseClient
+            .from("applications")
+            .insert({
+
+                application_id:
+                    applicationId,
+
+                customer_name:
+                    customerName,
+
+                mobile:
+                    mobile,
+
+                email:
+                    email,
+
+                whatsapp:
+                    whatsapp || null,
+
+                service:
+                    service,
+
+                requirement:
+                    requirement,
+
+                address:
+                    address || null,
+
+                status:
+                    "Pending",
+
+                admin_note:
+                    null,
+
+                document_urls:
+                    [],
+
+                user_id:
+                    user.id
+
+            });
+
+
+        if(insertError)
+            throw insertError;
+
+
+        if(file){
+
+            if(
+                file.size >
+                5*1024*1024
+            ){
+
+                throw new Error(
+                    "Maximum file size is 5 MB."
+                );
+
+            }
+
+
+            const path=
+                `applications/${applicationId}/${Date.now()}_${safeFileName(file.name)}`;
+
+
+            const {
+                error:uploadError
+            } =
+            await supabaseClient
+                .storage
+                .from(STORAGE_BUCKET)
+                .upload(
+                    path,
+                    file,
+                    {
+                        cacheControl:"3600",
+                        upsert:false,
+                        contentType:
+                            file.type
+                    }
+                );
+
+
+            if(uploadError)
+                throw uploadError;
+
+
+            uploadedPath=path;
+
+
+            const {
+                error:updateError
+            } =
+            await supabaseClient
+                .from("applications")
+                .update({
+                    document_urls:[path]
+                })
+                .eq(
+                    "application_id",
+                    applicationId
+                );
+
+
+            if(updateError){
+
+                await supabaseClient
+                    .storage
+                    .from(STORAGE_BUCKET)
+                    .remove([path]);
+
+                throw updateError;
+
+            }
+
+        }
+
+
+        showMessage(
+            "Application submitted successfully. Application ID: " +
+            applicationId,
+            "success"
+        );
+
+
+        form.reset();
+
+        selectedNote.style.display=
+            "none";
+
+
+        await loadUserDefaults();
+
+        applyServiceFromUrl();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Application submission failed: " +
+            (
+                error.message ||
+                "Unknown error"
+            ),
+            "error"
+        );
+
+    }
+    finally{
+
+        button.disabled=false;
+
+        button.textContent=
+            "Submit Application";
+
+    }
+
 });
 
+
 loadUserDefaults();
+
 applyServiceFromUrl();
+
 </script>
+
 </body>
 </html>
