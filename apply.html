@@ -35,7 +35,6 @@ button{width:100%;padding:14px;border:0;border-radius:9px;background:#0866d8;col
 <h2>Apply for a Service</h2>
 <p class="subtitle">Submit your details and we will process your service request.</p>
 <div id="selectedNote" class="selected-note"></div>
-<div id="draftStatus" style="display:none;margin-bottom:18px;padding:11px 13px;border-radius:9px;background:#f0f7ff;color:#1455a0;font-size:13px;font-weight:700;"></div>
 
 <form id="applicationForm">
 <div class="form-grid">
@@ -59,6 +58,8 @@ button{width:100%;padding:14px;border:0;border-radius:9px;background:#0866d8;col
 </select>
 </div>
 <div class="group full"><label for="address">Address</label><textarea id="address" placeholder="Enter your address"></textarea></div>
+<div class="group"><label for="dob">Date of Birth</label><input id="dob" type="date"></div>
+<div class="group"><label for="panNumber">PAN Number</label><input id="panNumber" type="text" maxlength="10" placeholder="PAN Number" style="text-transform:uppercase"></div>
 <div class="group full"><label for="requirement">Requirement / Details *</label><textarea id="requirement" required placeholder="Tell us what service you need"></textarea></div>
 <div class="group full"><label for="document">Upload Document</label><div class="file-box"><input id="document" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp"><div class="help">PDF / JPG / PNG / WEBP • Maximum 5 MB</div></div></div>
 <div class="group full"><button id="submitButton" type="submit">Submit Application</button><div id="message" class="message"></div></div>
@@ -78,7 +79,6 @@ const serviceSelect=document.getElementById("service");
 const selectedNote=document.getElementById("selectedNote");
 const message=document.getElementById("message");
 const button=document.getElementById("submitButton");
-const draftStatus=document.getElementById("draftStatus");
 
 const serviceAliases={
  "PAN Card":"PAN Card","pan":"PAN Card",
@@ -92,588 +92,108 @@ const serviceAliases={
  "Income Tax":"Income Tax","income-tax":"Income Tax"
 };
 
-let currentUser=null;
-let draftApplication=null;
-let saveTimer=null;
-let saving=false;
-let pendingSave=false;
+function showMessage(text,type){message.textContent=text;message.className="message "+type}
+function getApplicationId(){return "DS"+String(Math.floor(10000000+Math.random()*90000000))}
+function safeFileName(name){return name.replace(/[^a-zA-Z0-9._-]/g,"_")}
 
-function showMessage(text,type){
-    message.textContent=text;
-    message.className="message "+type;
+async function loadUserDefaults(){
+ const {data:{user},error}=await supabaseClient.auth.getUser();
+ if(error) throw error;
+ if(user){
+   const m=user.user_metadata||{};
+   document.getElementById("email").value=user.email||"";
+   document.getElementById("customerName").value=m.full_name||m.name||"";
+   document.getElementById("mobile").value=m.mobile||"";
+   document.getElementById("whatsapp").value=m.whatsapp||"";
+   document.getElementById("address").value=m.address||"";
+   document.getElementById("dob").value=m.dob||"";
+   document.getElementById("panNumber").value=m.pan_number||"";
+ }
 }
 
-function getApplicationId(){
-    return "DS"+String(Math.floor(10000000+Math.random()*90000000));
-}
-
-function safeFileName(name){
-    return name.replace(/[^a-zA-Z0-9._-]/g,"_");
-}
-
-function getApplicationIdFromUrl(){
-    return new URLSearchParams(location.search).get("application_id");
-}
-
-function setDraftStatus(text){
-    draftStatus.textContent=text;
-    draftStatus.style.display="block";
-}
-
-function hideDraftStatus(){
-    draftStatus.style.display="none";
-}
-
-function formData(){
-    return {
-        customer_name:document.getElementById("customerName").value.trim(),
-        mobile:document.getElementById("mobile").value.trim(),
-        email:document.getElementById("email").value.trim().toLowerCase(),
-        whatsapp:document.getElementById("whatsapp").value.trim(),
-        service:serviceSelect.value,
-        address:document.getElementById("address").value.trim(),
-        requirement:document.getElementById("requirement").value.trim()
-    };
-}
-
-function hasMeaningfulData(data){
-    return Boolean(
-        data.customer_name ||
-        data.mobile ||
-        data.email ||
-        data.whatsapp ||
-        data.service ||
-        data.address ||
-        data.requirement
-    );
-}
-
-function fillForm(app){
-    if(!app) return;
-
-    document.getElementById("customerName").value=app.customer_name || "";
-    document.getElementById("mobile").value=app.mobile || "";
-    document.getElementById("email").value=app.email || "";
-    document.getElementById("whatsapp").value=app.whatsapp || "";
-    document.getElementById("address").value=app.address || "";
-    document.getElementById("requirement").value=app.requirement || "";
-
-    if(app.service){
-        serviceSelect.value=app.service;
-        selectedNote.textContent="Selected service: "+app.service;
-        selectedNote.style.display="block";
-    }
-
-    if(app.document_urls && Array.isArray(app.document_urls) && app.document_urls.length){
-        const fileBox=document.querySelector(".file-box");
-        if(fileBox){
-            let existing=document.getElementById("existingDocument");
-            if(!existing){
-                existing=document.createElement("div");
-                existing.id="existingDocument";
-                existing.style.cssText="margin-top:10px;padding:10px;background:#eaf8f0;border-radius:8px;color:#08783d;font-size:12px;font-weight:700;";
-                fileBox.appendChild(existing);
-            }
-            existing.textContent="📄 Previously uploaded document is saved. Select a new file only if you want to replace it.";
-        }
-    }
-}
-
-async function loadUser(){
-    const {data:{user},error}=await supabaseClient.auth.getUser();
-
-    if(error) throw error;
-
-    if(!user){
-        window.location.href="login.html";
-        return null;
-    }
-
-    currentUser=user;
-    return user;
-}
-
-async function findExistingDraft(user,applicationId=null,service=null){
-    let query=supabaseClient
-        .from("applications")
-        .select("*")
-        .eq("user_id",user.id)
-        .eq("status","Draft");
-
-    if(applicationId){
-        query=query.eq("application_id",applicationId);
-    }else if(service){
-        query=query.eq("service",service).order("created_at",{ascending:false}).limit(1);
-    }else{
-        return null;
-    }
-
-    const {data,error}=await query;
-
-    if(error) throw error;
-
-    return data && data.length ? data[0] : null;
-}
-
-async function createDraft(data){
-    if(!currentUser) return null;
-
-    if(!data.service){
-        setDraftStatus("Select a service to start saving your application.");
-        return null;
-    }
-
-    const existing=await findExistingDraft(currentUser,null,data.service);
-
-    if(existing){
-        draftApplication=existing;
-        fillForm(existing);
-        return existing;
-    }
-
-    const applicationId=getApplicationId();
-
-    const {data:created,error}=await supabaseClient
-        .from("applications")
-        .insert({
-            application_id:applicationId,
-            customer_name:data.customer_name || null,
-            mobile:data.mobile || null,
-            email:data.email || currentUser.email || null,
-            whatsapp:data.whatsapp || null,
-            service:data.service,
-            requirement:data.requirement || null,
-            address:data.address || null,
-            status:"Draft",
-            admin_note:null,
-            document_urls:[],
-            user_id:currentUser.id,
-            last_saved_at:new Date().toISOString(),
-            submitted_at:null
-        })
-        .select("*")
-        .single();
-
-    if(error) throw error;
-
-    draftApplication=created;
-
-    if(!location.search.includes("application_id=")){
-        history.replaceState(
-            {},
-            "",
-            "apply.html?application_id="+encodeURIComponent(applicationId)
-        );
-    }
-
-    setDraftStatus("💾 Draft saved automatically.");
-    return created;
-}
-
-async function saveDraft(){
-    if(!currentUser) return;
-    if(!hasMeaningfulData(formData())) return;
-
-    const data=formData();
-
-    if(!data.service){
-        setDraftStatus("Select a service to continue auto-saving.");
-        return;
-    }
-
-    if(saving){
-        pendingSave=true;
-        return;
-    }
-
-    saving=true;
-
-    try{
-        if(!draftApplication){
-            await createDraft(data);
-        }
-
-        if(!draftApplication) return;
-
-        const fileInput=document.getElementById("document");
-        const selectedFile=fileInput && fileInput.files ? fileInput.files[0] : null;
-
-        if(selectedFile){
-            if(selectedFile.size > 5*1024*1024){
-                setDraftStatus("⚠️ Maximum file size is 5 MB.");
-                return;
-            }
-
-            const currentDocuments=Array.isArray(draftApplication.document_urls)
-                ? draftApplication.document_urls
-                : [];
-
-            if(!currentDocuments.length){
-                const path=`applications/${draftApplication.application_id}/${Date.now()}_${safeFileName(selectedFile.name)}`;
-
-                const {error:uploadError}=await supabaseClient
-                    .storage
-                    .from(STORAGE_BUCKET)
-                    .upload(path,selectedFile,{
-                        cacheControl:"3600",
-                        upsert:false,
-                        contentType:selectedFile.type
-                    });
-
-                if(uploadError) throw uploadError;
-
-                const {data:documentUpdated,error:documentError}=await supabaseClient
-                    .from("applications")
-                    .update({
-                        document_urls:[path],
-                        last_saved_at:new Date().toISOString()
-                    })
-                    .eq("id",draftApplication.id)
-                    .eq("user_id",currentUser.id)
-                    .eq("status","Draft")
-                    .select("*")
-                    .single();
-
-                if(documentError){
-                    await supabaseClient.storage
-                        .from(STORAGE_BUCKET)
-                        .remove([path]);
-                    throw documentError;
-                }
-
-                draftApplication=documentUpdated;
-
-                setDraftStatus(
-                    "📎 Document saved automatically • "+
-                    new Date().toLocaleTimeString("en-IN")
-                );
-            }
-        }
-
-        const updateData={
-            customer_name:data.customer_name || null,
-            mobile:data.mobile || null,
-            email:data.email || currentUser.email || null,
-            whatsapp:data.whatsapp || null,
-            service:data.service,
-            requirement:data.requirement || null,
-            address:data.address || null,
-            last_saved_at:new Date().toISOString()
-        };
-
-        const {data:updated,error}=await supabaseClient
-            .from("applications")
-            .update(updateData)
-            .eq("id",draftApplication.id)
-            .eq("user_id",currentUser.id)
-            .eq("status","Draft")
-            .select("*")
-            .single();
-
-        if(error) throw error;
-
-        draftApplication=updated;
-
-        setDraftStatus("💾 Saved automatically • "+new Date().toLocaleTimeString("en-IN"));
-    }catch(error){
-        console.error("Draft save error:",error);
-        setDraftStatus("⚠️ Auto-save failed. Your information may not be saved.");
-    }finally{
-        saving=false;
-
-        if(pendingSave){
-            pendingSave=false;
-            saveDraft();
-        }
-    }
-}
-
-function scheduleAutoSave(){
-    clearTimeout(saveTimer);
-
-    saveTimer=setTimeout(()=>{
-        saveDraft();
-    },700);
-}
-
-async function loadDraftOrDefaults(){
-    const user=await loadUser();
-    if(!user) return;
-
-    const applicationId=getApplicationIdFromUrl();
-
-    if(applicationId){
-        const {data,error}=await supabaseClient
-            .from("applications")
-            .select("*")
-            .eq("application_id",applicationId)
-            .eq("user_id",user.id)
-            .eq("status","Draft")
-            .maybeSingle();
-
-        if(error) throw error;
-
-        if(data){
-            draftApplication=data;
-            fillForm(data);
-            setDraftStatus("📝 Draft loaded • Continue where you left off.");
-            return;
-        }
-    }
-
-    document.getElementById("email").value=user.email || "";
-    document.getElementById("customerName").value=
-        user.user_metadata?.full_name ||
-        user.user_metadata?.name ||
-        "";
-    document.getElementById("mobile").value=
-        user.user_metadata?.mobile || "";
-
-    const raw=new URLSearchParams(location.search).get("service");
-
-    if(raw){
-        const value=serviceAliases[raw]||raw;
-        const option=[...serviceSelect.options]
-            .find(o=>o.value.toLowerCase()===String(value).toLowerCase());
-
-        if(option){
-            serviceSelect.value=option.value;
-            selectedNote.textContent="Selected service: "+option.textContent;
-            selectedNote.style.display="block";
-
-            const existing=await findExistingDraft(user,null,option.value);
-
-            if(existing){
-                draftApplication=existing;
-                fillForm(existing);
-                setDraftStatus("📝 Existing draft loaded • Continue where you left off.");
-            }else{
-                await createDraft(formData());
-            }
-        }
-    }
-}
-
-async function uploadDocument(file){
-    if(!file || !draftApplication) return;
-
-    if(file.size>5*1024*1024){
-        showMessage("Maximum file size is 5 MB.","error");
-        return;
-    }
-
-    setDraftStatus("📤 Uploading document...");
-
-    const path=
-        "applications/" +
-        draftApplication.application_id +
-        "/" +
-        Date.now() +
-        "_" +
-        safeFileName(file.name);
-
-    const {error:uploadError}=await supabaseClient
-        .storage
-        .from(STORAGE_BUCKET)
-        .upload(path,file,{
-            cacheControl:"3600",
-            upsert:false,
-            contentType:file.type
-        });
-
-    if(uploadError) throw uploadError;
-
-    const oldDocs=Array.isArray(draftApplication.document_urls)
-        ? draftApplication.document_urls
-        : [];
-
-    const newDocs=[...oldDocs,path];
-
-    const {data:updated,error:updateError}=await supabaseClient
-        .from("applications")
-        .update({
-            document_urls:newDocs,
-            last_saved_at:new Date().toISOString()
-        })
-        .eq("id",draftApplication.id)
-        .eq("user_id",currentUser.id)
-        .eq("status","Draft")
-        .select("*")
-        .single();
-
-    if(updateError){
-        await supabaseClient.storage.from(STORAGE_BUCKET).remove([path]);
-        throw updateError;
-    }
-
-    draftApplication=updated;
-
-    setDraftStatus("💾 Document saved automatically • "+new Date().toLocaleTimeString("en-IN"));
-
-    let existing=document.getElementById("existingDocument");
-    if(!existing){
-        const fileBox=document.querySelector(".file-box");
-        existing=document.createElement("div");
-        existing.id="existingDocument";
-        existing.style.cssText="margin-top:10px;padding:10px;background:#eaf8f0;border-radius:8px;color:#08783d;font-size:12px;font-weight:700;";
-        fileBox.appendChild(existing);
-    }
-
-    existing.textContent="📄 Document saved successfully.";
-}
-
-async function submitApplication(){
-    const data=formData();
-
-    if(!data.customer_name){
-        showMessage("Please enter your full name.","error");
-        document.getElementById("customerName").focus();
-        return;
-    }
-
-    if(!/^[0-9]{10}$/.test(data.mobile)){
-        showMessage("Please enter a valid 10 digit mobile number.","error");
-        document.getElementById("mobile").focus();
-        return;
-    }
-
-    if(!data.email){
-        showMessage("Please enter your email address.","error");
-        return;
-    }
-
-    if(!data.service){
-        showMessage("Please select a service.","error");
-        return;
-    }
-
-    if(!data.requirement){
-        showMessage("Please enter your requirement / details.","error");
-        document.getElementById("requirement").focus();
-        return;
-    }
-
-    if(data.whatsapp && !/^[0-9]{10}$/.test(data.whatsapp)){
-        showMessage("Please enter a valid WhatsApp number.","error");
-        return;
-    }
-
-    button.disabled=true;
-    button.textContent="Submitting...";
-
-    try{
-        await saveDraft();
-
-        if(!draftApplication){
-            throw new Error("Unable to save your application draft.");
-        }
-
-        const {data:submitted,error}=await supabaseClient
-            .from("applications")
-            .update({
-                customer_name:data.customer_name,
-                mobile:data.mobile,
-                email:data.email,
-                whatsapp:data.whatsapp || null,
-                service:data.service,
-                requirement:data.requirement,
-                address:data.address || null,
-                status:"Pending",
-                submitted_at:new Date().toISOString(),
-                last_saved_at:new Date().toISOString(),
-                status_updated_at:new Date().toISOString()
-            })
-            .eq("id",draftApplication.id)
-            .eq("user_id",currentUser.id)
-            .eq("status","Draft")
-            .select("*")
-            .single();
-
-        if(error) throw error;
-
-        draftApplication=submitted;
-
-        showMessage(
-            "Application submitted successfully. Application ID: "+
-            submitted.application_id,
-            "success"
-        );
-
-        setDraftStatus("✅ Application submitted successfully.");
-
-        button.textContent="Application Submitted";
-        button.disabled=true;
-
-        setTimeout(()=>{
-            window.location.href="customer-dashboard.html";
-        },1200);
-
-    }catch(error){
-        console.error("Application submission error:",error);
-        showMessage(
-            "Application submission failed: "+
-            (error.message || "Unknown error"),
-            "error"
-        );
-        button.disabled=false;
-        button.textContent="Submit Application";
-    }
+function applyServiceFromUrl(){
+ const raw=new URLSearchParams(location.search).get("service");
+ if(!raw)return;
+ const value=serviceAliases[raw]||raw;
+ const option=[...serviceSelect.options].find(o=>o.value.toLowerCase()===String(value).toLowerCase());
+ if(option){
+   serviceSelect.value=option.value;
+   selectedNote.textContent="Selected service: "+option.textContent;
+   selectedNote.style.display="block";
+ }
 }
 
 form.addEventListener("submit",async e=>{
-    e.preventDefault();
-    await submitApplication();
+ e.preventDefault();
+ message.className="message";message.textContent="";
+ const customerName=document.getElementById("customerName").value.trim();
+ const mobile=document.getElementById("mobile").value.trim();
+ const email=document.getElementById("email").value.trim().toLowerCase();
+ const whatsapp=document.getElementById("whatsapp").value.trim();
+ const service=serviceSelect.value;
+ const address=document.getElementById("address").value.trim();
+ const requirement=document.getElementById("requirement").value.trim();
+ const file=document.getElementById("document").files[0];
+
+ if(!/^[0-9]{10}$/.test(mobile)){showMessage("Please enter a valid 10 digit mobile number.","error");return}
+ if(whatsapp && !/^[0-9]{10}$/.test(whatsapp)){showMessage("Please enter a valid WhatsApp number.","error");return}
+ const pan=document.getElementById("panNumber").value.trim().toUpperCase();
+ if(pan && !/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)){showMessage("Please enter a valid PAN format, e.g. ABCDE1234F.","error");return}
+ if(file && file.size>5*1024*1024){showMessage("Maximum file size is 5 MB.","error");return}
+
+ button.disabled=true;button.textContent="Submitting...";
+
+ let applicationId=getApplicationId();
+ let uploadedPath=null;
+
+ try{
+   const {data:{user}}=await supabaseClient.auth.getUser();
+
+   const {error:insertError}=await supabaseClient.from("applications").insert({
+     application_id:applicationId,
+     customer_name:customerName,
+     mobile:mobile,
+     email:email,
+     whatsapp:whatsapp||null,
+     service:service,
+     requirement:requirement,
+     address:address||null,
+     status:"Pending",
+     admin_note:null,
+     document_urls:[],
+     user_id:user?.id||null
+   });
+   if(insertError)throw insertError;
+
+   if(file){
+     const path=`applications/${applicationId}/${Date.now()}_${safeFileName(file.name)}`;
+     const {error:uploadError}=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{
+       cacheControl:"3600",upsert:false,contentType:file.type
+     });
+     if(uploadError)throw uploadError;
+
+     const {error:updateError}=await supabaseClient.from("applications").update({document_urls:[path]}).eq("application_id",applicationId);
+     if(updateError){
+       await supabaseClient.storage.from(STORAGE_BUCKET).remove([path]);
+       throw updateError;
+     }
+     uploadedPath=path;
+   }
+
+   showMessage("Application submitted successfully. Application ID: "+applicationId,"success");
+   form.reset();
+   selectedNote.style.display="none";
+   await loadUserDefaults();
+ }catch(err){
+   console.error(err);
+   showMessage("Application submission failed: "+(err.message||"Unknown error"),"error");
+ }finally{
+   button.disabled=false;button.textContent="Submit Application";
+ }
 });
 
-document.querySelectorAll(
-    "#customerName,#mobile,#email,#whatsapp,#service,#address,#requirement"
-).forEach(field=>{
-    field.addEventListener("input",scheduleAutoSave);
-    field.addEventListener("change",scheduleAutoSave);
-});
-
-document.getElementById("document").addEventListener("change",async()=>{
-    const file=document.getElementById("document").files[0];
-
-    if(!file) return;
-
-    try{
-        if(!draftApplication){
-            const data=formData();
-
-            if(!data.service){
-                showMessage("Please select a service before uploading a document.","error");
-                return;
-            }
-
-            await createDraft(data);
-        }
-
-        await uploadDocument(file);
-    }catch(error){
-        console.error("Document upload error:",error);
-        showMessage(
-            "Document upload failed: "+
-            (error.message || "Unknown error"),
-            "error"
-        );
-    }
-});
-
-window.addEventListener("beforeunload",()=>{
-    if(hasMeaningfulData(formData())){
-        navigator.sendBeacon;
-    }
-});
-
-loadDraftOrDefaults().catch(error=>{
-    console.error("Application page error:",error);
-    showMessage(
-        "Unable to load application: "+
-        (error.message || "Unknown error"),
-        "error"
-    );
-});
+loadUserDefaults();
+applyServiceFromUrl();
 </script>
 </body>
 </html>
