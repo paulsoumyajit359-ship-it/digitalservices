@@ -44,7 +44,7 @@ button{cursor:pointer}
 }
 .logo-area h1{font-size:21px}
 .logo-area p{font-size:12px;color:#64748b;margin-top:3px}
-.header-right{display:flex;align-items:center;gap:12px}
+.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
 .user-pill{
     display:flex;align-items:center;gap:9px;
     background:#f5f8fd;border:1px solid #e6ebf3;
@@ -57,6 +57,14 @@ button{cursor:pointer}
     display:flex;align-items:center;justify-content:center;
     font-weight:800;font-size:12px;
 }
+.profile-btn{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:10px 14px;border-radius:9px;
+    background:#1769d1;color:#fff;text-decoration:none;
+    font-size:13px;font-weight:800;
+    transition:.2s;
+}
+.profile-btn:hover{background:#0d55b3;transform:translateY(-1px)}
 .logout-btn{
     border:0;background:#ef4444;color:#fff;
     padding:10px 17px;border-radius:9px;font-weight:700;
@@ -355,6 +363,7 @@ footer{text-align:center;padding:10px 20px 35px;color:#94a3b8;font-size:11px}
     </div>
 
     <div class="header-right">
+        <a href="customer-profile.html" class="profile-btn">👤 Customer Profile</a>
         <div class="user-pill">
             <div class="avatar" id="avatar">C</div>
             <span id="userEmail">Loading...</span>
