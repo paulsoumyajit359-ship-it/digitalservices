@@ -568,13 +568,14 @@ function updateCounters(applications){
     document.getElementById("completedApplications").textContent = completed;
 }
 
-function getFinalDocument(app){
-    // document_path contains the final document supplied by Digital Service.
-    // document_urls contains customer-uploaded/input files and must NOT be
-    // treated as the final certificate/document.
-    return app && app.document_path
-        ? String(app.document_path)
-        : "";
+function getDocuments(app){
+    // document_urls = customer-uploaded/input documents
+    // document_path = final document supplied by Digital Service
+    if(app.document_path){
+        return [app.document_path];
+    }
+
+    return [];
 }
 
 function progressState(status){
@@ -733,8 +734,9 @@ function renderApplication(app){
     const service = app.service || "Service";
     const status = app.status || "Pending";
     const note = app.admin_note || "";
-    const finalDocument = getFinalDocument(app);
-    const hasFinalDocument = !!finalDocument;
+    // document_urls = customer-uploaded/input files
+    // document_path = final document supplied by Digital Service
+    const finalDocument = app.document_path || "";
 
     const createdDate = app.created_at
         ? new Date(app.created_at).toLocaleString("en-IN")
@@ -777,20 +779,20 @@ function renderApplication(app){
                 ${escapeHtml(note)}
             </div>` : ""}
 
-        ${hasFinalDocument ? `
+        ${finalDocument ? `
             <div class="document-ready">
                 <div>
-                    <strong>${normalizedStatus(status) === "completed" ? "🎉 Your document is ready" : "📄 Document received from Digital Service"}</strong>
-                    <span>${normalizedStatus(status) === "completed" ? "Your completed document is available to view/download." : "A document has been uploaded for this application and is available to view/download."}</span>
+                    <strong>📄 Document received from Digital Service</strong>
+                    <span>A document has been uploaded for this application and is available to view/download.</span>
                 </div>
-                <button class="action-btn green" onclick="openDocument('${escapeJs(finalDocument)}')">
+                <button class="action-btn green" onclick="openDocument('${escapeJs(String(finalDocument))}')">
                     📥 Download / View
                 </button>
             </div>` : ""}
 
         <div class="app-footer">
             <div class="app-meta">
-                ${hasFinalDocument
+                ${finalDocument
                     ? "📄 Document available"
                     : "📄 Document will appear here when ready"}
             </div>
@@ -808,9 +810,9 @@ function renderApplication(app){
                     </button>
                 `}
 
-                ${hasFinalDocument ? `
+                ${finalDocument ? `
                     <button class="action-btn blue"
-                        onclick="openDocument('${escapeJs(finalDocument)}')">
+                        onclick="openDocument('${escapeJs(String(finalDocument))}')">
                         📄 Open Document
                     </button>
                 ` : ""}
@@ -835,7 +837,9 @@ function viewApplication(id){
     const app = findApplication(id);
     if(!app) return;
 
-    const finalDocument = getFinalDocument(app);
+    // Only document_path is a final document.
+    // document_urls contains customer-uploaded/input files.
+    const finalDocument = app.document_path || "";
     const createdDate = app.created_at
         ? new Date(app.created_at).toLocaleString("en-IN")
         : "N/A";
@@ -891,8 +895,8 @@ function viewApplication(id){
                 <div class="detail-label">Document</div>
                 <div class="detail-value">
                     ${finalDocument
-                        ? `<button class="action-btn blue" onclick="openDocument('${escapeJs(finalDocument)}')">📄 Open / Download Document</button>`
-                        : "No document uploaded by Digital Service yet."}
+                        ? `<button class="action-btn blue" onclick="openDocument('${escapeJs(String(finalDocument))}')">📄 Open / Download Document</button>`
+                        : "No document available yet."}
                 </div>
             </div>
         </div>`;
