@@ -93,6 +93,37 @@
         }
 
         button:disabled {
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 50px;
+            box-sizing: border-box;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 8px;
+            top: 4px;
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            margin: 0;
+            background: transparent;
+            color: #555;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .toggle-password:hover {
+            background: transparent;
+            color: #111;
+        }
             opacity: 0.6;
             cursor: not-allowed;
         }
@@ -144,13 +175,16 @@
             Password
         </label>
 
-        <input
-            type="password"
-            id="password"
-            placeholder="Enter password"
-            autocomplete="current-password"
-            required
-        >
+        <div class="password-wrapper">
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                autocomplete="current-password"
+                required
+            >
+            <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Show password">👁</button>
+        </div>
 
         <button
             type="submit"
@@ -174,6 +208,23 @@
 
 
 <script>
+
+    function togglePassword() {
+
+        const input = document.getElementById("password");
+        const button = document.querySelector(".toggle-password");
+
+        if (input.type === "password") {
+            input.type = "text";
+            button.textContent = "🙈";
+            button.setAttribute("aria-label", "Hide password");
+        } else {
+            input.type = "password";
+            button.textContent = "👁";
+            button.setAttribute("aria-label", "Show password");
+        }
+    }
+
 
     // =========================================================
     // SUPABASE CONFIG
