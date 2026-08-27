@@ -176,6 +176,7 @@ button{cursor:pointer}
     padding:7px 11px;border-radius:999px;font-size:12px;font-weight:800;
     white-space:nowrap
 }
+.status-draft{background:#eef5ff;color:#1455a0}
 .status-pending{background:#fff5d8;color:#8a6500}
 .status-processing{background:#e4efff;color:#1455a0}
 .status-completed,.status-approved{background:#def5e9;color:#086b36}
@@ -314,6 +315,30 @@ footer{text-align:center;padding:10px 20px 35px;color:#94a3b8;font-size:11px}
     .services-grid{grid-template-columns:repeat(2,1fr);padding:15px}
     .detail-grid{grid-template-columns:1fr}
     .detail-box.full{grid-column:auto}
+}
+.status-current-box{
+    margin-top:14px;
+    padding:13px 15px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:11px;
+}
+.status-current-label{
+    font-size:11px;
+    font-weight:800;
+    color:#64748b;
+    margin-bottom:4px;
+}
+.status-current-value{
+    font-size:15px;
+    font-weight:800;
+    color:#172033;
+}
+.status-current-time{
+    margin-top:4px;
+    font-size:11px;
+    font-weight:600;
+    color:#64748b;
 }
 </style>
 </head>
@@ -519,6 +544,7 @@ function formatStatus(status){
 
 function getStatusClass(status){
     const value = normalizedStatus(status);
+    if(value === "draft") return "status status-draft";
     if(value === "pending") return "status status-pending";
     if(value === "processing") return "status status-processing";
     if(value === "completed") return "status status-completed";
@@ -543,21 +569,52 @@ function updateCounters(applications){
 }
 
 function getDocuments(app){
-    return Array.isArray(app.document_urls) ? app.document_urls : [];
+    // document_urls = customer-uploaded/input documents
+    // document_path = final document supplied by Digital Service
+    if(app.document_path){
+        return [app.document_path];
+    }
+
+    return [];
 }
 
 function progressState(status){
     const s = normalizedStatus(status);
 
-    if(s === "rejected") return {index:0, rejected:true};
-    if(s === "completed") return {index:4, rejected:false};
-    if(s === "processing") return {index:3, rejected:false};
-    return {index:1, rejected:false};
+    if(s === "draft") return {index:0, rejected:false, draft:true};
+    if(s === "rejected") return {index:0, rejected:true, draft:false};
+    if(s === "completed") return {index:4, rejected:false, draft:false};
+    if(s === "processing") return {index:3, rejected:false, draft:false};
+    return {index:1, rejected:false, draft:false};
 }
 
-function renderProgress(status){
+function formatStatusDateTime(value){
+    if(!value) return "Date & time unavailable";
+    const date = new Date(value);
+    if(Number.isNaN(date.getTime())) return "Date & time unavailable";
+    return date.toLocaleString("en-IN",{
+        day:"2-digit",
+        month:"2-digit",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit",
+        second:"2-digit",
+        hour12:true
+    });
+}
+
+function renderProgress(status,statusUpdatedAt){
     const state = progressState(status);
     const labels = ["Submitted","Under Review","Processing","Completed"];
+
+    if(state.draft){
+        return `
+            <div style="margin-top:16px;padding:14px;border-radius:11px;background:#eef5ff;color:#1455a0;font-size:13px;line-height:1.5;">
+                📝 <strong>Draft Application</strong><br>
+                Your application has been saved automatically. You can continue it whenever you are ready.
+            </div>
+        `;
+    }
 
     let fill = 0;
     if(state.index === 1) fill = 0;
@@ -575,6 +632,7 @@ function renderProgress(status){
                     const current = state.index === i+1 && !state.rejected;
                     const cls = done ? "done" : (current ? "current" : "");
                     const icon = done ? "✓" : (current ? "•" : (i+1));
+
                     return `
                         <div class="step ${cls}">
                             <div class="step-circle">${icon}</div>
@@ -583,22 +641,33 @@ function renderProgress(status){
                 }).join("")}
             </div>
         </div>
-        ${state.rejected ? `<div style="margin-top:10px;color:#991b1b;font-size:12px;font-weight:700">⚠️ This application has been rejected. Please contact support.</div>` : ""}
+
+        <div class="status-current-box">
+            <div class="status-current-label">🔔 Current Status</div>
+            <div class="status-current-value">${escapeHtml(formatStatus(status))}</div>
+            <div class="status-current-time">📅 ${escapeHtml(formatStatusDateTime(statusUpdatedAt))}</div>
+        </div>
+
+        ${state.rejected
+            ? `<div style="margin-top:10px;color:#991b1b;font-size:12px;font-weight:700">⚠️ This application has been rejected. Please contact support.</div>`
+            : ""}
     `;
 }
 
 function renderUpdates(applications){
-    if(!applications.length){
-        updatesList.innerHTML = `<div class="empty-update">No application updates yet.</div>`;
-        return;
-    }
+    const submittedApplications = applications.filter(app => {
+        const status = normalizedStatus(app.status);
 
-    const recent = applications.slice(0,4);
+        // Draft applications are NOT submitted applications.
+        // Only applications with submitted_at should appear here.
+        return status !== "draft" && !!app.submitted_at;
+    });
 
-    updatesList.innerHTML = recent.map(app=>{
+    updatesList.innerHTML = submittedApplications.map(app=>{
         const status = normalizedStatus(app.status);
         const service = escapeHtml(app.service || "Service");
         const id = escapeHtml(app.application_id || "N/A");
+
         let title = "";
         let text = "";
         let icon = "🔵";
@@ -615,10 +684,14 @@ function renderUpdates(applications){
             title = `${service} needs attention`;
             text = `Please check your application details or contact support.`;
             icon = "⚠️";
-        }else{
+        }else if(status === "pending"){
             title = `${service} application received`;
             text = `Application ${id} has been submitted successfully.`;
             icon = "📩";
+        }else{
+            title = `${service} application updated`;
+            text = `Application ${id} has been updated.`;
+            icon = "🔵";
         }
 
         return `
@@ -630,6 +703,18 @@ function renderUpdates(applications){
                 </div>
             </div>`;
     }).join("");
+
+    // Keep the dashboard clean when there are no submitted updates.
+    if(!submittedApplications.length){
+        updatesList.innerHTML = `
+            <div class="update">
+                <div class="update-dot">📋</div>
+                <div>
+                    <h4>No application updates yet</h4>
+                    <p>Your submitted application updates will appear here.</p>
+                </div>
+            </div>`;
+    }
 }
 
 function renderNoApplications(){
@@ -649,10 +734,19 @@ function renderApplication(app){
     const service = app.service || "Service";
     const status = app.status || "Pending";
     const note = app.admin_note || "";
-    const docs = getDocuments(app);
+    // document_urls = customer-uploaded/input files
+    // document_path = final document supplied by Digital Service
+    const finalDocument = app.document_path || "";
+
     const createdDate = app.created_at
         ? new Date(app.created_at).toLocaleString("en-IN")
         : "N/A";
+
+    const savedDate = app.last_saved_at
+        ? new Date(app.last_saved_at).toLocaleString("en-IN")
+        : createdDate;
+
+    const isDraft = normalizedStatus(status) === "draft";
 
     const item = document.createElement("div");
     item.className = "application-item";
@@ -661,8 +755,13 @@ function renderApplication(app){
         <div class="app-top">
             <div>
                 <div class="app-id">Application ID: ${escapeHtml(applicationId)}</div>
-                <div class="app-date">Submitted: ${escapeHtml(createdDate)}</div>
+                <div class="app-date">
+                    ${isDraft
+                        ? "Last saved: " + escapeHtml(savedDate)
+                        : "Submitted: " + escapeHtml(createdDate)}
+                </div>
             </div>
+
             <span class="${getStatusClass(status)}">
                 ${escapeHtml(formatStatus(status))}
             </span>
@@ -672,7 +771,7 @@ function renderApplication(app){
             <div class="service-name">${escapeHtml(service)}</div>
         </div>
 
-        ${renderProgress(status)}
+        ${renderProgress(status, app.status_updated_at)}
 
         ${note ? `
             <div class="admin-note">
@@ -680,27 +779,54 @@ function renderApplication(app){
                 ${escapeHtml(note)}
             </div>` : ""}
 
-        ${docs.length && normalizedStatus(status) === "completed" ? `
+        ${finalDocument && normalizedStatus(status) === "completed" ? `
             <div class="document-ready">
                 <div>
                     <strong>🎉 Your document is ready</strong>
                     <span>Your completed document is available to view/download.</span>
                 </div>
-                <button class="action-btn green" onclick="openDocument('${escapeJs(String(docs[0]))}')">📥 Download / View</button>
+                <button class="action-btn green" onclick="openDocument('${escapeJs(String(finalDocument))}')">
+                    📥 Download / View
+                </button>
             </div>` : ""}
 
         <div class="app-footer">
             <div class="app-meta">
-                ${docs.length ? "📄 Document available" : "📄 Document will appear here when ready"}
+                ${finalDocument && normalizedStatus(status) === "completed"
+                    ? "📄 Completed document available"
+                    : "📄 Document will appear here when ready"}
             </div>
+
             <div class="app-actions">
-                <button class="action-btn" onclick="viewApplication('${escapeJs(String(app.id))}')">👁 View Details</button>
-                ${docs.length ? `<button class="action-btn blue" onclick="openDocument('${escapeJs(String(docs[0]))}')">📄 Open Document</button>` : ""}
+                        ${isDraft ? `
+                    <button class="action-btn blue"
+                        onclick="continueApplication('${escapeJs(String(applicationId))}')">
+                        ✏️ Edit Application
+                    </button>
+                ` : `
+                    <button class="action-btn"
+                        onclick="viewApplication('${escapeJs(String(app.id))}')">
+                        👁 View Details
+                    </button>
+                `}
+
+                ${finalDocument && normalizedStatus(status) === "completed" ? `
+                    <button class="action-btn blue"
+                        onclick="openDocument('${escapeJs(String(finalDocument))}')">
+                        📄 Open Document
+                    </button>
+                ` : ""}
             </div>
         </div>
     `;
 
     applicationsList.appendChild(item);
+}
+
+function continueApplication(applicationId){
+    window.location.href =
+        "apply.html?application_id=" +
+        encodeURIComponent(applicationId);
 }
 
 function findApplication(id){
@@ -711,7 +837,9 @@ function viewApplication(id){
     const app = findApplication(id);
     if(!app) return;
 
-    const docs = getDocuments(app);
+    // Only document_path is a final document.
+    // document_urls contains customer-uploaded/input files.
+    const finalDocument = app.document_path || "";
     const createdDate = app.created_at
         ? new Date(app.created_at).toLocaleString("en-IN")
         : "N/A";
@@ -766,9 +894,9 @@ function viewApplication(id){
             <div class="detail-box full">
                 <div class="detail-label">Document</div>
                 <div class="detail-value">
-                    ${docs.length
-                        ? `<button class="action-btn blue" onclick="openDocument('${escapeJs(String(docs[0]))}')">📄 Open / Download Document</button>`
-                        : "No document uploaded yet."}
+                    ${finalDocument && normalizedStatus(app.status) === "completed"
+                        ? `<button class="action-btn blue" onclick="openDocument('${escapeJs(String(finalDocument))}')">📄 Open / Download Document</button>`
+                        : "No completed document available yet."}
                 </div>
             </div>
         </div>`;
@@ -836,6 +964,10 @@ async function loadDashboard(){
                 status,
                 admin_note,
                 document_urls,
+                document_path,
+                status_updated_at,
+                last_saved_at,
+                submitted_at,
                 created_at
             `)
             .eq("user_id",user.id)

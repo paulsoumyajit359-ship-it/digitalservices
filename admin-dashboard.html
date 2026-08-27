@@ -1899,13 +1899,10 @@ function updateStats(apps){
 
 function getDocuments(app){
 
-    if(
-        Array.isArray(
-            app.document_urls
-        )
-    ){
+    // document_path = final document supplied by Digital Service
+    if(app.document_path){
 
-        return app.document_urls;
+        return [app.document_path];
 
     }
 
@@ -1976,7 +1973,7 @@ function renderDocuments(app){
    RENDER APPLICATIONS
 ========================================================= */
 
-function renderApplicationsBase(apps){
+function renderApplications(apps){
 
     if(
         !apps.length
@@ -3509,7 +3506,7 @@ async function deleteDocument(
             await supabaseClient
                 .from("applications")
                 .update({
-                    document_urls:[]
+                    document_path:null
                 })
                 .eq(
                     "id",
@@ -3538,8 +3535,8 @@ async function deleteDocument(
 
         if(app){
 
-            app.document_urls =
-                [];
+            app.document_path =
+                null;
 
         }
 
