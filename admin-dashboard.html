@@ -1899,14 +1899,11 @@ function updateStats(apps){
 
 function getDocuments(app){
 
-    // document_path = final document supplied by Digital Service
-    if(app.document_path){
+    // document_path is the ONLY field used for final documents
+    // supplied by Digital Service.
+    const path = app && app.document_path;
 
-        return [app.document_path];
-
-    }
-
-    return [];
+    return path ? [path] : [];
 
 }
 
@@ -2470,7 +2467,7 @@ function renderApplicationResults(){
                 start + applicationPageSize
             );
 
-    renderApplicationsBase(visible);
+    renderApplications(visible);
     renderPagination(
         total,
         start,
@@ -2736,8 +2733,8 @@ async function updateStatus(id){
             await supabaseClient
                 .from("applications")
                 .update({
-                    status:
-                        select.value
+                    status: select.value,
+                    status_updated_at: new Date().toISOString()
                 })
                 .eq(
                     "id",
@@ -3275,14 +3272,15 @@ async function uploadDocument(id){
             getDocuments(app);
 
 
+        // IMPORTANT: final/admin documents belong in document_path.
+        // document_urls is reserved for customer-uploaded/input files.
         const {
             error:updateError
         } =
             await supabaseClient
                 .from("applications")
                 .update({
-                    document_urls:
-                        [newPath]
+                    document_path: newPath
                 })
                 .eq(
                     "id",
@@ -3333,8 +3331,8 @@ async function uploadDocument(id){
         }
 
 
-        app.document_urls =
-            [newPath];
+        app.document_path =
+            newPath;
 
 
         renderApplications(
