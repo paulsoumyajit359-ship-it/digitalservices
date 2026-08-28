@@ -1100,23 +1100,47 @@ async function(event){
                 customer_name:
                     customerName,
 
+                dob:
+                    document.getElementById("dob").value || null,
+
+                father_name:
+                    document.getElementById("fatherName").value.trim() || null,
+
+                mother_name:
+                    document.getElementById("motherName").value.trim() || null,
+
                 mobile:
                     mobile,
+
+                whatsapp:
+                    whatsapp || null,
 
                 email:
                     email,
 
-                whatsapp:
-                    whatsapp || null,
+                address:
+                    address || null,
+
+                district:
+                    document.getElementById("district").value.trim() || null,
+
+                state:
+                    document.getElementById("state").value.trim() || null,
+
+                pin:
+                    document.getElementById("pin").value.trim() || null,
+
+                pan:
+                    document.getElementById("pan").value.trim().toUpperCase() || null,
+
+                aadhaar:
+                    document.getElementById("aadhaar").value.trim() || null,
 
                 service:
                     service,
 
                 requirement:
                     requirement,
-
-                address:
-                    address || null,
 
                 status:
                     "Pending",
