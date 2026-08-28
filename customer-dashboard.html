@@ -1232,7 +1232,7 @@ function renderApplication(app){
     const note=
         app.admin_note || "";
 
-    const document=
+    const finalDocument=
         getFinalDocument(app);
 
     const item=
@@ -1241,7 +1241,7 @@ function renderApplication(app){
     item.className="application";
 
     const documentHtml=
-        document &&
+        finalDocument &&
         normalized==="completed"
 
         ?
@@ -1264,7 +1264,7 @@ function renderApplication(app){
 
             <button
                 class="open-btn"
-                onclick="openDocument('${escapeJs(document)}')">
+                onclick="openDocument('${escapeJs(finalDocument)}')">
 
                 📥 Download / View
 
@@ -1639,7 +1639,7 @@ async function viewApplication(id){
                         `
                         <button
                             class="open-btn"
-                            onclick="openDocument('${escapeJs(document)}')">
+                            onclick="openDocument('${escapeJs(finalDocument)}')">
 
                             📄 Open / Download Document
 
