@@ -1,3 +1,5 @@
+gopal@pc3 MINGW64 ~/digitalservices (main)
+$ cat login-current.txt
 <!DOCTYPE html>
 <html lang="en">
 
@@ -265,28 +267,62 @@
         */
 
 
-        /* PASSWORD EYE BUTTON - FINAL OVERRIDE */
+        /* PASSWORD EYE BUTTON - FINAL */
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
         .password-wrapper .toggle-password {
             position: absolute !important;
             right: 12px !important;
             top: 50% !important;
             transform: translateY(-50%) !important;
-            width: 24px !important;
-            height: 24px !important;
+            width: 28px !important;
+            height: 28px !important;
             padding: 0 !important;
             margin: 0 !important;
             background: transparent !important;
             border: none !important;
             color: #555 !important;
-            font-size: 18px !important;
-            line-height: 24px !important;
             cursor: pointer !important;
             z-index: 2 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
         .password-wrapper .toggle-password:hover {
             background: transparent !important;
             color: #111 !important;
+        }
+
+        .password-wrapper .toggle-password svg {
+            width: 20px !important;
+            height: 20px !important;
+            display: block !important;
+            transition: opacity 0.18s ease, transform 0.18s ease !important;
+        }
+
+        .password-wrapper .eye-visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .password-wrapper .eye-hidden {
+            opacity: 0;
+            transform: scale(0.75) rotate(-15deg);
+            position: absolute;
+        }
+
+        .password-wrapper .toggle-password.password-visible .eye-visible {
+            opacity: 0;
+            transform: scale(0.75) rotate(15deg);
+        }
+
+        .password-wrapper .toggle-password.password-visible .eye-hidden {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
         }
 
     </style>
@@ -344,7 +380,18 @@
                 autocomplete="current-password"
                 required
             >
-            <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Show password">&#128065;</button>
+            <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Show password">
+                <svg class="eye-visible" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg class="eye-hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 3l18 18"></path>
+                    <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                    <path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c5.5 0 9.5 5.2 10 8-.2 1.1-1.1 2.8-2.7 4.4"></path>
+                    <path d="M6.6 6.6C4.5 8 2.9 10.2 2 12c.8 1.7 2.5 4 5.2 5.7A10.8 10.8 0 0 0 12 20c1.5 0 2.9-.3 4.1-.8"></path>
+                </svg>
+            </button>
         </div>
 
         <a
