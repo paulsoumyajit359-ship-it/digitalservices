@@ -452,18 +452,27 @@
 <script>
 
     function togglePassword() {
-
         const input = document.getElementById("password");
         const button = document.querySelector(".toggle-password");
+        const normalEye = button.querySelector(".eye-normal");
+        const crossedEye = button.querySelector(".eye-crossed");
 
         if (input.type === "password") {
             input.type = "text";
             button.classList.add("password-visible");
             button.setAttribute("aria-label", "Hide password");
+            normalEye.style.opacity = "0";
+            normalEye.style.transform = "scale(0.75)";
+            crossedEye.style.opacity = "1";
+            crossedEye.style.transform = "scale(1)";
         } else {
             input.type = "password";
             button.classList.remove("password-visible");
             button.setAttribute("aria-label", "Show password");
+            normalEye.style.opacity = "1";
+            normalEye.style.transform = "scale(1)";
+            crossedEye.style.opacity = "0";
+            crossedEye.style.transform = "scale(0.75)";
         }
     }
 
