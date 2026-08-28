@@ -264,6 +264,31 @@
         =========================================================
         */
 
+
+        /* PASSWORD EYE BUTTON - FINAL OVERRIDE */
+        .password-wrapper .toggle-password {
+            position: absolute !important;
+            right: 12px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            width: 24px !important;
+            height: 24px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            color: #555 !important;
+            font-size: 18px !important;
+            line-height: 24px !important;
+            cursor: pointer !important;
+            z-index: 2 !important;
+        }
+
+        .password-wrapper .toggle-password:hover {
+            background: transparent !important;
+            color: #111 !important;
+        }
+
     </style>
 
 </head>
@@ -311,7 +336,7 @@
             Password
         </label>
 
-        <div class="password-wrapper">
+        <div class="password-wrapper" style="position:relative;width:100%;">
             <input
                 type="password"
                 id="password"
