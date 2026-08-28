@@ -1258,5 +1258,203 @@ applyServiceFromUrl();
 
 </script>
 
-</body>
+
+<script>
+/* DIGITALSERVICES_AUTO_DRAFT_V1
+   1-second automatic form draft save + restore
+   Existing application functionality untouched.
+*/
+(function(){
+
+    const AUTO_DRAFT_KEY =
+        "digitalservices_apply_draft_v1";
+
+    const AUTO_SAVE_INTERVAL =
+        1000;
+
+    const formElement =
+        document.getElementById("applicationForm");
+
+    if(!formElement) return;
+
+    function collectDraft(){
+
+        const data = {};
+
+        formElement
+            .querySelectorAll("input, textarea, select")
+            .forEach(function(field){
+
+                if(!field.id) return;
+
+                if(field.type === "file") return;
+
+                data[field.id] =
+                    field.value || "";
+
+            });
+
+        data.savedAt =
+            new Date().toISOString();
+
+        return data;
+    }
+
+    function hasDraftData(data){
+
+        if(!data) return false;
+
+        return Object.keys(data).some(function(key){
+
+            if(key === "savedAt") return false;
+
+            return String(data[key] || "").trim() !== "";
+
+        });
+
+    }
+
+    function saveLocalDraft(){
+
+        try{
+
+            const data =
+                collectDraft();
+
+            if(!hasDraftData(data)) return;
+
+            localStorage.setItem(
+                AUTO_DRAFT_KEY,
+                JSON.stringify(data)
+            );
+
+        }catch(error){
+
+            console.error(
+                "Local auto-save error:",
+                error
+            );
+
+        }
+
+    }
+
+    function restoreLocalDraft(){
+
+        try{
+
+            const raw =
+                localStorage.getItem(
+                    AUTO_DRAFT_KEY
+                );
+
+            if(!raw) return;
+
+            const data =
+                JSON.parse(raw);
+
+            if(!hasDraftData(data)) return;
+
+            Object.keys(data).forEach(function(id){
+
+                if(id === "savedAt") return;
+
+                const field =
+                    document.getElementById(id);
+
+                if(!field) return;
+
+                if(field.type === "file") return;
+
+                field.value =
+                    data[id] || "";
+
+            });
+
+            const service =
+                document.getElementById("service");
+
+            const selectedNote =
+                document.getElementById("selectedNote");
+
+            if(
+                service &&
+                service.value &&
+                selectedNote
+            ){
+
+                const option =
+                    service.options[
+                        service.selectedIndex
+                    ];
+
+                if(option){
+
+                    selectedNote.textContent =
+                        "Selected service: " +
+                        option.textContent;
+
+                    selectedNote.style.display =
+                        "block";
+
+                }
+
+            }
+
+            console.log(
+                "Application draft restored automatically."
+            );
+
+        }catch(error){
+
+            console.error(
+                "Draft restore error:",
+                error
+            );
+
+        }
+
+    }
+
+    /*
+       Save every 1 second while the page is open.
+    */
+    setInterval(
+        saveLocalDraft,
+        AUTO_SAVE_INTERVAL
+    );
+
+    /*
+       Save immediately when the customer types/changes
+       something, so there is no unnecessary 1-second wait.
+    */
+    formElement.addEventListener(
+        "input",
+        saveLocalDraft
+    );
+
+    formElement.addEventListener(
+        "change",
+        saveLocalDraft
+    );
+
+    /*
+       Restore after the existing page scripts have loaded
+       customer/profile defaults.
+    */
+    window.addEventListener(
+        "load",
+        function(){
+
+            setTimeout(
+                restoreLocalDraft,
+                500
+            );
+
+        }
+    );
+
+})();
+</script>
+\n</body>
 </html>
