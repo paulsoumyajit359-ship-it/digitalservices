@@ -314,32 +314,43 @@
             pointer-events: none !important;
         }
 
-        .password-wrapper .eye-normal {
-            opacity: 1 !important;
-            transform: scale(1) rotate(0deg) !important;
+
+
+        .password-wrapper .toggle-password .eye-normal,
+        .password-wrapper .toggle-password .eye-crossed {
+            position: absolute !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 20px !important;
+            height: 20px !important;
+            transition: opacity 0.18s ease, transform 0.18s ease !important;
         }
 
-        .password-wrapper .eye-crossed {
+        .password-wrapper .toggle-password .eye-normal svg,
+        .password-wrapper .toggle-password .eye-crossed svg {
+            width: 20px !important;
+            height: 20px !important;
+        }
+
+        .password-wrapper .toggle-password .eye-normal {
+            opacity: 1 !important;
+            transform: scale(1) !important;
+        }
+
+        .password-wrapper .toggle-password .eye-crossed {
             opacity: 0 !important;
-            transform: scale(0.75) rotate(-15deg) !important;
+            transform: scale(0.75) !important;
         }
 
         .password-wrapper .toggle-password.password-visible .eye-normal {
             opacity: 0 !important;
-            transform: scale(0.75) rotate(15deg) !important;
+            transform: scale(0.75) !important;
         }
 
         .password-wrapper .toggle-password.password-visible .eye-crossed {
             opacity: 1 !important;
-            transform: scale(1) rotate(0deg) !important;
-        }
-
-        .password-wrapper .toggle-password .eye-svg {
-            display: block !important;
-            width: 20px !important;
-            height: 20px !important;
-            opacity: 1 !important;
-            visibility: visible !important;
+            transform: scale(1) !important;
         }
 
     </style>
@@ -397,7 +408,7 @@
                 autocomplete="current-password"
                 required
             >
-            <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Show password"><svg class="eye-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
+            <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Show password"><span class="eye-normal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span class="eye-crossed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"></path><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path><path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c5.5 0 9.5 5.2 10 8-.2 1.1-1.1 2.8-2.7 4.4"></path><path d="M6.6 6.6C4.5 8 2.9 10.2 2 12c.8 1.7 2.5 4 5.2 5.7A10.8 10.8 0 0 0 12 20c1.5 0 2.9-.3 4.1-.8"></path></svg></span></button>
         </div>
 
         <a
