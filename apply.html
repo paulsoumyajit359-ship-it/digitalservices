@@ -1063,8 +1063,44 @@ async function(event){
         "Submitting...";
 
 
-    const applicationId=
-        getApplicationId();
+    const editApplicationId =
+        new URLSearchParams(
+            window.location.search
+        ).get("edit");
+
+    const draftApi =
+        window.digitalServicesDraft || null;
+
+    if(editApplicationId && draftApi && draftApi.loadEdit){
+        await draftApi.loadEdit();
+    }
+
+    if(!editApplicationId && draftApi && draftApi.save){
+        await draftApi.save();
+    }
+
+    const draftRecord =
+        draftApi && draftApi.getCurrentDraft
+            ? draftApi.getCurrentDraft()
+            : null;
+
+    const draftId =
+        editApplicationId ||
+        (draftRecord ? draftRecord.id : null);
+
+    if(
+        editApplicationId &&
+        (!draftRecord || draftRecord.id !== editApplicationId)
+    ){
+        throw new Error(
+            "Draft could not be loaded. Please refresh and try again."
+        );
+    }
+
+    const applicationId =
+        draftRecord && draftRecord.application_id
+            ? draftRecord.application_id
+            : getApplicationId();
 
     let uploadedPath=null;
 
@@ -1088,54 +1124,122 @@ async function(event){
             );
 
 
-        const {
-            error:insertError
-        } =
-        await supabaseClient
-            .from("applications")
-            .insert({
+        const submitPayload = {
 
-                application_id:
-                    applicationId,
+            customer_name:
+                customerName,
 
-                customer_name:
-                    customerName,
+            dob:
+                dob,
 
-                mobile:
-                    mobile,
+            father_name:
+                fatherName,
 
-                email:
-                    email,
+            mother_name:
+                motherName,
 
-                whatsapp:
-                    whatsapp || null,
+            mobile:
+                mobile,
 
-                service:
-                    service,
+            email:
+                email,
 
-                requirement:
-                    requirement,
+            whatsapp:
+                whatsapp || null,
 
-                address:
-                    address || null,
+            address:
+                address || null,
 
-                status:
-                    "Pending",
+            district:
+                district || null,
 
-                admin_note:
-                    null,
+            state:
+                state || null,
 
-                document_urls:
-                    [],
+            pin:
+                pin || null,
 
-                user_id:
+            pan:
+                pan || null,
+
+            aadhaar:
+                aadhaar || null,
+
+            service:
+                service,
+
+            requirement:
+                requirement,
+
+            status:
+                "Pending",
+
+            admin_note:
+                null,
+
+            submitted_at:
+                new Date().toISOString(),
+
+            status_updated_at:
+                new Date().toISOString(),
+
+            last_saved_at:
+                new Date().toISOString(),
+
+            document_urls:
+                draftRecord &&
+                Array.isArray(draftRecord.document_urls)
+                    ? draftRecord.document_urls
+                    : [],
+
+            user_id:
+                user.id
+
+        };
+
+
+        if(draftId){
+
+            const {
+                error:updateError
+            } =
+            await supabaseClient
+                .from("applications")
+                .update(submitPayload)
+                .eq(
+                    "id",
+                    draftId
+                )
+                .eq(
+                    "user_id",
                     user.id
+                )
+                .eq(
+                    "status",
+                    "Draft"
+                );
 
-            });
+            if(updateError)
+                throw updateError;
 
+        }else{
 
-        if(insertError)
-            throw insertError;
+            const {
+                error:insertError
+            } =
+            await supabaseClient
+                .from("applications")
+                .insert({
+                    application_id:
+                        applicationId,
+
+                    ...submitPayload
+                });
+
+            if(insertError)
+                throw insertError;
+
+        }
 
 
         if(file){
@@ -1261,78 +1365,118 @@ applyServiceFromUrl();
 
 
 <script>
-/* DIGITALSERVICES_AUTO_DRAFT_V1
-   1-second automatic form draft save + restore
-   Existing application functionality untouched.
+
+/* DIGITALSERVICES_AUTO_DRAFT_V2
+   Cloud Draft autosave + edit restore
 */
 (function(){
 
-    const AUTO_DRAFT_KEY =
-        "digitalservices_apply_draft_v1";
-
-    const AUTO_SAVE_INTERVAL =
-        1000;
+    const editApplicationId =
+        new URLSearchParams(
+            window.location.search
+        ).get("edit");
 
     const formElement =
         document.getElementById("applicationForm");
 
     if(!formElement) return;
 
+    let currentDraft = null;
+    let savingDraft = false;
+    let saveTimer = null;
+
+    function getValue(id){
+        const field = document.getElementById(id);
+        return field ? field.value || "" : "";
+    }
+
+    function setValue(id,value){
+        const field = document.getElementById(id);
+        if(field && field.type !== "file"){
+            field.value = value || "";
+        }
+    }
+
     function collectDraft(){
-
-        const data = {};
-
-        formElement
-            .querySelectorAll("input, textarea, select")
-            .forEach(function(field){
-
-                if(!field.id) return;
-
-                if(field.type === "file") return;
-
-                data[field.id] =
-                    field.value || "";
-
-            });
-
-        data.savedAt =
-            new Date().toISOString();
-
-        return data;
+        return {
+            customer_name:getValue("customerName"),
+            dob:getValue("dob"),
+            father_name:getValue("fatherName"),
+            mother_name:getValue("motherName"),
+            mobile:getValue("mobile"),
+            whatsapp:getValue("whatsapp"),
+            email:getValue("email"),
+            address:getValue("address"),
+            district:getValue("district"),
+            state:getValue("state"),
+            pin:getValue("pin"),
+            pan:getValue("pan"),
+            aadhaar:getValue("aadhaar"),
+            service:getValue("service"),
+            requirement:getValue("requirement")
+        };
     }
 
     function hasDraftData(data){
-
-        if(!data) return false;
-
         return Object.keys(data).some(function(key){
-
-            if(key === "savedAt") return false;
-
             return String(data[key] || "").trim() !== "";
-
         });
-
     }
 
-    function saveLocalDraft(){
+    function restoreFields(data){
+        setValue("customerName",data.customer_name);
+        setValue("dob",data.dob);
+        setValue("fatherName",data.father_name);
+        setValue("motherName",data.mother_name);
+        setValue("mobile",data.mobile);
+        setValue("whatsapp",data.whatsapp);
+        setValue("email",data.email);
+        setValue("address",data.address);
+        setValue("district",data.district);
+        setValue("state",data.state);
+        setValue("pin",data.pin);
+        setValue("pan",data.pan);
+        setValue("aadhaar",data.aadhaar);
+        setValue("service",data.service);
+        setValue("requirement",data.requirement);
+    }
+
+    async function loadEditDraft(){
+
+        if(!editApplicationId) return;
 
         try{
 
-            const data =
-                collectDraft();
+            const {
+                data:{user},
+                error:userError
+            } = await supabaseClient.auth.getUser();
 
-            if(!hasDraftData(data)) return;
+            if(userError) throw userError;
+            if(!user) return;
 
-            localStorage.setItem(
-                AUTO_DRAFT_KEY,
-                JSON.stringify(data)
-            );
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("applications")
+                .select("*")
+                .eq("id",editApplicationId)
+                .eq("user_id",user.id)
+                .eq("status","Draft")
+                .single();
+
+            if(error) throw error;
+
+            if(data){
+                currentDraft = data;
+                restoreFields(data);
+            }
 
         }catch(error){
 
             console.error(
-                "Local auto-save error:",
+                "Cloud draft restore error:",
                 error
             );
 
@@ -1340,120 +1484,131 @@ applyServiceFromUrl();
 
     }
 
-    function restoreLocalDraft(){
+    async function saveCloudDraft(){
+
+        if(savingDraft) return;
+
+        const values = collectDraft();
+
+        if(!hasDraftData(values)) return;
+
+        savingDraft = true;
 
         try{
 
-            const raw =
-                localStorage.getItem(
-                    AUTO_DRAFT_KEY
-                );
+            const {
+                data:{user},
+                error:userError
+            } = await supabaseClient.auth.getUser();
 
-            if(!raw) return;
+            if(userError) throw userError;
+            if(!user) return;
 
-            const data =
-                JSON.parse(raw);
+            const now =
+                new Date().toISOString();
 
-            if(!hasDraftData(data)) return;
+            const payload = {
+                ...values,
+                status:"Draft",
+                submitted_at:null,
+                status_updated_at:null,
+                last_saved_at:now,
+                user_id:user.id,
+                document_urls:[]
+            };
 
-            Object.keys(data).forEach(function(id){
+            if(currentDraft){
 
-                if(id === "savedAt") return;
+                const {
+                    data,
+                    error
+                } = await supabaseClient
+                    .from("applications")
+                    .update(payload)
+                    .eq("id",currentDraft.id)
+                    .eq("user_id",user.id)
+                    .eq("status","Draft")
+                    .select()
+                    .single();
 
-                const field =
-                    document.getElementById(id);
+                if(error) throw error;
 
-                if(!field) return;
+                currentDraft = data;
 
-                if(field.type === "file") return;
+            }else{
 
-                field.value =
-                    data[id] || "";
+                payload.application_id =
+                    getApplicationId();
 
-            });
+                const {
+                    data,
+                    error
+                } = await supabaseClient
+                    .from("applications")
+                    .insert(payload)
+                    .select()
+                    .single();
 
-            const service =
-                document.getElementById("service");
+                if(error) throw error;
 
-            const selectedNote =
-                document.getElementById("selectedNote");
-
-            if(
-                service &&
-                service.value &&
-                selectedNote
-            ){
-
-                const option =
-                    service.options[
-                        service.selectedIndex
-                    ];
-
-                if(option){
-
-                    selectedNote.textContent =
-                        "Selected service: " +
-                        option.textContent;
-
-                    selectedNote.style.display =
-                        "block";
-
-                }
+                currentDraft = data;
 
             }
 
-            console.log(
-                "Application draft restored automatically."
-            );
-
         }catch(error){
 
             console.error(
-                "Draft restore error:",
+                "Cloud draft save error:",
                 error
             );
+
+        }finally{
+
+            savingDraft = false;
 
         }
 
     }
 
-    /*
-       Save every 1 second while the page is open.
-    */
-    setInterval(
-        saveLocalDraft,
-        AUTO_SAVE_INTERVAL
-    );
+    function queueCloudDraft(){
 
-    /*
-       Save immediately when the customer types/changes
-       something, so there is no unnecessary 1-second wait.
-    */
+        clearTimeout(saveTimer);
+
+        saveTimer =
+            setTimeout(
+                saveCloudDraft,
+                1000
+            );
+
+    }
+
     formElement.addEventListener(
         "input",
-        saveLocalDraft
+        queueCloudDraft
     );
 
     formElement.addEventListener(
         "change",
-        saveLocalDraft
+        queueCloudDraft
     );
 
-    /*
-       Restore after the existing page scripts have loaded
-       customer/profile defaults.
-    */
     window.addEventListener(
         "load",
         function(){
-
             setTimeout(
-                restoreLocalDraft,
+                loadEditDraft,
                 500
             );
-
         }
     );
+
+    window.digitalServicesDraft = {
+        getCurrentDraft:function(){
+            return currentDraft;
+        },
+        save:saveCloudDraft,
+        loadEdit:loadEditDraft
+    };
 
 })();
 </script>
