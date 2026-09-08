@@ -1501,7 +1501,9 @@ applyServiceFromUrl();
                 status_updated_at:null,
                 last_saved_at:now,
                 user_id:user.id,
-                document_urls:[]
+                document_urls:Array.isArray(currentDraft && currentDraft.document_urls)
+            ? currentDraft.document_urls
+            : []
             };
 
             if(currentDraft){
