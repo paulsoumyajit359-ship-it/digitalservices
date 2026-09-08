@@ -1300,14 +1300,9 @@ async function(event){
         }
 
 
-        showMessage(
-            "Application submitted successfully. Application ID: " +
-            applicationId,
-            "success"
-        );
+        window.location.href = "application-success.html?applicationId=" + encodeURIComponent(applicationId);
 
-
-        form.reset();
+        return;
 
         selectedNote.style.display=
             "none";

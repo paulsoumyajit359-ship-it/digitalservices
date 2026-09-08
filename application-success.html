@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Application Submitted | Digital Service</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+.header{
+    background:linear-gradient(135deg,#063b8f,#1769d1);
+    color:#fff;
+    padding:16px 6%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+    width:48px;height:48px;background:#fff;color:#0755b8;
+    border-radius:12px;display:flex;align-items:center;
+    justify-content:center;font-weight:bold;font-size:20px;
+}
+.brand h1{font-size:23px}
+.brand p{font-size:13px;opacity:.9}
+.header-btn{
+    color:#1769d1;background:#fff;text-decoration:none;
+    padding:9px 13px;border-radius:8px;font-weight:700;font-size:13px;
+}
+.container{
+    max-width:700px;margin:70px auto;padding:0 20px;
+}
+.card{
+    background:#fff;border-radius:18px;padding:45px 30px;
+    box-shadow:0 8px 30px rgba(20,40,80,.1);
+    text-align:center;
+}
+.success-icon{
+    width:82px;height:82px;margin:0 auto 22px;
+    border-radius:50%;background:#e9f8ef;color:#16803c;
+    display:flex;align-items:center;justify-content:center;
+    font-size:42px;font-weight:bold;
+}
+h2{color:#063b8f;font-size:30px;margin-bottom:10px}
+.subtitle{color:#687386;font-size:16px;line-height:1.6}
+.application-box{
+    margin:28px auto;padding:20px;
+    background:#f4f7fb;border:1px solid #e1e7ef;
+    border-radius:12px;max-width:500px;
+}
+.application-label{
+    color:#687386;font-size:13px;font-weight:700;
+    margin-bottom:8px;
+}
+.application-id{
+    color:#1769d1;font-size:24px;font-weight:800;
+    word-break:break-word;
+}
+.message{
+    color:#536174;font-size:14px;line-height:1.6;
+    margin:20px 0 28px;
+}
+.actions{
+    display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+}
+.btn{
+    display:inline-block;text-decoration:none;
+    padding:11px 18px;border-radius:9px;
+    font-weight:700;font-size:14px;
+}
+.primary{background:#1769d1;color:#fff}
+.secondary{background:#eef3f9;color:#1769d1}
+@media(max-width:600px){
+    .header{padding:14px 18px}
+    .brand h1{font-size:19px}
+    .brand p{font-size:11px}
+    .header-btn{padding:8px 10px;font-size:12px}
+    .container{margin:40px auto}
+    .card{padding:35px 20px}
+    h2{font-size:25px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="brand">
+        <div class="logo">DS</div>
+        <div>
+            <h1>Digital Service</h1>
+            <p>Digital • Tax • Business Services</p>
+        </div>
+    </div>
+
+    <a href="customer-dashboard.html" class="header-btn">
+        ← Dashboard
+    </a>
+
+</header>
+
+<main class="container">
+
+    <div class="card">
+
+        <div class="success-icon">✓</div>
+
+        <h2>Congratulations!</h2>
+
+        <p class="subtitle">
+            Your application has been submitted successfully.
+        </p>
+
+        <div class="application-box">
+
+            <div class="application-label">
+                YOUR APPLICATION ID
+            </div>
+
+            <div class="application-id" id="applicationId">
+                Loading...
+            </div>
+
+        </div>
+
+        <p class="message">
+            Please keep your Application ID safe for future reference.
+            You can track your application status from your dashboard.
+        </p>
+
+        <div class="actions">
+
+            <a
+                href="customer-dashboard.html"
+                class="btn primary">
+                View Dashboard
+            </a>
+
+            <a
+                href="index.html"
+                class="btn secondary">
+                Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const applicationId = params.get("applicationId");
+
+document.getElementById("applicationId").textContent =
+    applicationId || "Not available";
+</script>
+
+</body>
+</html>
