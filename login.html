@@ -527,8 +527,7 @@
 
     const message =
         document.getElementById("message");
-
-
+    const returnTo = new URLSearchParams(window.location.search).get("returnTo");
 
     // =========================================================
     // CUSTOMER LOGIN
@@ -604,8 +603,7 @@
                 setTimeout(
                     function() {
 
-                        window.location.href =
-                            "customer-dashboard.html";
+                        window.location.href = returnTo ? decodeURIComponent(returnTo) : "customer-dashboard.html";
 
                     },
                     800
