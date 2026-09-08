@@ -1125,57 +1125,37 @@ async function(event){
 
 
         const submitPayload = {
+            customer_name: customerName,
 
-            customer_name:
-                customerName,
+            dob: dob,
 
-            dob:
-                dob,
+            father_name: fatherName,
 
-            father_name:
-                fatherName,
+            mother_name: motherName,
 
-            mother_name:
-                motherName,
+            mobile: mobile,
 
-            mobile:
-                mobile,
+            whatsapp: whatsapp || null,
 
-            email:
-                email,
+            email: email,
 
-            whatsapp:
-                whatsapp || null,
+            address: address || null,
 
-            address:
-                address || null,
+            district: district || null,
 
-            district:
-                district || null,
+            state: state || null,
 
-            state:
-                state || null,
+            pin: pin || null,
 
-            pin:
-                pin || null,
+            pan: pan || null,
 
-            pan:
-                pan || null,
+            aadhaar: aadhaar || null,
 
-            aadhaar:
-                aadhaar || null,
+            service: service,
 
-            service:
-                service,
+            requirement: requirement,
 
-            requirement:
-                requirement,
-
-            status:
-                "Pending",
-
-            admin_note:
-                null,
+            status: "Pending",
 
             submitted_at:
                 new Date().toISOString(),
