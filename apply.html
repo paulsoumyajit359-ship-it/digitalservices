@@ -1097,7 +1097,7 @@ async function(event){
 
     if(
         editApplicationId &&
-        (!draftRecord || draftRecord.id !== editApplicationId)
+        (!draftRecord || String(draftRecord.id) !== String(editApplicationId))
     ){
         throw new Error(
             "Draft could not be loaded. Please refresh and try again."
