@@ -983,6 +983,9 @@ function progressIndex(status){
 
     const s=normalizedStatus(status);
 
+    if(s==="draft")
+        return 0;
+
     if(s==="completed")
         return 4;
 
@@ -1009,10 +1012,16 @@ function renderProgress(status){
         "Completed"
     ];
 
-    let fill=33.33;
+    let fill=0;
+
+    if(index===1)
+        fill=12.5;
+
+    if(index===2)
+        fill=37.5;
 
     if(index===3)
-        fill=66.66;
+        fill=62.5;
 
     if(index===4)
         fill=100;
