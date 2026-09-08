@@ -1368,6 +1368,8 @@ function renderApplication(app){
 
         <div class="footer-actions">
 
+            ${normalized==="draft" ? "<button class=\"view-btn\" onclick=\"window.location.href=\x27apply.html?edit="+escapeJs(String(app.id))+"\x27\">✏️ Edit Application</button>" : ""}
+
             <button
                 class="view-btn"
                 onclick="viewApplication('${escapeJs(String(app.id))}')">
