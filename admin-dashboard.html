@@ -1899,12 +1899,16 @@ function updateStats(apps){
 
 function getDocuments(app){
 
-    // document_path = final document supplied by Digital Service
-    if(app.document_path){
+    const customerDocuments =
+        Array.isArray(app.document_urls)
+            ? app.document_urls.filter(Boolean)
+            : [];
 
+    if(customerDocuments.length)
+        return customerDocuments;
+
+    if(app.document_path)
         return [app.document_path];
-
-    }
 
     return [];
 
