@@ -3278,7 +3278,9 @@ async function uploadDocument(id){
 
 
         const oldDocuments =
-            getDocuments(app);
+            app.document_path
+                ? [app.document_path]
+                : [];
 
 
         const {
