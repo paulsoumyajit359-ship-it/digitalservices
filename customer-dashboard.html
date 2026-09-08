@@ -990,9 +990,9 @@ function progressIndex(status){
         return 3;
 
     if(s==="pending")
-        return 1;
+        return 2;
 
-    return 1;
+    return 2;
 
 }
 
@@ -1009,7 +1009,7 @@ function renderProgress(status){
         "Completed"
     ];
 
-    let fill=0;
+    let fill=33.33;
 
     if(index===3)
         fill=66.66;
@@ -1318,9 +1318,7 @@ function renderApplication(app){
             </div>
 
             <div class="current-value">
-                ${escapeHtml(
-                    formatStatus(status)
-                )}
+                ${escapeHtml(normalizedStatus(status)==="pending" ? "Under Review" : formatStatus(status))}
             </div>
 
             <div class="current-time">
