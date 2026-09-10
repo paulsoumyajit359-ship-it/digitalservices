@@ -35,6 +35,21 @@
             color: inherit;
         }
 
+html[data-theme="dark"] .hero,
+html[data-theme="dark"] .services-section,
+html[data-theme="dark"] .features-section,
+html[data-theme="dark"] .about-section,
+html[data-theme="dark"] .contact-section {
+    background: #121212 !important;
+}
+
+html[data-theme="dark"] .hero h2,
+html[data-theme="dark"] .hero p,
+html[data-theme="dark"] .section-title,
+html[data-theme="dark"] .section-subtitle {
+    color: #f1f1f1 !important;
+}
+
         /* =========================
            NAVBAR
         ========================== */
@@ -102,6 +117,53 @@
             opacity: 0.75;
         }
 
+        .theme-toggle {
+            border: 1px solid rgba(255,255,255,0.55);
+            background: rgba(255,255,255,0.12);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            font-size: 19px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s ease;
+        }
+
+html[data-theme="dark"] body {
+    background: #121212 !important;
+    color: #f1f1f1 !important;
+}
+
+html[data-theme="dark"] .service-card,
+html[data-theme="dark"] .feature-card,
+html[data-theme="dark"] .ad-card,
+html[data-theme="dark"] .testimonial-card {
+    background: #1e1e1e !important;
+    color: #f1f1f1 !important;
+    border-color: #333 !important;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+    background: #1e1e1e !important;
+    color: #f1f1f1 !important;
+    border-color: #444 !important;
+}
+
+html[data-theme="dark"] a {
+    color: #8ab4f8;
+}
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.22);
+            transform: scale(1.05);
+        }
+
+
         /* =========================
            HERO
         ========================== */
@@ -163,6 +225,7 @@
         .btn-outline:hover {
             background: #edf5ff;
         }
+
 
         /* =========================
            ADVERTISEMENT SECTION
@@ -301,6 +364,7 @@
             font-size: 17px;
         }
 
+
         /* =========================
            SERVICES
         ========================== */
@@ -396,6 +460,7 @@
             font-size: 15px;
         }
 
+
         /* =========================
            PROFESSIONAL FOOTER
         ========================== */
@@ -489,6 +554,7 @@
         .footer-bottom a:hover {
             color: #60a5fa;
         }
+
 
         /* =========================
            MOBILE
@@ -663,6 +729,10 @@
         <a href="signup.html">Sign Up</a>
 
         <a href="admin-login.html">🔐 Admin Login</a>
+
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+            🌙
+        </button>
 
     </nav>
 
@@ -1634,6 +1704,37 @@ function showNoAdvertisements() {
 ===================================================== */
 
 loadAdvertisements();
+
+/* =====================================================
+   DARK / LIGHT MODE
+===================================================== */
+
+const themeToggle = document.getElementById("themeToggle");
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+
+    if (theme === "dark") {
+        themeToggle.textContent = "☀️";
+        themeToggle.setAttribute("aria-label", "Switch to light mode");
+        themeToggle.setAttribute("title", "Switch to light mode");
+    } else {
+        themeToggle.textContent = "🌙";
+        themeToggle.setAttribute("aria-label", "Switch to dark mode");
+        themeToggle.setAttribute("title", "Switch to dark mode");
+    }
+}
+
+const savedTheme = localStorage.getItem("theme") || "light";
+applyTheme(savedTheme);
+
+themeToggle.addEventListener("click", function () {
+    const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+    localStorage.setItem("theme", nextTheme);
+    applyTheme(nextTheme);
+});
 
 
 </script>
