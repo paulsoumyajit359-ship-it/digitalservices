@@ -1387,7 +1387,7 @@ applyServiceFromUrl();
     function collectDraft(){
         return {
             customer_name:getValue("customerName"),
-            dob:getValue("dob"),
+            dob:getValue("dob") || null,
             father_name:getValue("fatherName"),
             mother_name:getValue("motherName"),
             mobile:getValue("mobile"),
