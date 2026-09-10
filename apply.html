@@ -1283,7 +1283,7 @@ async function(event){
             await supabaseClient
                 .from("applications")
                 .update({
-                    document_urls:Array.from(new Set([...(Array.isArray(draftRecord.document_urls) ? draftRecord.document_urls : []), path]))
+                    document_urls:Array.from(new Set([...(Array.isArray(draftRecord && draftRecord.document_urls) ? draftRecord.document_urls : []), path]))
                 })
                 .eq(
                     "application_id",
