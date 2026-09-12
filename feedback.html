@@ -9,6 +9,162 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+        .navbar {
+            width: 100%;
+            background: linear-gradient(135deg, #164b9b, #0875dc);
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        .brand-logo {
+            width: 58px;
+            height: 58px;
+            background: white;
+            color: #1260c9;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .brand-text h1 {
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .brand-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 28px;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            color: white;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.75;
+        }
+
+        .theme-toggle {
+            border: 1px solid rgba(255,255,255,0.55);
+            background: rgba(255,255,255,0.12);
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            font-size: 19px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s ease;
+        }
+
+html[data-theme="dark"] body {
+    background: #121212 !important;
+    color: #f1f1f1 !important;
+}
+
+html[data-theme="dark"] .service-card,
+html[data-theme="dark"] .feature-card,
+html[data-theme="dark"] .ad-card,
+html[data-theme="dark"] .testimonial-card {
+    background: #1e1e1e !important;
+    color: #f1f1f1 !important;
+    border-color: #333 !important;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+    background: #1e1e1e !important;
+    color: #f1f1f1 !important;
+    border-color: #444 !important;
+}
+
+html[data-theme="dark"] a {
+    color: #8ab4f8;
+}
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.22);
+            transform: scale(1.05);
+        }
+
+
+
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 14px 4%;
+                gap: 16px;
+            }
+
+            .nav-links {
+                gap: 14px;
+                flex-wrap: wrap;
+            }
+
+            .brand-text h1 {
+                font-size: 20px;
+            }
+
+            .brand-text p {
+                font-size: 12px;
+            }
+
+            .brand-logo {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                position: relative;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                justify-content: flex-end;
+                gap: 10px;
+                font-size: 12px;
+            }
+
+            .theme-toggle {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+        }
+
         body {
             min-height: 100vh;
             display: flex;
