@@ -1138,6 +1138,10 @@ tbody tr:hover{
         📢 Advertisement Management
     </button>
 
+
+    <button class="tab" data-panel="feedbackPanel">
+        💬 Customer Feedback
+    </button>
 </div>
 
 
@@ -1398,6 +1402,35 @@ tbody tr:hover{
 
 </section>
 
+
+<section class="panel" id="feedbackPanel">
+
+<div class="box">
+
+<div class="box-header">
+
+<div>
+
+<h2>💬 Customer Feedback</h2>
+
+<p>Review customer feedback and approve or reject submissions.</p>
+
+</div>
+
+<button class="refresh-btn" id="refreshFeedback" type="button">🔄 Refresh</button>
+
+</div>
+
+<div id="feedbackContent">
+
+<div class="loading">Loading feedback...</div>
+
+</div>
+
+</div>
+
+</section>
+
 </main>
 
 
@@ -1573,6 +1606,249 @@ function escapeJs(value){
         .replace(/\\/g,"\\\\")
         .replace(/'/g,"\\'")
         .replace(/\r?\n/g,"\\n");
+
+}
+
+
+
+async function loadFeedback(){
+
+    const container = $("feedbackContent");
+
+    container.innerHTML =
+        '<div class="loading">Loading feedback...</div>';
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("customer_feedback")
+                .select("*")
+                .order("created_at", {
+                    ascending:false
+                });
+
+        if(error){
+            throw error;
+        }
+
+        if(!data || data.length === 0){
+
+            container.innerHTML =
+                '<div class="empty"><h3>No Customer Feedback</h3><p>No feedback submissions yet.</p></div>';
+
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="table-wrap">
+                <table style="min-width:900px;">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Rating</th>
+                            <th>Feedback</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="feedbackTableBody"></tbody>
+                </table>
+            </div>
+        `;
+
+        const body = $("feedbackTableBody");
+
+        data.forEach(function(item){
+
+            const row =
+                document.createElement("tr");
+
+            const rating =
+                "★".repeat(Number(item.rating)) +
+                "☆".repeat(5 - Number(item.rating));
+
+            const date =
+                item.created_at
+                    ? new Date(item.created_at).toLocaleString()
+                    : "";
+
+            row.innerHTML = `
+                <td class="customer">
+                    ${escapeHtml(item.customer_name)}
+                </td>
+
+                <td>
+                    ${rating}
+                </td>
+
+                <td style="max-width:360px;white-space:normal;">
+                    ${escapeHtml(item.feedback)}
+                </td>
+
+                <td>
+                    <strong>${escapeHtml(capitalize(item.status))}</strong>
+                </td>
+
+                <td class="date">
+                    ${escapeHtml(date)}
+                </td>
+
+                <td>
+                    ${
+                        item.status === "pending"
+                        ? `
+                            <button
+                                class="primary-btn feedback-approve"
+                                data-id="${escapeHtml(item.id)}"
+                                type="button"
+                            >
+                                ✓ Approve
+                            </button>
+
+                            <button
+                                class="secondary-btn feedback-reject"
+                                data-id="${escapeHtml(item.id)}"
+                                type="button"
+                            >
+                                ✕ Reject
+                            </button>
+                        `
+                        : "—"
+                    }
+                </td>
+            `;
+
+            body.appendChild(row);
+
+        });
+
+        document
+            .querySelectorAll(".feedback-approve")
+            .forEach(function(button){
+
+                button.onclick =
+                    function(){
+
+                        updateFeedbackStatus(
+                            button.dataset.id,
+                            "approved"
+                        );
+
+                    };
+
+            });
+
+        document
+            .querySelectorAll(".feedback-reject")
+            .forEach(function(button){
+
+                button.onclick =
+                    function(){
+
+                        updateFeedbackStatus(
+                            button.dataset.id,
+                            "rejected"
+                        );
+
+                    };
+
+            });
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="empty">
+                <h3>Unable to load feedback</h3>
+                <p>${escapeHtml(error.message)}</p>
+            </div>
+        `;
+
+    }
+
+}
+
+
+async function updateFeedbackStatus(
+    id,
+    status
+){
+
+    const action =
+        status === "approved"
+            ? "approve"
+            : "reject";
+
+    if(
+        !confirm(
+            "Are you sure you want to " +
+            action +
+            " this feedback?"
+        )
+    ){
+
+        return;
+
+    }
+
+    try{
+
+        const updateData = {
+            status:status
+        };
+
+        if(status === "approved"){
+
+            updateData.approved_at =
+                new Date().toISOString();
+
+        }
+        else{
+
+            updateData.approved_at =
+                null;
+
+        }
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("customer_feedback")
+                .update(updateData)
+                .eq("id", id);
+
+        if(error){
+            throw error;
+        }
+
+        toast(
+            status === "approved"
+                ? "Feedback approved successfully."
+                : "Feedback rejected successfully."
+        );
+
+        await loadFeedback();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        toast(
+            "Feedback update failed: " +
+            error.message,
+            "error"
+        );
+
+    }
 
 }
 
@@ -4346,8 +4622,11 @@ document.addEventListener(
 
 
 /* =========================================================
+
    INITIALIZE
 ========================================================= */
+
+document.getElementById("refreshFeedback").onclick = loadFeedback;
 
 (async function(){
 
@@ -4366,7 +4645,9 @@ document.addEventListener(
 
         loadApplications(),
 
-        loadAds()
+        loadAds(),
+
+        loadFeedback()
 
     ]);
 
