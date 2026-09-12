@@ -1333,103 +1333,26 @@ html[data-theme="dark"] a {
             <span>⭐ Trusted by Our Customers</span>
             <h2>Real People. Real Experiences.</h2>
             <p>
-                See what our customers say about their experience and share
-                your own feedback with us.
+                See what our customers say about their experience.
             </p>
         </div>
 
-        <div class="trust-stats single-feedback-stat">
-
-
-            <div class="trust-stat">
-                <div class="trust-stat-icon">❤️</div>
-                <strong id="happyCustomerCount">0</strong>
-                <span>Happy Customers</span>
-            </div>
-        </div>
-
-        <div class="feedback-layout">
-
-            <div class="feedback-card">
-                <h3>Share Your Experience</h3>
-                <p>
-                    Your feedback helps us improve our digital services.
-                    All feedback is reviewed before appearing publicly.
-                </p>
-
-                <form id="customerFeedbackForm">
-
-                    <div class="feedback-form-group">
-                        <label for="feedbackName">Your Name</label>
-                        <input
-                            type="text"
-                            id="feedbackName"
-                            maxlength="80"
-                            required
-                            autocomplete="name"
-                            placeholder="Enter your name"
-                        >
-                    </div>
-
-                    <div class="feedback-form-group">
-                        <label>Your Rating</label>
-
-                        <div class="rating-input" aria-label="Choose a rating">
-                            <input type="radio" id="rating5" name="rating" value="5" required>
-                            <label for="rating5" title="5 stars">★</label>
-
-                            <input type="radio" id="rating4" name="rating" value="4">
-                            <label for="rating4" title="4 stars">★</label>
-
-                            <input type="radio" id="rating3" name="rating" value="3">
-                            <label for="rating3" title="3 stars">★</label>
-
-                            <input type="radio" id="rating2" name="rating" value="2">
-                            <label for="rating2" title="2 stars">★</label>
-
-                            <input type="radio" id="rating1" name="rating" value="1">
-                            <label for="rating1" title="1 star">★</label>
-                        </div>
-                    </div>
-
-                    <div class="feedback-form-group">
-                        <label for="feedbackText">Your Feedback</label>
-                        <textarea
-                            id="feedbackText"
-                            maxlength="1000"
-                            minlength="10"
-                            required
-                            placeholder="Tell us about your experience..."
-                        ></textarea>
-                    </div>
-
-                    <button class="feedback-submit" type="submit">
-                        Submit Feedback
-                    </button>
-
-                    <div
-                        id="feedbackMessage"
-                        class="feedback-message"
-                        role="status"
-                        aria-live="polite"
-                    ></div>
-
-                </form>
+        <div class="feedback-card feedback-display-only">
+            <div class="feedback-card-header">
+                <div>
+                    <h3>What Customers Say</h3>
+                    <p>Approved customer feedback from our customers.</p>
+                </div>
+                <a class="feedback-write-button" href="feedback.html">
+                    Give Feedback
+                </a>
             </div>
 
-            <div class="feedback-card">
-                <h3>What Customers Say</h3>
-                <p>
-                    Approved customer feedback appears here.
-                </p>
-
-                <div id="testimonialList" class="testimonial-list">
-                    <div class="testimonial-empty">
-                        Loading customer feedback...
-                    </div>
+            <div id="testimonialList" class="testimonial-list">
+                <div class="testimonial-empty">
+                    Loading customer feedback...
                 </div>
             </div>
-
         </div>
     </div>
 </section>
@@ -2511,17 +2434,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const visitorCountElement =
         document.getElementById("visitorCount");
 
-    const happyCustomerElement =
-        document.getElementById("happyCustomerCount");
-
     const testimonialList =
         document.getElementById("testimonialList");
-
-    const feedbackForm =
-        document.getElementById("customerFeedbackForm");
-
-    const feedbackMessage =
-        document.getElementById("feedbackMessage");
 
     async function loadVisitorCount() {
         try {
@@ -2563,9 +2477,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const rows = await response.json();
-
-            happyCustomerElement.textContent =
-                Number(rows.length).toLocaleString("en-IN");
 
             if (!rows.length) {
                 testimonialList.innerHTML =
@@ -2621,8 +2532,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }).join("");
 
         } catch (error) {
-            happyCustomerElement.textContent = "0";
-
             testimonialList.innerHTML =
                 '<div class="testimonial-empty">' +
                 'Customer feedback is temporarily unavailable.' +
@@ -2630,76 +2539,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    feedbackForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
-
-        const submitButton =
-            feedbackForm.querySelector("button[type='submit']");
-
-        const name =
-            document.getElementById("feedbackName").value.trim();
-
-        const ratingInput =
-            document.querySelector("input[name='rating']:checked");
-
-        const feedback =
-            document.getElementById("feedbackText").value.trim();
-
-        if (!name || !ratingInput || feedback.length < 10) {
-            feedbackMessage.className =
-                "feedback-message error";
-
-            feedbackMessage.textContent =
-                "Please complete your name, rating and feedback.";
-
-            return;
-        }
-
-        submitButton.disabled = true;
-        submitButton.textContent = "Submitting...";
-
-        try {
-            const response = await fetch(
-                SUPABASE_URL + "/rest/v1/customer_feedback",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "apikey": SUPABASE_PUBLISHABLE_KEY,
-                        "Prefer": "return=minimal"
-                    },
-                    body: JSON.stringify({
-                        customer_name: name,
-                        rating: Number(ratingInput.value),
-                        feedback: feedback,
-                        status: "pending"
-                    })
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error("Feedback submission failed.");
-            }
-
-            feedbackForm.reset();
-
-            feedbackMessage.className =
-                "feedback-message success";
-
-            feedbackMessage.textContent =
-                "Thank you! Your feedback has been submitted and is awaiting admin approval.";
-
-        } catch (error) {
-            feedbackMessage.className =
-                "feedback-message error";
-
-            feedbackMessage.textContent =
-                "Unable to submit feedback right now. Please try again.";
-        } finally {
-            submitButton.disabled = false;
-            submitButton.textContent = "Submit Feedback";
-        }
-    });
 
     loadVisitorCount();
     loadApprovedFeedback();
@@ -2787,6 +2626,60 @@ document.addEventListener("DOMContentLoaded", function () {
             grid-template-columns: 1fr;
         }
     }
+
+    .feedback-display-only {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 22px;
+        border-radius: 14px;
+    }
+
+    .feedback-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .feedback-card-header h3 {
+        margin-bottom: 5px;
+    }
+
+    .feedback-card-header p {
+        margin: 0;
+    }
+
+    .feedback-write-button {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 15px;
+        border-radius: 8px;
+        background: #1769d1;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: opacity 0.2s ease;
+    }
+
+    .feedback-write-button:hover {
+        opacity: 0.9;
+    }
+
+    @media (max-width: 600px) {
+        .feedback-card-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .feedback-write-button {
+            width: 100%;
+        }
+    }
+
 </style>
 </body>
 </html>

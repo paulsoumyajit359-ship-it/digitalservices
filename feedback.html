@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Give Feedback - Digital Services</title>
+
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feedback-page {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            background: #f7f9fc;
+        }
+
+        .feedback-container {
+            width: 100%;
+            max-width: 620px;
+        }
+
+        .feedback-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .feedback-header span {
+            color: #1769d1;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .feedback-header h1 {
+            margin: 8px 0;
+            font-size: 32px;
+        }
+
+        .feedback-header p {
+            margin: 0;
+            color: #68778d;
+            line-height: 1.6;
+        }
+
+        .feedback-form-card {
+            background: #ffffff;
+            border: 1px solid #e3e9f1;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(25, 55, 95, 0.08);
+        }
+
+        .feedback-form-group {
+            margin-bottom: 18px;
+        }
+
+        .feedback-form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .feedback-form-group input,
+        .feedback-form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #d6dee9;
+            border-radius: 9px;
+            padding: 11px 12px;
+            font: inherit;
+            background: #ffffff;
+            color: #172033;
+            outline: none;
+        }
+
+        .feedback-form-group input:focus,
+        .feedback-form-group textarea:focus {
+            border-color: #1769d1;
+            box-shadow: 0 0 0 3px rgba(23, 105, 209, 0.1);
+        }
+
+        .feedback-form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .rating-input {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 4px;
+        }
+
+        .rating-input input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .rating-input label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 30px;
+            line-height: 1;
+            color: #c7d0dc;
+            transition: color 0.15s ease;
+        }
+
+        .rating-input label:hover,
+        .rating-input label:hover ~ label,
+        .rating-input input:checked ~ label {
+            color: #f5b301;
+        }
+
+        .feedback-submit {
+            width: 100%;
+            border: 0;
+            border-radius: 9px;
+            padding: 12px 16px;
+            background: #1769d1;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .feedback-submit:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .feedback-message {
+            margin-top: 14px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .feedback-message.success {
+            color: #16804b;
+        }
+
+        .feedback-message.error {
+            color: #c0392b;
+        }
+
+        .feedback-back {
+            display: block;
+            margin-top: 18px;
+            text-align: center;
+            color: #1769d1;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        html[data-theme="dark"] .feedback-page {
+            background: #0b1220;
+        }
+
+        html[data-theme="dark"] .feedback-form-card {
+            background: #111b2e;
+            border-color: #24334a;
+            box-shadow: none;
+        }
+
+        html[data-theme="dark"] .feedback-header p {
+            color: #9aabc1;
+        }
+
+        html[data-theme="dark"] .feedback-form-group input,
+        html[data-theme="dark"] .feedback-form-group textarea {
+            background: #0d1728;
+            border-color: #2b3c55;
+            color: #eef4fb;
+        }
+
+        @media (max-width: 600px) {
+            .feedback-page {
+                padding: 35px 16px;
+            }
+
+            .feedback-form-card {
+                padding: 21px;
+            }
+
+            .feedback-header h1 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.html" class="logo">Digital Services</a>
+
+        <nav class="main-nav">
+            <a href="index.html">Home</a>
+        </nav>
+    </div>
+</header>
+
+<main class="feedback-page">
+    <div class="feedback-container">
+
+        <div class="feedback-header">
+            <span>⭐ CUSTOMER FEEDBACK</span>
+            <h1>Share Your Experience</h1>
+            <p>
+                Your feedback helps us improve our digital services.
+                All feedback is reviewed before appearing publicly.
+            </p>
+        </div>
+
+        <div class="feedback-form-card">
+
+            <form id="customerFeedbackForm">
+
+                <div class="feedback-form-group">
+                    <label for="feedbackName">Your Name</label>
+                    <input
+                        type="text"
+                        id="feedbackName"
+                        maxlength="80"
+                        required
+                        autocomplete="name"
+                        placeholder="Enter your name"
+                    >
+                </div>
+
+                <div class="feedback-form-group">
+                    <label>Your Rating</label>
+
+                    <div class="rating-input" aria-label="Choose a rating">
+                        <input type="radio" id="rating5" name="rating" value="5" required>
+                        <label for="rating5" title="5 stars">★</label>
+
+                        <input type="radio" id="rating4" name="rating" value="4">
+                        <label for="rating4" title="4 stars">★</label>
+
+                        <input type="radio" id="rating3" name="rating" value="3">
+                        <label for="rating3" title="3 stars">★</label>
+
+                        <input type="radio" id="rating2" name="rating" value="2">
+                        <label for="rating2" title="2 stars">★</label>
+
+                        <input type="radio" id="rating1" name="rating" value="1">
+                        <label for="rating1" title="1 star">★</label>
+                    </div>
+                </div>
+
+                <div class="feedback-form-group">
+                    <label for="feedbackText">Your Feedback</label>
+                    <textarea
+                        id="feedbackText"
+                        maxlength="1000"
+                        minlength="10"
+                        required
+                        placeholder="Tell us about your experience..."
+                    ></textarea>
+                </div>
+
+                <button class="feedback-submit" type="submit">
+                    Submit Feedback
+                </button>
+
+                <div
+                    id="feedbackMessage"
+                    class="feedback-message"
+                    role="status"
+                    aria-live="polite"
+                ></div>
+
+            </form>
+
+            <a href="index.html" class="feedback-back">
+                ← Back to Home
+            </a>
+
+        </div>
+    </div>
+</main>
+
+<script src="theme.js"></script>
+
+<script>
+(function () {
+    const SUPABASE_URL =
+        "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+
+    const feedbackForm =
+        document.getElementById("customerFeedbackForm");
+
+    const feedbackMessage =
+        document.getElementById("feedbackMessage");
+
+    feedbackForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const submitButton =
+            feedbackForm.querySelector("button[type='submit']");
+
+        const name =
+            document.getElementById("feedbackName").value.trim();
+
+        const ratingInput =
+            document.querySelector("input[name='rating']:checked");
+
+        const feedback =
+            document.getElementById("feedbackText").value.trim();
+
+        if (!name || !ratingInput || feedback.length < 10) {
+            feedbackMessage.className =
+                "feedback-message error";
+
+            feedbackMessage.textContent =
+                "Please complete your name, rating and feedback.";
+
+            return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+
+        try {
+            const response = await fetch(
+                SUPABASE_URL + "/rest/v1/customer_feedback",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "apikey": SUPABASE_PUBLISHABLE_KEY,
+                        "Prefer": "return=minimal"
+                    },
+                    body: JSON.stringify({
+                        customer_name: name,
+                        rating: Number(ratingInput.value),
+                        feedback: feedback,
+                        status: "pending"
+                    })
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Feedback submission failed.");
+            }
+
+            feedbackForm.reset();
+
+            feedbackMessage.className =
+                "feedback-message success";
+
+            feedbackMessage.textContent =
+                "Thank you! Your feedback has been submitted and is awaiting admin approval.";
+
+        } catch (error) {
+            feedbackMessage.className =
+                "feedback-message error";
+
+            feedbackMessage.textContent =
+                "Unable to submit feedback right now. Please try again.";
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit Feedback";
+        }
+    });
+})();
+</script>
+
+</body>
+</html>
