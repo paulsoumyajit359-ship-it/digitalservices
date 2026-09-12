@@ -1,11 +1,22 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "digitalservices",
-  "compatibility_date": "2026-08-26",
-  "observability": {
-    "enabled": true
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "digitalservices",
+	"compatibility_date": "2026-08-26",
+	"observability": {
+		"enabled": true
+	},
+	"main": "worker.js",
+  "vars": {
+    "SUPABASE_URL": "https://nlzrdjvlkdqungmhnsrl.supabase.co"
   },
-  "assets": {
-    "directory": "."
-  }
+	"assets": {
+		"directory": "."
+	},
+	"kv_namespaces": [
+		{
+			"binding": "VISITOR_KV",
+			"id": "e913e001a31e4a73811eba4889d2af9e",
+			"remote": true
+		}
+	]
 }

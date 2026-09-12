@@ -2074,5 +2074,632 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+
+<style>
+    .trust-section {
+        padding: 70px 20px;
+        background: #f6f9ff;
+    }
+
+    .trust-container {
+        max-width: 1150px;
+        margin: 0 auto;
+    }
+
+    .trust-heading {
+        text-align: center;
+        margin-bottom: 38px;
+    }
+
+    .trust-heading span {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: #e8f2ff;
+        color: #1769d1;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .trust-heading h2 {
+        margin: 0 0 10px;
+        font-size: 34px;
+        color: #10233f;
+    }
+
+    .trust-heading p {
+        max-width: 680px;
+        margin: 0 auto;
+        color: #65758b;
+        line-height: 1.7;
+    }
+
+    .trust-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        max-width: 760px;
+        margin: 0 auto 42px;
+    }
+
+    .trust-stat {
+        padding: 25px;
+        background: #ffffff;
+        border: 1px solid #e3ebf5;
+        border-radius: 18px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(30, 75, 130, 0.06);
+    }
+
+    .trust-stat-icon {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+
+    .trust-stat strong {
+        display: block;
+        font-size: 30px;
+        color: #1769d1;
+        margin-bottom: 4px;
+    }
+
+    .trust-stat span {
+        color: #6b7b90;
+        font-size: 14px;
+    }
+
+    .feedback-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        align-items: start;
+    }
+
+    .feedback-card {
+        background: #ffffff;
+        border: 1px solid #e3ebf5;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 10px 30px rgba(30, 75, 130, 0.06);
+    }
+
+    .feedback-card h3 {
+        margin: 0 0 8px;
+        color: #10233f;
+        font-size: 22px;
+    }
+
+    .feedback-card > p {
+        margin: 0 0 22px;
+        color: #6b7b90;
+        line-height: 1.6;
+    }
+
+    .feedback-form-group {
+        margin-bottom: 15px;
+    }
+
+    .feedback-form-group label {
+        display: block;
+        margin-bottom: 7px;
+        color: #263a55;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .feedback-form-group input,
+    .feedback-form-group textarea {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #d5e0ee;
+        border-radius: 11px;
+        padding: 12px 13px;
+        font: inherit;
+        outline: none;
+        background: #fbfdff;
+        color: #1b2b41;
+    }
+
+    .feedback-form-group textarea {
+        min-height: 115px;
+        resize: vertical;
+    }
+
+    .feedback-form-group input:focus,
+    .feedback-form-group textarea:focus {
+        border-color: #3184e8;
+        box-shadow: 0 0 0 3px rgba(49, 132, 232, 0.1);
+    }
+
+    .rating-input {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        gap: 4px;
+    }
+
+    .rating-input input {
+        display: none;
+    }
+
+    .rating-input label {
+        margin: 0;
+        font-size: 28px;
+        cursor: pointer;
+        color: #c8d2df;
+        transition: color 0.15s ease;
+    }
+
+    .rating-input label:hover,
+    .rating-input label:hover ~ label,
+    .rating-input input:checked ~ label {
+        color: #f5b400;
+    }
+
+    .feedback-submit {
+        width: 100%;
+        border: 0;
+        border-radius: 11px;
+        padding: 13px 18px;
+        background: #1769d1;
+        color: #ffffff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .feedback-submit:hover {
+        background: #0f57b3;
+    }
+
+    .feedback-message {
+        display: none;
+        margin-top: 13px;
+        padding: 11px 13px;
+        border-radius: 10px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .feedback-message.success {
+        display: block;
+        background: #eaf8ef;
+        color: #1c7138;
+    }
+
+    .feedback-message.error {
+        display: block;
+        background: #fff0f0;
+        color: #a83232;
+    }
+
+    .testimonial-list {
+        display: grid;
+        gap: 15px;
+    }
+
+    .testimonial-item {
+        padding: 20px;
+        border: 1px solid #e3ebf5;
+        border-radius: 15px;
+        background: #fbfdff;
+    }
+
+    .testimonial-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 9px;
+    }
+
+    .testimonial-name {
+        font-weight: 700;
+        color: #203650;
+    }
+
+    .testimonial-rating {
+        color: #f5b400;
+        white-space: nowrap;
+    }
+
+    .testimonial-item p {
+        margin: 0;
+        color: #61728a;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+    .testimonial-empty {
+        padding: 25px;
+        border: 1px dashed #cbd8e8;
+        border-radius: 15px;
+        text-align: center;
+        color: #718198;
+    }
+
+    html[data-theme="dark"] .trust-section {
+        background: #0b1220;
+    }
+
+    html[data-theme="dark"] .trust-heading h2,
+    html[data-theme="dark"] .feedback-card h3 {
+        color: #e7f0ff;
+    }
+
+    html[data-theme="dark"] .trust-heading p,
+    html[data-theme="dark"] .feedback-card > p,
+    html[data-theme="dark"] .trust-stat span,
+    html[data-theme="dark"] .testimonial-item p {
+        color: #9fb2ca;
+    }
+
+    html[data-theme="dark"] .trust-heading span {
+        background: #17345a;
+        color: #74b5ff;
+    }
+
+    html[data-theme="dark"] .trust-stat,
+    html[data-theme="dark"] .feedback-card,
+    html[data-theme="dark"] .testimonial-item {
+        background: #111c2e;
+        border-color: #263a55;
+    }
+
+    html[data-theme="dark"] .feedback-form-group label,
+    html[data-theme="dark"] .testimonial-name {
+        color: #dce9f8;
+    }
+
+    html[data-theme="dark"] .feedback-form-group input,
+    html[data-theme="dark"] .feedback-form-group textarea {
+        background: #0f1a2b;
+        color: #e7f0ff;
+        border-color: #304762;
+    }
+
+    @media (max-width: 800px) {
+        .feedback-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .trust-heading h2 {
+            font-size: 28px;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .trust-section {
+            padding: 50px 15px;
+        }
+
+        .trust-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .feedback-card {
+            padding: 21px;
+        }
+    }
+</style>
+
+<section class="trust-section" id="customer-feedback-section">
+    <div class="trust-container">
+
+        <div class="trust-heading">
+            <span>⭐ Trusted by Our Customers</span>
+            <h2>Real People. Real Experiences.</h2>
+            <p>
+                See what our customers say about their experience and share
+                your own feedback with us.
+            </p>
+        </div>
+
+        <div class="trust-stats">
+            <div class="trust-stat">
+                <div class="trust-stat-icon">👥</div>
+                <strong id="visitorCount">0</strong>
+                <span>Visitors</span>
+            </div>
+
+            <div class="trust-stat">
+                <div class="trust-stat-icon">❤️</div>
+                <strong id="happyCustomerCount">0</strong>
+                <span>Happy Customers</span>
+            </div>
+        </div>
+
+        <div class="feedback-layout">
+
+            <div class="feedback-card">
+                <h3>Share Your Experience</h3>
+                <p>
+                    Your feedback helps us improve our digital services.
+                    All feedback is reviewed before appearing publicly.
+                </p>
+
+                <form id="customerFeedbackForm">
+
+                    <div class="feedback-form-group">
+                        <label for="feedbackName">Your Name</label>
+                        <input
+                            type="text"
+                            id="feedbackName"
+                            maxlength="80"
+                            required
+                            autocomplete="name"
+                            placeholder="Enter your name"
+                        >
+                    </div>
+
+                    <div class="feedback-form-group">
+                        <label>Your Rating</label>
+
+                        <div class="rating-input" aria-label="Choose a rating">
+                            <input type="radio" id="rating5" name="rating" value="5" required>
+                            <label for="rating5" title="5 stars">★</label>
+
+                            <input type="radio" id="rating4" name="rating" value="4">
+                            <label for="rating4" title="4 stars">★</label>
+
+                            <input type="radio" id="rating3" name="rating" value="3">
+                            <label for="rating3" title="3 stars">★</label>
+
+                            <input type="radio" id="rating2" name="rating" value="2">
+                            <label for="rating2" title="2 stars">★</label>
+
+                            <input type="radio" id="rating1" name="rating" value="1">
+                            <label for="rating1" title="1 star">★</label>
+                        </div>
+                    </div>
+
+                    <div class="feedback-form-group">
+                        <label for="feedbackText">Your Feedback</label>
+                        <textarea
+                            id="feedbackText"
+                            maxlength="1000"
+                            minlength="10"
+                            required
+                            placeholder="Tell us about your experience..."
+                        ></textarea>
+                    </div>
+
+                    <button class="feedback-submit" type="submit">
+                        Submit Feedback
+                    </button>
+
+                    <div
+                        id="feedbackMessage"
+                        class="feedback-message"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
+
+                </form>
+            </div>
+
+            <div class="feedback-card">
+                <h3>What Customers Say</h3>
+                <p>
+                    Approved customer feedback appears here.
+                </p>
+
+                <div id="testimonialList" class="testimonial-list">
+                    <div class="testimonial-empty">
+                        Loading customer feedback...
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+(function () {
+    const SUPABASE_URL =
+        "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+
+    const visitorCountElement =
+        document.getElementById("visitorCount");
+
+    const happyCustomerElement =
+        document.getElementById("happyCustomerCount");
+
+    const testimonialList =
+        document.getElementById("testimonialList");
+
+    const feedbackForm =
+        document.getElementById("customerFeedbackForm");
+
+    const feedbackMessage =
+        document.getElementById("feedbackMessage");
+
+    async function loadVisitorCount() {
+        try {
+            const response =
+                await fetch("/api/visitor-count", {
+                    method: "GET",
+                    cache: "no-store"
+                });
+
+            const data = await response.json();
+
+            if (data.success) {
+                visitorCountElement.textContent =
+                    Number(data.visitorCount).toLocaleString("en-IN");
+            }
+        } catch (error) {
+            visitorCountElement.textContent = "0";
+        }
+    }
+
+    async function loadApprovedFeedback() {
+        try {
+            const response = await fetch(
+                SUPABASE_URL +
+                "/rest/v1/customer_feedback" +
+                "?status=eq.approved" +
+                "&select=customer_name,rating,feedback,approved_at" +
+                "&order=approved_at.desc" +
+                "&limit=6",
+                {
+                    headers: {
+                        apikey: SUPABASE_PUBLISHABLE_KEY
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Unable to load feedback.");
+            }
+
+            const rows = await response.json();
+
+            happyCustomerElement.textContent =
+                Number(rows.length).toLocaleString("en-IN");
+
+            if (!rows.length) {
+                testimonialList.innerHTML =
+                    '<div class="testimonial-empty">' +
+                    'Be the first customer to share your experience.' +
+                    '</div>';
+                return;
+            }
+
+            testimonialList.innerHTML = rows.map(function (item) {
+                const name =
+                    String(item.customer_name)
+                        .replace(/[&<>"']/g, function (char) {
+                            return {
+                                "&": "&amp;",
+                                "<": "&lt;",
+                                ">": "&gt;",
+                                '"': "&quot;",
+                                "'": "&#039;"
+                            }[char];
+                        });
+
+                const feedback =
+                    String(item.feedback)
+                        .replace(/[&<>"']/g, function (char) {
+                            return {
+                                "&": "&amp;",
+                                "<": "&lt;",
+                                ">": "&gt;",
+                                '"': "&quot;",
+                                "'": "&#039;"
+                            }[char];
+                        });
+
+                const rating =
+                    Math.min(5, Math.max(1, Number(item.rating) || 0));
+
+                return (
+                    '<div class="testimonial-item">' +
+                        '<div class="testimonial-top">' +
+                            '<span class="testimonial-name">' +
+                                name +
+                            '</span>' +
+                            '<span class="testimonial-rating">' +
+                                "★".repeat(rating) +
+                                "</span>" +
+                        "</div>" +
+                        "<p>" +
+                            feedback +
+                        "</p>" +
+                    "</div>"
+                );
+            }).join("");
+
+        } catch (error) {
+            happyCustomerElement.textContent = "0";
+
+            testimonialList.innerHTML =
+                '<div class="testimonial-empty">' +
+                'Customer feedback is temporarily unavailable.' +
+                '</div>';
+        }
+    }
+
+    feedbackForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const submitButton =
+            feedbackForm.querySelector("button[type='submit']");
+
+        const name =
+            document.getElementById("feedbackName").value.trim();
+
+        const ratingInput =
+            document.querySelector("input[name='rating']:checked");
+
+        const feedback =
+            document.getElementById("feedbackText").value.trim();
+
+        if (!name || !ratingInput || feedback.length < 10) {
+            feedbackMessage.className =
+                "feedback-message error";
+
+            feedbackMessage.textContent =
+                "Please complete your name, rating and feedback.";
+
+            return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+
+        try {
+            const response = await fetch(
+                SUPABASE_URL + "/rest/v1/customer_feedback",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "apikey": SUPABASE_PUBLISHABLE_KEY,
+                        "Prefer": "return=minimal"
+                    },
+                    body: JSON.stringify({
+                        customer_name: name,
+                        rating: Number(ratingInput.value),
+                        feedback: feedback,
+                        status: "pending"
+                    })
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Feedback submission failed.");
+            }
+
+            feedbackForm.reset();
+
+            feedbackMessage.className =
+                "feedback-message success";
+
+            feedbackMessage.textContent =
+                "Thank you! Your feedback has been submitted and is awaiting admin approval.";
+
+        } catch (error) {
+            feedbackMessage.className =
+                "feedback-message error";
+
+            feedbackMessage.textContent =
+                "Unable to submit feedback right now. Please try again.";
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit Feedback";
+        }
+    });
+
+    loadVisitorCount();
+    loadApprovedFeedback();
+})();
+</script>
+
 </body>
 </html>
