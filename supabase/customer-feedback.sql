@@ -61,7 +61,7 @@ on public.customer_feedback
 for select
 to authenticated
 using (
-    auth.uid() = 'e3c0a5b6-7bb4-4efa-b7c4-64b37cc84b08'::uuid
+    (select auth.uid()) = 'e3c0a5b6-7bb4-4efa-b7c4-64b37cc84b08'::uuid
 );
 
 drop policy if exists "Admin can update feedback"
@@ -72,10 +72,10 @@ on public.customer_feedback
 for update
 to authenticated
 using (
-    auth.uid() = 'e3c0a5b6-7bb4-4efa-b7c4-64b37cc84b08'::uuid
+    (select auth.uid()) = 'e3c0a5b6-7bb4-4efa-b7c4-64b37cc84b08'::uuid
 )
 with check (
-    auth.uid() = 'e3c0a5b6-7bb4-4efa-b7c4-64b37cc84b08'::uuid
+    (select auth.uid()) = 'e3c0a5b6-7bb4-4efa-b7c4-64b37cc84b08'::uuid
 );
 
 drop policy if exists "Public can read visitor count"
