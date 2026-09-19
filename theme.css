@@ -117,3 +117,201 @@ html[data-theme="dark"] .btn-outline:hover {
 html[data-theme="dark"] .btn-primary {
     color: #ffffff !important;
 }
+
+/* =====================================================
+   GLOBAL TYPOGRAPHY + DARK MODE FIX
+===================================================== */
+
+html,
+body {
+    font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+html[data-theme="dark"] body,
+html[data-theme="dark"] main,
+html[data-theme="dark"] section,
+html[data-theme="dark"] article,
+html[data-theme="dark"] .container {
+    background-color: #20242a !important;
+    color: #e7e9ec !important;
+}
+
+html[data-theme="dark"] .success-box {
+    background: #2b3037 !important;
+    color: #e7e9ec !important;
+    border: 1px solid #424850 !important;
+}
+
+html[data-theme="dark"] .application-id {
+    background: #252f3d !important;
+    color: #8ab4f8 !important;
+}
+
+html[data-theme="dark"] .new-btn {
+    background: #3b82d0 !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] footer,
+html[data-theme="dark"] footer p,
+html[data-theme="dark"] .footer,
+html[data-theme="dark"] .site-footer {
+    background: #181b1f !important;
+    color: #c9ced5 !important;
+}
+
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6,
+html[data-theme="dark"] p,
+html[data-theme="dark"] li,
+html[data-theme="dark"] label,
+html[data-theme="dark"] td,
+html[data-theme="dark"] th {
+    color: inherit;
+}
+
+
+/* =====================================================
+   COMPACT TOP THEME SWITCH
+===================================================== */
+
+.theme-toggle-global {
+    position: fixed !important;
+    top: 14px !important;
+    right: 145px !important;
+    bottom: auto !important;
+    width: 68px !important;
+    height: 30px !important;
+    padding: 3px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 999px !important;
+    background: #e8edf4 !important;
+    color: #64748b !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.16) !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    z-index: 99999 !important;
+}
+
+.theme-toggle-icon {
+    width: 22px !important;
+    height: 22px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 15px !important;
+    z-index: 2 !important;
+}
+
+.theme-toggle-track {
+    position: absolute !important;
+    top: 3px !important;
+    left: 3px !important;
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,.22) !important;
+    transition: transform .22s ease !important;
+    pointer-events: none !important;
+}
+
+.theme-toggle-knob {
+    display: none !important;
+}
+
+.theme-toggle-sun {
+    color: #475569 !important;
+}
+
+.theme-toggle-moon {
+    color: #94a3b8 !important;
+}
+
+.theme-toggle-global.is-dark {
+    background: #20283a !important;
+    border-color: #3f4b63 !important;
+    color: #cbd5e1 !important;
+}
+
+.theme-toggle-global.is-dark .theme-toggle-track {
+    transform: translateX(38px) !important;
+    background: #596579 !important;
+}
+
+.theme-toggle-global.is-dark .theme-toggle-sun {
+    color: #64748b !important;
+}
+
+.theme-toggle-global.is-dark .theme-toggle-moon {
+    color: #f1f5f9 !important;
+}
+
+@media (max-width: 700px) {
+    .theme-toggle-global {
+        top: 10px !important;
+        right: 82px !important;
+        width: 62px !important;
+        height: 28px !important;
+    }
+
+    .theme-toggle-global.is-dark .theme-toggle-track {
+        transform: translateX(34px) !important;
+    }
+}
+
+
+/* =====================================================
+   FINAL NAVBAR THEME SWITCH POSITION
+===================================================== */
+
+.nav-links .theme-toggle-global {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 62px !important;
+    height: 28px !important;
+    min-width: 62px !important;
+    flex: 0 0 62px !important;
+    margin-left: 4px !important;
+    padding: 2px !important;
+}
+
+.nav-links .theme-toggle-track {
+    top: 2px !important;
+    left: 2px !important;
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.nav-links .theme-toggle-global.is-dark .theme-toggle-track {
+    transform: translateX(34px) !important;
+}
+
+@media (max-width: 700px) {
+    .nav-links .theme-toggle-global {
+        width: 56px !important;
+        min-width: 56px !important;
+        flex-basis: 56px !important;
+        height: 26px !important;
+        margin-left: 2px !important;
+    }
+
+    .nav-links .theme-toggle-track {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    .nav-links .theme-toggle-global.is-dark .theme-toggle-track {
+        transform: translateX(30px) !important;
+    }
+}

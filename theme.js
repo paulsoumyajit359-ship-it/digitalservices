@@ -14,19 +14,31 @@
         button.className = "theme-toggle-global";
         button.type = "button";
 
+        button.innerHTML = `
+            <span class="theme-toggle-icon theme-toggle-sun" aria-hidden="true">☀</span>
+            <span class="theme-toggle-track" aria-hidden="true">
+                <span class="theme-toggle-knob"></span>
+            </span>
+            <span class="theme-toggle-icon theme-toggle-moon" aria-hidden="true">☾</span>
+        `;
+
         function updateButton() {
             const theme =
                 document.documentElement.getAttribute("data-theme") || "light";
 
-            if (theme === "dark") {
-                button.textContent = "☀️";
-                button.setAttribute("aria-label", "Switch to light mode");
-                button.setAttribute("title", "Switch to light mode");
-            } else {
-                button.textContent = "🌙";
-                button.setAttribute("aria-label", "Switch to dark mode");
-                button.setAttribute("title", "Switch to dark mode");
-            }
+            const isDark = theme === "dark";
+
+            button.classList.toggle("is-dark", isDark);
+
+            button.setAttribute(
+                "aria-label",
+                isDark ? "Switch to light mode" : "Switch to dark mode"
+            );
+
+            button.setAttribute(
+                "title",
+                isDark ? "Switch to light mode" : "Switch to dark mode"
+            );
         }
 
         button.addEventListener("click", function () {
@@ -42,7 +54,12 @@
             updateButton();
         });
 
-        document.body.appendChild(button);
+        const navLinks = document.querySelector(".nav-links");
+        if (navLinks) {
+            navLinks.appendChild(button);
+        } else {
+            document.body.appendChild(button);
+        }
 
         updateButton();
     }

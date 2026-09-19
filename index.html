@@ -1017,9 +1017,6 @@ html[data-theme="dark"] a {
 
         <a href="admin-login.html">🔐 Admin Login</a>
 
-        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
-            🌙
-        </button>
 
     </nav>
 
@@ -2062,35 +2059,6 @@ function showNoAdvertisements() {
 loadAdvertisements();
 
 /* =====================================================
-   DARK / LIGHT MODE
-===================================================== */
-
-const themeToggle = document.getElementById("themeToggle");
-
-function applyTheme(theme) {
-    document.documentElement.setAttribute("data-theme", theme);
-
-    if (theme === "dark") {
-        themeToggle.textContent = "☀️";
-        themeToggle.setAttribute("aria-label", "Switch to light mode");
-        themeToggle.setAttribute("title", "Switch to light mode");
-    } else {
-        themeToggle.textContent = "🌙";
-        themeToggle.setAttribute("aria-label", "Switch to dark mode");
-        themeToggle.setAttribute("title", "Switch to dark mode");
-    }
-}
-
-const savedTheme = localStorage.getItem("theme") || "light";
-applyTheme(savedTheme);
-
-themeToggle.addEventListener("click", function () {
-    const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
-
-    localStorage.setItem("theme", nextTheme);
-    applyTheme(nextTheme);
-});
 
 
 </script>
