@@ -315,3 +315,22 @@ html[data-theme="dark"] th {
         transform: translateX(30px) !important;
     }
 }
+
+/* =====================================================
+   DARK MODE NAVBAR TEXT
+===================================================== */
+
+html[data-theme="dark"] .navbar .nav-links a {
+    color: #f8fafc !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="dark"] .navbar .nav-links a:hover {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="dark"] .navbar .brand-text h1,
+html[data-theme="dark"] .navbar .brand-text p {
+    color: #f8fafc !important;
+}
