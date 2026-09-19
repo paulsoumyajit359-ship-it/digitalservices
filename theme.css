@@ -273,6 +273,30 @@ html[data-theme="dark"] th {
    FINAL NAVBAR THEME SWITCH POSITION
 ===================================================== */
 
+.header-right .theme-toggle-global {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 62px !important;
+    height: 28px !important;
+    min-width: 62px !important;
+    flex: 0 0 62px !important;
+    margin-left: 0 !important;
+    padding: 2px !important;
+}
+
+.header-right .theme-toggle-track {
+    top: 2px !important;
+    left: 2px !important;
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.header-right .theme-toggle-global.is-dark .theme-toggle-track {
+    transform: translateX(34px) !important;
+}
+
 .nav-links .theme-toggle-global {
     position: relative !important;
     top: auto !important;
@@ -298,6 +322,30 @@ html[data-theme="dark"] th {
 }
 
 @media (max-width: 700px) {
+.header-right .theme-toggle-global {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 62px !important;
+    height: 28px !important;
+    min-width: 62px !important;
+    flex: 0 0 62px !important;
+    margin-left: 0 !important;
+    padding: 2px !important;
+}
+
+.header-right .theme-toggle-track {
+    top: 2px !important;
+    left: 2px !important;
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.header-right .theme-toggle-global.is-dark .theme-toggle-track {
+    transform: translateX(34px) !important;
+}
+
     .nav-links .theme-toggle-global {
         width: 56px !important;
         min-width: 56px !important;

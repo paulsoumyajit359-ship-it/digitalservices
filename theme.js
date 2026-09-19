@@ -55,8 +55,11 @@
         });
 
         const navLinks = document.querySelector(".nav-links");
+        const headerRight = document.querySelector(".header-right");
         if (navLinks) {
             navLinks.appendChild(button);
+        } else if (headerRight) {
+            headerRight.appendChild(button);
         } else {
             document.body.appendChild(button);
         }
