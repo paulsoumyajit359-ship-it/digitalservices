@@ -55,7 +55,7 @@
         });
 
         const navLinks = document.querySelector(".nav-links");
-        const headerRight = document.querySelector(".header-right");
+        const headerRight = document.querySelector(".header-right, .header-actions");
         if (navLinks) {
             navLinks.appendChild(button);
         } else if (headerRight) {

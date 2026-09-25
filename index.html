@@ -1430,9 +1430,13 @@ html[data-theme="dark"] a {
 
 function openService(serviceName) {
 
-    window.location.href =
+    const returnTo =
         "apply.html?service=" +
         encodeURIComponent(serviceName);
+
+    window.location.href =
+        "login.html?returnTo=" +
+        encodeURIComponent(returnTo);
 
 }
 
