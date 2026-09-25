@@ -279,7 +279,7 @@ button:disabled{
 
 <div class="brand">
 
-    <div class="logo">
+    <div class="logo" id="mainLogo">
         DS
     </div>
 
@@ -1349,6 +1349,10 @@ async function(event){
 loadUserDefaults();
 
 applyServiceFromUrl();
+document.getElementById("mainLogo").addEventListener("click", async function(){
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    window.location.href = user ? "customer-dashboard.html" : "index.html";
+});
 
 </script>
 

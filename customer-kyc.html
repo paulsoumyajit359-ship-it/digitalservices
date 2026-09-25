@@ -247,7 +247,7 @@ button,a,input,select,textarea{
 
     <div class="logo-area">
 
-        <div class="logo-box">
+        <div class="logo-box" id="mainLogo">
             DS
         </div>
 
@@ -1020,6 +1020,10 @@ supabaseClient
 
 });
 
+document.getElementById("mainLogo").addEventListener("click", async function(){
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    window.location.href = user ? "customer-dashboard.html" : "index.html";
+});
 
 loadProfile()
 .catch(error=>{

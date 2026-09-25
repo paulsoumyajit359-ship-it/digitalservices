@@ -252,7 +252,7 @@ textarea:focus{
 <header class="header">
 
     <div class="brand">
-        <div class="logo">DS</div>
+        <div class="logo" id="mainLogo">DS</div>
         <div>
             <h1>Digital Service</h1>
             <p>Customer Profile</p>
@@ -737,6 +737,12 @@ async function(){
 
     window.location.href="login.html";
 
+});
+
+
+document.getElementById("mainLogo").addEventListener("click", async function(){
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    window.location.href = user ? "customer-dashboard.html" : "index.html";
 });
 
 loadProfile();
