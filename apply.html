@@ -950,40 +950,50 @@ async function loadUserDefaults(){
 
 function applyServiceFromUrl(){
 
-    const raw=
-        new URLSearchParams(
-            location.search
-        ).get("service");
+    const params = new URLSearchParams(location.search);
 
-    if(!raw)
+    const rawService = params.get("service");
+    const aadhaarService = params.get("aadhaarService");
+
+    if(!rawService)
         return;
 
-    const value=
-        serviceAliases[raw] ||
-        raw;
+    let value =
+        serviceAliases[rawService] ||
+        rawService;
 
-    const option=
-        [
-            ...serviceSelect.options
-        ].find(
+    if(
+        String(value).toLowerCase() === "aadhaar" &&
+        aadhaarService
+    ){
+        value = aadhaarService;
+    }
+
+    const option =
+        [...serviceSelect.options].find(
             option =>
-                option.value.toLowerCase()
-                ===
+                option.value.toLowerCase() ===
                 String(value).toLowerCase()
         );
 
     if(option){
 
-        serviceSelect.value=
-            option.value;
+        serviceSelect.value = option.value;
 
-        selectedNote.textContent=
+        selectedNote.textContent =
             "Selected service: " +
             option.textContent;
 
-        selectedNote.style.display=
-            "block";
+        selectedNote.style.display = "block";
 
+        const requirement =
+            document.getElementById("requirement");
+
+        if(requirement && aadhaarService){
+            requirement.value =
+                "Aadhaar Service: " +
+                aadhaarService;
+        }
     }
 
 }
