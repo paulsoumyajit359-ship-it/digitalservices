@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aadhaar Services | Digital Service</title>
+    <meta name="description" content="Aadhaar related digital assistance services by Digital Service.">
+
+    <link rel="stylesheet" href="theme.css">
+
+    <style>
+        /* Existing Digital Service navbar styles */
+        .navbar {
+            width: 100%;
+            background: linear-gradient(135deg, #164b9b, #0875dc);
+            color: white;
+            padding: 18px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        .brand-logo {
+            width: 58px;
+            height: 58px;
+            background: white;
+            color: #1260c9;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .brand-text h1 {
+            font-size: 24px;
+            margin-bottom: 3px;
+        }
+
+        .brand-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 28px;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            color: white;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.75;
+        }
+
+        @media (max-width: 1100px) {
+            .navbar {
+                padding: 15px 3%;
+            }
+
+            .nav-links {
+                gap: 16px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                gap: 14px 20px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .brand-logo {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+
+            .brand-text h1 {
+                font-size: 20px;
+            }
+
+            .brand-text p {
+                font-size: 12px;
+            }
+        }
+
+        .aadhaar-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+        }
+
+        .aadhaar-layout {
+            display: grid;
+            grid-template-columns: 230px minmax(0, 1fr);
+            gap: 28px;
+            align-items: start;
+        }
+
+        .aadhaar-sidebar,
+        .aadhaar-main-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
+        }
+
+        .aadhaar-sidebar {
+            padding: 22px;
+            position: sticky;
+            top: 105px;
+        }
+
+        .aadhaar-sidebar h3 {
+            margin-bottom: 14px;
+            color: #123b75;
+            font-size: 18px;
+        }
+
+        .aadhaar-sidebar a {
+            display: block;
+            padding: 10px 12px;
+            border-radius: 9px;
+            color: #475569;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .aadhaar-sidebar a:hover {
+            background: #eef5ff;
+            color: #1260c9;
+        }
+
+        .aadhaar-main-card {
+            padding: 32px;
+        }
+
+        .aadhaar-heading {
+            margin-bottom: 24px;
+        }
+
+        .aadhaar-heading h2 {
+            color: #123b75;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .aadhaar-heading p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .aadhaar-info {
+            background: #eef6ff;
+            border: 1px solid #cfe2ff;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 28px;
+        }
+
+        .aadhaar-info h3 {
+            color: #123b75;
+            margin-bottom: 8px;
+        }
+
+        .aadhaar-info p {
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .aadhaar-services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .aadhaar-service-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 22px;
+            background: #ffffff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .aadhaar-service-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+        }
+
+        .aadhaar-service-card h3 {
+            color: #123b75;
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .aadhaar-service-card p {
+            color: #64748b;
+            line-height: 1.55;
+            margin-bottom: 16px;
+        }
+
+        .aadhaar-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 17px;
+        }
+
+        .aadhaar-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .aadhaar-apply-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 10px 17px;
+            border: 0;
+            border-radius: 9px;
+            background: #1260c9;
+            color: #ffffff !important;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .aadhaar-apply-btn:hover {
+            background: #0d4fa8;
+        }
+
+        .aadhaar-centre-box {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 12px;
+            padding: 13px 14px;
+            color: #9a3412;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 850px) {
+            .aadhaar-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .aadhaar-sidebar {
+                position: static;
+            }
+
+            .aadhaar-services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        html[data-theme="dark"] .aadhaar-sidebar,
+        html[data-theme="dark"] .aadhaar-main-card,
+        html[data-theme="dark"] .aadhaar-service-card {
+            background: #1e1e1e !important;
+            border-color: #333 !important;
+            color: #f1f1f1 !important;
+        }
+
+        html[data-theme="dark"] .aadhaar-sidebar h3,
+        html[data-theme="dark"] .aadhaar-heading h2,
+        html[data-theme="dark"] .aadhaar-info h3,
+        html[data-theme="dark"] .aadhaar-service-card h3 {
+            color: #f1f1f1 !important;
+        }
+
+        html[data-theme="dark"] .aadhaar-sidebar a,
+        html[data-theme="dark"] .aadhaar-heading p,
+        html[data-theme="dark"] .aadhaar-info p,
+        html[data-theme="dark"] .aadhaar-service-card p {
+            color: #cbd5e1 !important;
+        }
+
+        html[data-theme="dark"] .aadhaar-info {
+            background: #172554 !important;
+            border-color: #1e40af !important;
+        }
+
+        html[data-theme="dark"] .aadhaar-badge {
+            background: #334155 !important;
+            color: #f1f5f9 !important;
+        }
+
+        html[data-theme="dark"] .aadhaar-centre-box {
+            background: #431407 !important;
+            border-color: #7c2d12 !important;
+            color: #fed7aa !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="brand">
+        <a href="index.html" class="brand-logo" aria-label="Digital Service Home">DS</a>
+
+        <div class="brand-text">
+            <h1>Digital Service</h1>
+            <p>Digital • Tax • Business Services</p>
+        </div>
+    </div>
+
+    <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+    </nav>
+</header>
+
+<main class="aadhaar-page">
+
+    <div class="aadhaar-layout">
+
+        <aside class="aadhaar-sidebar">
+            <h3>All Services</h3>
+
+            <a href="index.html#services">PAN Card</a>
+            <a href="aadhaar-services.html">Aadhaar</a>
+            <a href="index.html#services">Ration Card</a>
+            <a href="index.html#services">Trade License</a>
+            <a href="index.html#services">FSSAI License</a>
+            <a href="index.html#services">GST</a>
+            <a href="index.html#services">TDS</a>
+            <a href="index.html#services">Income Tax</a>
+        </aside>
+
+        <section class="aadhaar-main-card">
+
+            <div class="aadhaar-heading">
+                <h2>Aadhaar Services</h2>
+                <p>
+                    Select the Aadhaar service you need.
+                    Mobile OTP verification is required for applicable services.
+                </p>
+            </div>
+
+            <div class="aadhaar-info">
+                <h3>Important Information</h3>
+                <p>
+                    Aadhaar services that require an Enrolment Centre or
+                    Aadhaar Camp cannot be submitted through this website.
+                    Please follow the centre/camp instructions shown below.
+                </p>
+            </div>
+
+            <div class="aadhaar-services-grid">
+
+                <article class="aadhaar-service-card">
+                    <h3>Generate VID</h3>
+                    <p>Generate a Virtual ID using your Aadhaar details.</p>
+
+                    <div class="aadhaar-meta">
+                        <span class="aadhaar-badge">Free</span>
+                        <span class="aadhaar-badge">Mobile OTP Required</span>
+                    </div>
+
+                    <button
+                        class="aadhaar-apply-btn"
+                        type="button"
+                        onclick="applyAadhaarService('Generate VID')">
+                        Apply Now
+                    </button>
+                </article>
+
+                <article class="aadhaar-service-card">
+                    <h3>Masked Aadhaar Download</h3>
+                    <p>Assistance with downloading a masked Aadhaar copy.</p>
+
+                    <div class="aadhaar-meta">
+                        <span class="aadhaar-badge">Free</span>
+                        <span class="aadhaar-badge">Mobile OTP Required</span>
+                    </div>
+
+                    <button
+                        class="aadhaar-apply-btn"
+                        type="button"
+                        onclick="applyAadhaarService('Masked Aadhaar Download')">
+                        Apply Now
+                    </button>
+                </article>
+
+                <article class="aadhaar-service-card">
+                    <h3>Aadhaar PVC Card Order</h3>
+                    <p>Assistance with ordering an Aadhaar PVC card.</p>
+
+                    <div class="aadhaar-meta">
+                        <span class="aadhaar-badge">Fee Applicable</span>
+                        <span class="aadhaar-badge">Mobile OTP Required</span>
+                    </div>
+
+                    <button
+                        class="aadhaar-apply-btn"
+                        type="button"
+                        onclick="applyAadhaarService('Aadhaar PVC Card Order')">
+                        Apply Now
+                    </button>
+                </article>
+
+                <article class="aadhaar-service-card">
+                    <h3>Lock / Unlock Biometric</h3>
+                    <p>Assistance with Aadhaar biometric lock or unlock services.</p>
+
+                    <div class="aadhaar-meta">
+                        <span class="aadhaar-badge">Free</span>
+                        <span class="aadhaar-badge">Mobile OTP Required</span>
+                    </div>
+
+                    <button
+                        class="aadhaar-apply-btn"
+                        type="button"
+                        onclick="applyAadhaarService('Lock / Unlock Biometric')">
+                        Apply Now
+                    </button>
+                </article>
+
+                <article class="aadhaar-service-card">
+                    <h3>Lock / Unlock Aadhaar</h3>
+                    <p>Assistance with Aadhaar lock or unlock services.</p>
+
+                    <div class="aadhaar-meta">
+                        <span class="aadhaar-badge">Free</span>
+                        <span class="aadhaar-badge">Mobile OTP Required</span>
+                    </div>
+
+                    <button
+                        class="aadhaar-apply-btn"
+                        type="button"
+                        onclick="applyAadhaarService('Lock / Unlock Aadhaar')">
+                        Apply Now
+                    </button>
+                </article>
+
+                <article class="aadhaar-service-card">
+                    <h3>Address Update</h3>
+                    <p>Apply for assistance with Aadhaar address update.</p>
+
+                    <div class="aadhaar-meta">
+                        <span class="aadhaar-badge">Fee Applicable</span>
+                        <span class="aadhaar-badge">Mobile OTP Required</span>
+                    </div>
+
+                    <button
+                        class="aadhaar-apply-btn"
+                        type="button"
+                        onclick="applyAadhaarService('Address Update')">
+                        Apply Now
+                    </button>
+                </article>
+
+                <article class="aadhaar-service-card">
+                    <h3>Photo / Biometric Update</h3>
+                    <p>
+                        Photo and biometric updates require an Aadhaar
+                        Enrolment Centre or Aadhaar Camp.
+                    </p>
+
+                    <div class="aadhaar-centre-box">
+                        Aadhaar Seva Kendra / Aadhaar Camp Required.
+                        No online application is available here.
+                    </div>
+                </article>
+
+                <article class="aadhaar-service-card">
+                    <h3>Check Enrolment Status</h3>
+                    <p>Assistance with checking Aadhaar enrolment status.</p>
+
+                    <div class="aadhaar-meta">
+                        <span class="aadhaar-badge">Status Check</span>
+                    </div>
+
+                    <button
+                        class="aadhaar-apply-btn"
+                        type="button"
+                        onclick="applyAadhaarService('Check Enrolment Status')">
+                        Apply Now
+                    </button>
+                </article>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+<script src="theme.js"></script>
+
+<script>
+function applyAadhaarService(serviceName) {
+    window.location.href =
+        "apply.html?service=" +
+        encodeURIComponent("Aadhaar") +
+        "&aadhaarService=" +
+        encodeURIComponent(serviceName);
+}
+</script>
+
+</body>
+</html>

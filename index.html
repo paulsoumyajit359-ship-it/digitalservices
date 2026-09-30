@@ -1430,6 +1430,13 @@ html[data-theme="dark"] a {
 
 function openService(serviceName) {
 
+    if (serviceName === "Aadhaar Card") {
+        window.location.href =
+            "login.html?returnTo=" +
+            encodeURIComponent("aadhaar-services.html");
+        return;
+    }
+
     const returnTo =
         "apply.html?service=" +
         encodeURIComponent(serviceName);
