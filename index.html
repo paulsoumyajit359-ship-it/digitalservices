@@ -980,6 +980,8 @@ html[data-theme="dark"] a {
 </style>
 <link rel="stylesheet" href="theme.css">
 <script src="theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm//supabase-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -1428,12 +1430,23 @@ html[data-theme="dark"] a {
    SERVICE CARD → APPLY PAGE
 ===================================================== */
 
-function openService(serviceName) {
+async function openService(serviceName) {
+
+    const client = window.supabase.createClient(
+        "https://nlzrdjvlkdqungmhnsrl.supabase.co",
+        "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6"
+    );
+
+    const { data: { user } } = await client.auth.getUser();
 
     if (serviceName === "Aadhaar Card") {
-        window.location.href =
-            "login.html?returnTo=" +
-            encodeURIComponent("aadhaar-services.html");
+        if (user) {
+            window.location.href = "aadhaar-services.html";
+        } else {
+            window.location.href =
+                "login.html?returnTo=" +
+                encodeURIComponent("aadhaar-services.html");
+        }
         return;
     }
 
@@ -2660,5 +2673,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 </style>
+<script>
+(function () {
+    const SUPABASE_URL = "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+    const dashboardClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+    async function setupCustomerDashboardButton() {
+    const { data: { user } } = await dashboardClient.auth.getUser();
+    if (!user) return;
+        const { data: { user } } = await dashboardClient.auth.getUser();
+        if (!user) return;
+
+        const nav = document.querySelector(".nav-links, nav");
+        if (!nav) return;
+        if (nav.querySelector("[data-customer-dashboard]")) return;
+
+        const dashboardLink = document.createElement("a");
+        dashboardLink.href = "customer-dashboard.html";
+        dashboardLink.textContent = "Customer Dashboard";
+        dashboardLink.setAttribute("data-customer-dashboard", "true");
+        dashboardLink.style.fontWeight = "700";
+        dashboardLink.style.color = "#ffffff";
+        dashboardLink.style.background = "#16a34a";
+        dashboardLink.style.padding = "8px 12px";
+        dashboardLink.style.borderRadius = "7px";
+        dashboardLink.style.textDecoration = "none";
+        nav.appendChild(dashboardLink);
+    }
+
+    setupCustomerDashboardButton();
+})();
+</script>
 </body>
 </html>

@@ -668,6 +668,27 @@
         }
 
     </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function () {
+    const SUPABASE_URL = "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+
+    const authClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+    authClient.auth.getUser().then(function (result) {
+        if (!result.data.user) {
+            window.location.replace(
+                "login.html?returnTo=" +
+                encodeURIComponent("aadhaar-services.html")
+            );
+        }
+    });
+})();
+</script>
 </head>
 
 <body>
@@ -896,5 +917,40 @@ function applyAadhaarService(serviceName) {
 }
 </script>
 
+<script>
+(function () {
+    const SUPABASE_URL = "https://nlzrdjvlkdqungmhnsrl.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
+
+    const dashboardClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+    async function setupCustomerDashboardButton() {
+        try {
+            const { data: { user } } = await dashboardClient.auth.getUser();
+
+            if (!user) return;
+
+            const nav = document.querySelector(".nav-links");
+            if (!nav) return;
+
+            if (nav.querySelector("[data-customer-dashboard]")) return;
+
+            const dashboardLink = document.createElement("a");
+            dashboardLink.href = "customer-dashboard.html";
+            dashboardLink.textContent = "Customer Dashboard";
+            dashboardLink.setAttribute("data-customer-dashboard", "true");
+
+            nav.appendChild(dashboardLink);
+        } catch (error) {
+            console.error("Dashboard button error:", error);
+        }
+    }
+
+    setupCustomerDashboardButton();
+})();
+</script>
 </body>
 </html>
