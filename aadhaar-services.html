@@ -676,7 +676,15 @@
 
     const authClient = window.supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth: {
+                storage: window.sessionStorage,
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }
     );
 
     authClient.auth.getUser().then(function (result) {
@@ -924,7 +932,15 @@ function applyAadhaarService(serviceName) {
 
     const dashboardClient = window.supabase.createClient(
         SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth: {
+                storage: window.sessionStorage,
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        }
     );
 
     async function setupCustomerDashboardButton() {
@@ -943,7 +959,7 @@ function applyAadhaarService(serviceName) {
             dashboardLink.textContent = "Customer Dashboard";
             dashboardLink.setAttribute("data-customer-dashboard", "true");
 
-            nav.appendChild(dashboardLink);
+            nav.insertBefore(dashboardLink, nav.children[1] || null);
         } catch (error) {
             console.error("Dashboard button error:", error);
         }

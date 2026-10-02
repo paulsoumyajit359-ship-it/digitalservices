@@ -518,11 +518,19 @@ html[data-theme="dark"] .login-box .login-link {
         "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6";
 
 
-    const supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY
-        );
+      const supabaseClient =
+          window.supabase.createClient(
+              SUPABASE_URL,
+              SUPABASE_PUBLISHABLE_KEY,
+              {
+                  auth: {
+                      storage: window.sessionStorage,
+                      persistSession: true,
+                      autoRefreshToken: true,
+                      detectSessionInUrl: true
+                  }
+              }
+          );
 
 
 
@@ -553,7 +561,10 @@ html[data-theme="dark"] .login-box .login-link {
 
     const message =
         document.getElementById("message");
-    const returnTo = new URLSearchParams(window.location.search).get("returnTo");
+    const returnTo =
+        new URLSearchParams(window.location.search).get("returnTo") ||
+        sessionStorage.getItem("digitalservice_returnTo");
+
 
     // =========================================================
     // CUSTOMER LOGIN
@@ -625,15 +636,14 @@ html[data-theme="dark"] .login-box .login-link {
                 message.textContent =
                     "Login successful!";
 
+                        const destination =
+                            returnTo || "customer-dashboard.html";
 
-                setTimeout(
-                    function() {
+                        sessionStorage.removeItem(
+                            "digitalservice_returnTo"
+                        );
 
-                        window.location.href = returnTo ? decodeURIComponent(returnTo) : "customer-dashboard.html";
-
-                    },
-                    800
-                );
+                        window.location.href = destination;
 
 
             }
