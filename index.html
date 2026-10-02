@@ -426,15 +426,9 @@ html[data-theme="dark"] a {
             width: 100%;
             height: 100%;
             display: block;
-
-            /*
-              IMPORTANT:
-              contain = পুরো poster দেখা যাবে
-              crop হবে না
-            */
             object-fit: contain;
             object-position: center;
-            background: white;
+            background: transparent;
         }
 
         /* Arrows */
@@ -1475,12 +1469,42 @@ function openService(serviceName) {
 
 
 const ADVERTISEMENT_FILES = [
-    "https://nlzrdjvlkdqungmhnsrl.supabase.co/storage/v1/object/public/advertisements/advertisement_poster_01.png",
-    "https://nlzrdjvlkdqungmhnsrl.supabase.co/storage/v1/object/public/advertisements/advertisement_poster_02.png",
-    "https://nlzrdjvlkdqungmhnsrl.supabase.co/storage/v1/object/public/advertisements/advertisement_poster_03.png",
-    "https://nlzrdjvlkdqungmhnsrl.supabase.co/storage/v1/object/public/advertisements/advertisement_poster_04.png",
-    "https://nlzrdjvlkdqungmhnsrl.supabase.co/storage/v1/object/public/advertisements/advertisement_poster_05.png",
-    "https://nlzrdjvlkdqungmhnsrl.supabase.co/storage/v1/object/public/advertisements/advertisement_poster_06.png"
+    {
+        light: "/advertisements/aadhaar_card.png",
+        dark: "/advertisements/aadhaar_card_dark.png",
+        service: "Aadhaar Card",
+        title: "Aadhaar Card"
+    },
+    {
+        light: "/advertisements/pan_card.png",
+        dark: "/advertisements/pan_card_dark.png",
+        service: "PAN Card",
+        title: "PAN Card"
+    },
+    {
+        light: "/advertisements/msme_udyam.png",
+        dark: "/advertisements/msme_udyam_dark.png",
+        service: "MSME / UDYAM",
+        title: "MSME / UDYAM"
+    },
+    {
+        light: "/advertisements/fssai_license.png",
+        dark: "/advertisements/fssai_license_dark.png",
+        service: "FSSAI License",
+        title: "FSSAI License"
+    },
+    {
+        light: "/advertisements/voter_epic.png",
+        dark: "/advertisements/voter_epic_dark.png",
+        service: "VOTER Card / EPIC",
+        title: "VOTER Card / EPIC"
+    },
+    {
+        light: "/advertisements/caste_certificate.png",
+        dark: "/advertisements/caste_certificate_dark.png",
+        service: "Caste Certificate",
+        title: "Caste Certificate"
+    }
 ];
 
 
@@ -1516,72 +1540,19 @@ const adNext =
 
 async function loadAdvertisements() {
 
-    try {
+    advertisements = ADVERTISEMENT_FILES.map(function (ad, index) {
 
-        /*
-          First try existing Worker API.
-        */
+        return {
+            id: index + 1,
+            image_url: ad.light,
+            dark_image_url: ad.dark,
+            service: ad.service,
+            title: ad.title
+        };
 
-        const response =
-            await fetch("/api/advertisements", {
-                method: "GET",
-                cache: "no-store"
-            });
+    });
 
-
-        if (response.ok) {
-
-            const data =
-                await response.json();
-
-            if (Array.isArray(data) && data.length > 0) {
-
-                advertisements =
-                    normaliseAdvertisements(data);
-
-                renderAdvertisements();
-
-                return;
-            }
-
-        }
-
-    } catch (error) {
-
-        console.log(
-            "Advertisement API unavailable."
-        );
-
-    }
-
-
-    /*
-      Fallback to manually configured files.
-    */
-
-    if (ADVERTISEMENT_FILES.length > 0) {
-
-        advertisements =
-            ADVERTISEMENT_FILES.map(
-                (url, index) => ({
-                    id: index + 1,
-                    image_url: url,
-                    service: "",
-                    title: ""
-                })
-            );
-
-        renderAdvertisements();
-
-        return;
-    }
-
-
-    /*
-      If nothing found.
-    */
-
-    showNoAdvertisements();
+    renderAdvertisements();
 
 }
 
@@ -1640,6 +1611,38 @@ function normaliseAdvertisements(data) {
 
 
 /* =====================================================
+   ADVERTISEMENT_THEME_OBSERVER
+===================================================== */
+
+const advertisementThemeObserver =
+    new MutationObserver(function () {
+
+        const isDark =
+            document.documentElement.getAttribute("data-theme") === "dark";
+
+        document
+            .querySelectorAll(".ad-slide img[data-light-src]")
+            .forEach(function (image) {
+
+                image.src =
+                    isDark
+                        ? image.dataset.darkSrc
+                        : image.dataset.lightSrc;
+
+            });
+
+    });
+
+advertisementThemeObserver.observe(
+    document.documentElement,
+    {
+        attributes: true,
+        attributeFilter: ["data-theme"]
+    }
+);
+
+
+/* =====================================================
    RENDER ADS
 ===================================================== */
 
@@ -1680,8 +1683,24 @@ function renderAdvertisements() {
                 document.createElement("img");
 
 
-            image.src =
+            image.dataset.lightSrc =
                 ad.image_url;
+
+            image.dataset.darkSrc =
+                ad.dark_image_url;
+
+            function updateAdvertisementImage() {
+
+                const isDark =
+                    document.documentElement.getAttribute("data-theme") === "dark";
+
+                image.src =
+                    isDark
+                        ? image.dataset.darkSrc
+                        : image.dataset.lightSrc;
+            }
+
+            updateAdvertisementImage();
 
             image.alt =
                 ad.title ||
