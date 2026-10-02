@@ -1590,6 +1590,54 @@ const ADMIN_UID =
 const AD_BUCKET =
     "advertisements";
 
+/* ================= INITIAL WEBSITE ADS SYNC ================= */
+const INITIAL_ADS = [
+    ["aadhaar_card.png","advertisement_aadhaar_card.png"],
+    ["aadhaar_card_dark.png","advertisement_aadhaar_card_dark.png"],
+    ["pan_card.png","advertisement_pan_card.png"],
+    ["pan_card_dark.png","advertisement_pan_card_dark.png"],
+    ["msme_udyam.png","advertisement_msme_udyam.png"],
+    ["msme_udyam_dark.png","advertisement_msme_udyam_dark.png"],
+    ["fssai_license.png","advertisement_fssai_license.png"],
+    ["fssai_license_dark.png","advertisement_fssai_license_dark.png"],
+    ["voter_epic.png","advertisement_voter_epic.png"],
+    ["voter_epic_dark.png","advertisement_voter_epic_dark.png"],
+    ["caste_certificate.png","advertisement_caste_certificate.png"],
+    ["caste_certificate_dark.png","advertisement_caste_certificate_dark.png"]
+];
+
+async function syncInitialAds(){
+    try{
+        const {data,error} = await supabaseClient.storage.from(AD_BUCKET).list("",{limit:100});
+        if(error) throw error;
+
+        const existing = new Set((data || []).map(file => file.name));
+
+        for(const [sourceName,fileName] of INITIAL_ADS){
+            if(existing.has(fileName)) continue;
+
+            const response = await fetch("/advertisements/" + sourceName);
+            if(!response.ok) continue;
+
+            const blob = await response.blob();
+
+            const {error:uploadError} = await supabaseClient.storage
+                .from(AD_BUCKET)
+                .upload(fileName,blob,{
+                    cacheControl:"3600",
+                    contentType:blob.type || "image/png",
+                    upsert:false
+                });
+
+            if(uploadError && !/already exists/i.test(uploadError.message || "")){
+                console.error("Initial advertisement sync failed:",fileName,uploadError);
+            }
+        }
+    }catch(error){
+        console.error("Initial advertisement sync error:",error);
+    }
+}
+
 const DOC_BUCKET =
     "documents";
 
@@ -3899,6 +3947,8 @@ async function deleteDocument(
 ========================================================= */
 
 async function loadAds(){
+
+    await syncInitialAds();
 
     $("adsLoading")
         .style.display =

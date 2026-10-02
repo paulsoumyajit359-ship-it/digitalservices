@@ -1540,17 +1540,116 @@ const adNext =
 
 async function loadAdvertisements() {
 
-    advertisements = ADVERTISEMENT_FILES.map(function (ad, index) {
+    try {
 
-        return {
-            id: index + 1,
-            image_url: ad.light,
-            dark_image_url: ad.dark,
-            service: ad.service,
-            title: ad.title
-        };
+        const adSupabaseClient =
+            window.supabase.createClient(
+                "https://nlzrdjvlkdqungmhnsrl.supabase.co",
+                "sb_publishable_ZJldk78Tl0wQW0r2k4Sakw_lYTXIET6"
+            );
 
-    });
+        const { data, error } =
+            await adSupabaseClient
+                .storage
+                .from("advertisements")
+                .list("", {
+                    limit: 100,
+                    sortBy: {
+                        column: "name",
+                        order: "asc"
+                    }
+                });
+
+        if (error) throw error;
+
+        const files = (data || []).filter(function (file) {
+            return /\.(jpg|jpeg|png|webp)$/i.test(file.name);
+        });
+
+        const fileMap = new Map();
+
+        files.forEach(function (file) {
+
+            if (/^advertisement_poster_\d+\.(jpg|jpeg|png|webp)$/i.test(file.name)) {
+                return;
+            }
+
+            const dark = /_dark\.(jpg|jpeg|png|webp)$/i.test(file.name);
+
+            const baseName = dark
+                ? file.name.replace(/_dark\.(jpg|jpeg|png|webp)$/i, "")
+                : file.name.replace(/\.(jpg|jpeg|png|webp)$/i, "");
+
+            if (!fileMap.has(baseName)) {
+                fileMap.set(baseName, {
+                    light: null,
+                    dark: null
+                });
+            }
+
+            const item = fileMap.get(baseName);
+
+            const publicUrl =
+                adSupabaseClient
+                    .storage
+                    .from("advertisements")
+                    .getPublicUrl(file.name).data.publicUrl;
+
+            if (dark) {
+                item.dark = publicUrl;
+            } else {
+                item.light = publicUrl;
+            }
+        });
+
+        advertisements = Array.from(fileMap.entries()).map(function ([name, item], index) {
+
+            const displayName = name
+                .replace(/^advertisement_/, "")
+                .replace(/^\d+_/, "")
+                .replace(/_/g, " ")
+                .replace(/\b\w/g, function (char) {
+                    return char.toUpperCase();
+                });
+
+            return {
+                id: index + 1,
+                image_url: item.light || item.dark,
+                dark_image_url: item.dark || item.light,
+                service: displayName,
+                title: displayName
+            };
+
+        }).filter(function (ad) {
+            return ad.image_url;
+        });
+
+        if (!advertisements.length) {
+            advertisements = ADVERTISEMENT_FILES.map(function (ad, index) {
+                return {
+                    id: index + 1,
+                    image_url: ad.light,
+                    dark_image_url: ad.dark,
+                    service: ad.service,
+                    title: ad.title
+                };
+            });
+        }
+
+    } catch (error) {
+
+        console.error("Unable to load advertisements from Supabase:", error);
+
+        advertisements = ADVERTISEMENT_FILES.map(function (ad, index) {
+            return {
+                id: index + 1,
+                image_url: ad.light,
+                dark_image_url: ad.dark,
+                service: ad.service,
+                title: ad.title
+            };
+        });
+    }
 
     renderAdvertisements();
 
@@ -2690,8 +2789,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const dashboardClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
     async function setupCustomerDashboardButton() {
-    const { data: { user } } = await dashboardClient.auth.getUser();
-    if (!user) return;
         const { data: { user } } = await dashboardClient.auth.getUser();
         if (!user) return;
 
